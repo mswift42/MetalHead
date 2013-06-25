@@ -8,7 +8,7 @@
 (in-package :world)
 
 (defclass Room ()
-  ((ldescription :initform nil :initarg :ldescription)
+  ((ldescription :initform nil :initarg :ldescription :accessor :ldescription)
    (sdescription :initform nil :initarg :sdescription)
    (uexit :initform nil :initarg :uexit)  
    (cexit :initform nil :initarg :cexit)  
@@ -67,7 +67,8 @@
 		 :sdescription '(your laptop. It used to be black.
 				 Whats the color of grime again?)
 		 :location '(*bedroom*)
-		 :action '((use-v  use-laptop) (start-v power-on-laptop) (type-pass-v crack-password-p))
+		 :action '((use-v  use-laptop)
+			   (start-v power-on-laptop) (type-pass-v crack-password-p))
 		 :flags '(poweroff )))
 
 (defun non-exits (room)
@@ -98,11 +99,59 @@
   '((use use-v)
     (utilize use-v)
     (start start-v)
-    (power start-v)))
+    (power start-v))
+  "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
   (first ( rest (assoc verb verb-synonyms))))
 
+(defun game-repl ()
+  (let ((cmd (game-read)))
+    (unless (eq (car cmd) 'quit)
+      (game-print (game-eval cmd))
+      (game-repl))))
+
+(defun game-read ()
+  (let ((cmd (read-from-string
+	      (concatenate 'string "(" (read-line) ")"))))
+    (flet ((quote-it (x)
+	     (list 'quote x)))
+      (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
+
+
+(defparameter *allowed-commands* '(look go take move get pick))
+
+(defun game-eval (sexp)
+  (if (member (car sexp) *allowed-commands*)
+      (eval sexp)
+      '(I do not know this command.)))
+
+(defun tweak-text (lst caps lit)
+  (when lst
+    (let ((item (car lst))
+	  (rest (cdr lst)))
+      (cond ((eq item #\space) (cons item (tweak-text rest caps lit)))
+	    ((member item '(#\! #\? #\.)) (cons item (tweak-text rest t lit)))
+	    ((eq item #\") (tweak-text rest caps (not lit)))
+	    (lit (cons item (tweak-text rest nil lit)))
+	    ((or caps lit) (cons (char-upcase item) ( tweak-text rest nil lit)))
+	    (t (cons (char-downcase item) (tweak-text rest nil nil)))))))
+
+(defun game-print (lst)
+  (princ (coerce (tweak-text (coerce (string-trim "() "
+						  (prin1-to-string lst))
+				     'list)
+			     t
+			     nil)
+		 'string))
+  (fresh-line))
+
+
+
+
+(defun describe-room (room)
+  (loop for i in ( :ldescription room)
+        do (format t "~A " i)))
 
 
 
@@ -111,7 +160,8 @@
 (clunit:defsuite Parse-suite ())
 
 (clunit:deftest test-non-exits (Room-suite)
-  (clunit:assert-equal '(did you seriously think about leaving by the window? I know you had a rough night but please use the door like other normal people.) (non-exits *bedroom*)))
+  (clunit:assert-equal '(did you seriously think about leaving by the window?
+			 I know you had a rough night but please use the door like other normal people.) (non-exits *bedroom*)))
 (clunit:deftest test-u-exits (Room-suite)
   (clunit:assert-equal '((west hallway)) (u-exits *bedroom*))
   (clunit:assert-equal '((east bedroom) (west frontdoor)) (u-exits *hallway*)))
@@ -119,6 +169,8 @@
 (clunit:deftest test-return-synonym (Parse-suite)
   (clunit:assert-equal 'start-v (return-synonym 'power))
   (clunit:assert-equal 'use-v (return-synonym 'use)))
+
+
 
 (clunit:run-suite 'Room-suite)
 (clunit:run-suite 'Parse-suite)
