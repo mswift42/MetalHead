@@ -45,7 +45,7 @@
    :nexit '(east (did you seriously think about leaving by the window?
 		  I know you had a rough night but please use the door
 		  like other normal people.))
-   :things '(*laptop*)))
+   :things '(*laptop* *clothes*)))
 
 
 (defparameter *hallway*
@@ -71,7 +71,14 @@
 	     (start-v power-on-laptop) (type-pass-v crack-password-p))
    :flags '(poweroff )))
 
-
+(defparameter *clothes*
+  (make-item
+   :name '(your clothes)
+   :fdescription '(strewn all over the floor are your clothes.)
+   :ldescription '(jeans and a t-shirt. nothing fancy.)
+   :location '(*bedroom*)
+   :action '((wear-v put-on-clothes))
+   :flags '(not-wearing)))
 
 (defun non-exits (room)
   (first ( rest (room-nexit room))))
@@ -121,7 +128,6 @@
 	     (list 'quote x)))
       (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
-
 (defparameter *allowed-commands* '(look go take move get pick))
 
 (defun game-eval (sexp)
@@ -150,10 +156,10 @@
   (fresh-line))
 
 
-(defun describe-item-in-location (room )
-  "Get fdescription of first item in room-things."
-  (item-fdescription (symbol-value (first ( room-things room)))))
 
+(defun describe-list-of-items-in-location (room)
+  "Return list of descriptions of all items in a room."
+  (mapcar #'(lambda (x) (item-fdescription (symbol-value x))) (room-things room))) 
 
 (defun describe-room (room)
   (loop for i in (room-ldescription room)
@@ -170,14 +176,20 @@
 
 (clunit:deftest test-non-exits (Room-suite)
   (clunit:assert-equal '(did you seriously think about leaving by the window?
-			 I know you had a rough night but please use the door like other normal people.) (non-exits *bedroom*)))
+			 I know you had a rough night but please use the door
+			 like other normal people.) (non-exits *bedroom*)))
+
 (clunit:deftest test-u-exits (Room-suite)
   (clunit:assert-equal '((west hallway)) (u-exits *bedroom*))
   (clunit:assert-equal '((east bedroom) (west frontdoor)) (u-exits *hallway*)))
+
 (deftest test-items-in-room (Room-suite)
-  (clunit:assert-equal '(*laptop*) (items-in-room *bedroom*)))
-(deftest test-describe-item-in-location (Room-suite)
-  (clunit:assert-equal (item-fdescription *laptop*) (describe-item-in-location *bedroom*)))
+  (clunit:assert-equal '(*laptop* *clothes*) (items-in-room *bedroom*)))
+
+(deftest test-describe-list-of-items-in-location (Room-suite)
+  (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.) (STREWN ALL OVER THE
+ FLOOR ARE YOUR CLOTHES.)) (describe-list-of-items-in-location *bedroom*)))
+
 (clunit:deftest test-return-synonym (Parse-suite)
   (clunit:assert-equal 'start-v (return-synonym 'power))
   (clunit:assert-equal 'use-v (return-synonym 'use)))
