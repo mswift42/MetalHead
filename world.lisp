@@ -35,41 +35,41 @@
 
 (defparameter *bedroom*
   (make-room
-		 :ldescription '(the bedroom. Very messy. Very tiny. There is a big poster
-				 on the wall. Your clothes are strewn all over the floor.
-				 Near the exit to the west is your laptop.)
-		 :sdescription '(you are in your bedroom. You should seriously think
-				 about cleaning it up.)
-		 :uexit '(( west hallway))
-		 
-		 :nexit '(east (did you seriously think about leaving by the window?
-				 I know you had a rough night but please use the door
-				 like other normal people.))
-		 :things '(*laptop*)))
+   :ldescription '(the bedroom. Very messy. Very tiny. There is a big poster
+		   on the wall. Your clothes are strewn all over the floor.
+		   Near the exit to the west is your laptop.)
+   :sdescription '(you are in your bedroom. You should seriously think
+		   about cleaning it up.)
+   :uexit '(( west hallway))
+   
+   :nexit '(east (did you seriously think about leaving by the window?
+		  I know you had a rough night but please use the door
+		  like other normal people.))
+   :things '(*laptop*)))
 
 
 (defparameter *hallway*
   (make-room
-		 :ldescription '(the hallway. A narrow thing leading from your bedroom
-				 to the east to your frontdoor leading into town to the
-				 west.)
-		 :uexit '((east bedroom)
-			  (west frontdoor))))
+   :ldescription '(the hallway. A narrow thing leading from your bedroom
+		   to the east to your frontdoor leading into town to the
+		   west.)
+   :uexit '((east bedroom)
+	    (west frontdoor))))
 
 (defparameter *laptop*
   (make-item 
-		 :name '(a laptop)
-		 :synonym '(notebook laptop computer )
-		 :fdescription '(on a table near the exit to the west is a laptop.)
-		 :ldescription '(your old sturdy laptop. Not the latest and shiniest
-				model but money is very expensive so you still
-				 make do with it.)
-		 :sdescription '(your laptop. It used to be black.
-				 Whats the color of grime again?)
-		 :location '(*bedroom*)
-		 :action '((use-v  use-laptop)
-			   (start-v power-on-laptop) (type-pass-v crack-password-p))
-		 :flags '(poweroff )))
+   :name '(a laptop)
+   :synonym '(notebook laptop computer )
+   :fdescription '(on a table near the exit to the west is a laptop.)
+   :ldescription '(your old sturdy laptop. Not the latest and shiniest
+		   model but money is very expensive so you still
+		   make do with it.)
+   :sdescription '(your laptop. It used to be black.
+		   Whats the color of grime again?)
+   :location '(*bedroom*)
+   :action '((use-v  use-laptop)
+	     (start-v power-on-laptop) (type-pass-v crack-password-p))
+   :flags '(poweroff )))
 
 
 
@@ -87,7 +87,7 @@
 
 (defun power-on-laptop-f ()
   (setf (item-flags *laptop*
-) '(poweron))
+		    ) '(poweron))
   "You press the power button. You hear some funny noises, and it actually starts booting.
    One Cup of Tee later, and you start at the login screen. I hope you haven't forgotten
    the password.")
@@ -149,10 +149,9 @@
 		 'string))
   (fresh-line))
 
-(defparameter items-in-locations
-  '((*laptop* *bedroom*)))
 
 (defun describe-item-in-location (room )
+  "Get fdescription of first item in room-things."
   (item-fdescription (symbol-value (first ( room-things room)))))
 
 
@@ -162,6 +161,7 @@
   )
 
 (defun items-in-room (room)
+  "Return all items in a location."
   (room-things room))
 
 
