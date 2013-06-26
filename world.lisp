@@ -6,19 +6,6 @@
 
 (in-package :world)
 
-;; (defclass Room ()
-;;   ((ldescription :initform nil :initarg :ldescription :accessor :ldescription)
-;;    (sdescription :initform nil :initarg :sdescription)
-;;    (uexit :initform nil :initarg :uexit)  
-;;    (cexit :initform nil :initarg :cexit)  
-;;    (nexit :initform nil :initarg :nexit)
-;;    (action :initform '() :initarg :action)
-;;    (things :initform '() :initarg :things :accessor :things))
-;;    ( :documentation "Holds long and short descriptions for locations. 
-;;                    Also unconditional exits from room, conditional exits from room 
-;;                    (for instance - a closed door, you'd have to open first) and
-;;                    non-exits, paths that lead nowhere but warrant a non default 
-;;                    explanation.")) 
 
 (defstruct (room)
   "Holds a initial and a later descriptions for locations.
@@ -44,20 +31,7 @@
   (location '())
   (action '())
   (flags '()))
-;; (defclass Object ()
-;;   ((name :initform nil :initarg :name :accessor name)
-;;    (synonym :initform '() :initarg :synonym :accessor :synonym)
-;;    (fdescription :initform '() :initarg :fdescription :accessor :fdescription)
-;;    (ldescription :initform '() :initarg :ldescription)
-;;    (sdescription :initform '() :initarg :sdescription )
-;;    (location :initform '() :initarg :location :accessor :location)
-;;    (action :initform '() :initarg :action )
-;;    (flags :initform '() :initarg :flags :accessor :flags))
-;;   (:documentation "Class for all inventory items in the game."))
 
-;; (defclass Inventory ()
-;;   ((inventory :accessor inventory :initform '() :initarg :inventory))
-;;   (:documentation "Players Inventory"))
 
 (defparameter *bedroom*
   (make-room
@@ -71,7 +45,7 @@
 		 :nexit '(east (did you seriously think about leaving by the window?
 				 I know you had a rough night but please use the door
 				 like other normal people.))
-		 :things '('laptop)))
+		 :things '(*laptop*)))
 
 
 (defparameter *hallway*
@@ -96,6 +70,8 @@
 		 :action '((use-v  use-laptop)
 			   (start-v power-on-laptop) (type-pass-v crack-password-p))
 		 :flags '(poweroff )))
+
+
 
 (defun non-exits (room)
   (first ( rest (room-nexit room))))
@@ -173,14 +149,20 @@
 		 'string))
   (fresh-line))
 
+(defparameter items-in-locations
+  '((*laptop* *bedroom*)))
 
+(defun describe-item-in-location (room )
+  (item-fdescription (symbol-value (first ( room-things room)))))
 
 
 (defun describe-room (room)
   (loop for i in (room-ldescription room)
-        do (format t "~A " i)))
+        do (format t "~A " i))
+  )
 
-
+(defun items-in-room (room)
+  (room-things room))
 
 
 (clunit:defsuite Room-suite ())
@@ -192,7 +174,10 @@
 (clunit:deftest test-u-exits (Room-suite)
   (clunit:assert-equal '((west hallway)) (u-exits *bedroom*))
   (clunit:assert-equal '((east bedroom) (west frontdoor)) (u-exits *hallway*)))
-
+(deftest test-items-in-room (Room-suite)
+  (clunit:assert-equal '(*laptop*) (items-in-room *bedroom*)))
+(deftest test-describe-item-in-location (Room-suite)
+  (clunit:assert-equal (item-fdescription *laptop*) (describe-item-in-location *bedroom*)))
 (clunit:deftest test-return-synonym (Parse-suite)
   (clunit:assert-equal 'start-v (return-synonym 'power))
   (clunit:assert-equal 'use-v (return-synonym 'use)))
