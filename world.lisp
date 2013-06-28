@@ -2,7 +2,7 @@
 (ql:quickload "clunit")
 
 (defpackage :world
-  (:use :cl :clunit))
+  (:use :cl :clunit :utilities))
 
 (in-package :world)
 
@@ -35,9 +35,7 @@
 
 (defparameter *bedroom*
   (make-room
-   :ldescription '(the bedroom. Very messy. Very tiny. There is a big poster
-		   on the wall. Your clothes are strewn all over the floor.
-		   Near the exit to the west is your laptop.)
+   :ldescription '(the bedroom. Very messy. Very tiny.)
    :sdescription '(you are in your bedroom. You should seriously think
 		   about cleaning it up.)
    :uexit '(( west hallway))
@@ -45,7 +43,7 @@
    :nexit '(east (did you seriously think about leaving by the window?
 		  I know you had a rough night but please use the door
 		  like other normal people.))
-   :things '(*laptop* *clothes*)))
+   :things '(*laptop* *clothes* *poster*)))
 
 
 (defparameter *hallway*
@@ -55,6 +53,17 @@
 		   west.)
    :uexit '((east bedroom)
 	    (west frontdoor))))
+
+
+(defparameter *frontdoor*
+  (make-room
+   :ldescription '(You leave your house and find yourself at an absolutely
+		   marvellous spring day. It is warm sunny and the birds are singing.
+		   Its exactly the sort of day that makes nearly everyone happy.)
+   :sdescription '(you stand outside of your house.)
+   :uexit '((east *hallway*) (west *park-entrance*) (nw *main-road*))))
+
+
 
 (defparameter *laptop*
   (make-item 
@@ -80,6 +89,18 @@
    :action '((wear-v put-on-clothes))
    :flags '(not-wearing)))
 
+(defparameter *poster*
+  (make-item
+   :name '(a poster)
+   :fdescription '(On the wall you can see an old poster.)
+   :sdescription '(It is a very old nearly completely faded poster. You can only
+		   make out a painted scene of rows of white crosses in a field.)
+   :ldescription '(Oh you joyful Master of Puppets. You mother of all metal records.)
+   :location '(*bedroom*)
+   :action '((look-closer-v describe-poster-f))))
+
+
+
 (defun non-exits (room)
   (first ( rest (room-nexit room))))
 
@@ -104,6 +125,8 @@
   "You cannot take it. It's too heavy, the battery is not working and it's highly unlikely 
    that it would survive any form of transport.")
 
+(defun describe-poster ()
+  (item-sdescription *poster*))
 
 (defparameter verb-synonyms
   '((use use-v)
@@ -115,11 +138,16 @@
 (defun return-synonym (verb)
   (first ( rest (assoc verb verb-synonyms))))
 
+
+
+
 (defun game-repl ()
   (let ((cmd (game-read)))
     (unless (eq (car cmd) 'quit)
       (game-print (game-eval cmd))
       (game-repl))))
+
+
 
 (defun game-read ()
   (let ((cmd (read-from-string
@@ -162,9 +190,8 @@
   (mapcar #'(lambda (x) (item-fdescription (symbol-value x))) (room-things room))) 
 
 (defun describe-room (room)
-  (loop for i in (room-ldescription room)
-        do (format t "~A " i))
-  )
+  (game-print (room-ldescription room))
+  (game-print (flatten ( describe-list-of-items-in-location room))))
 
 (defun items-in-room (room)
   "Return all items in a location."
@@ -184,11 +211,10 @@
   (clunit:assert-equal '((east bedroom) (west frontdoor)) (u-exits *hallway*)))
 
 (deftest test-items-in-room (Room-suite)
-  (clunit:assert-equal '(*laptop* *clothes*) (items-in-room *bedroom*)))
+  (clunit:assert-equal '(*laptop* *clothes* *poster*) (items-in-room *bedroom*)))
 
 (deftest test-describe-list-of-items-in-location (Room-suite)
-  (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.) (STREWN ALL OVER THE
- FLOOR ARE YOUR CLOTHES.)) (describe-list-of-items-in-location *bedroom*)))
+  (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.) (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.) (ON THE WALL YOU CAN SEE AN OLD POSTER.)) (describe-list-of-items-in-location *bedroom*)))
 
 (clunit:deftest test-return-synonym (Parse-suite)
   (clunit:assert-equal 'start-v (return-synonym 'power))
