@@ -33,9 +33,24 @@
   (action '())
   (flags '()))
 
-(defparameter *location* *bedroom*)
+(defparameter *location* '*bedroom*)
 
 (defparameter *inventory* '())
+
+(defparameter  *directions-synonyms*
+    '((e  east) (w  west) (s  south) (n  north) (d  down)
+    (u  up) (se  southeast) (sw  southwest) (ne  northeast) (nw  northwest)))
+
+(defparameter *directions*
+  '(east west south north down up southeast southwest northeast northwest))
+
+(defun read-direction (input)
+  "look up entered direction in directions-synonyms and directions.
+   If synonym return full name. If full name entered return it."
+  (cond
+    ((member input *directions*) input)
+    ((assoc input *directions-synonyms*) (second (assoc input *directions-synonyms*)))
+    (t nil)))
 
 
 (defparameter *bedroom*
@@ -278,6 +293,11 @@
 (clunit:deftest test-return-synonym (Parse-suite)
   (clunit:assert-equal 'start-v (return-synonym 'power))
   (clunit:assert-equal 'use-v (return-synonym 'use)))
+
+(clunit:deftest test-read-direction (Parse-suite)
+  (clunit:assert-equal 'up (read-direction 'u))
+  (clunit:assert-equal 'west (read-direction 'west))
+  (clunit:assert-equal 'northeast (read-direction 'ne)))
 
 
 
