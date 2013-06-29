@@ -1,5 +1,6 @@
 (load "~/quicklisp/setup.lisp")
 (ql:quickload "clunit")
+(load "util.lisp")
 
 (defpackage :world
   (:use :cl :clunit :utilities))
@@ -32,17 +33,21 @@
   (action '())
   (flags '()))
 
+(defparameter *location* *bedroom*)
+
+(defparameter *inventory* '())
+
 
 (defparameter *bedroom*
   (make-room
-   :ldescription '(the bedroom. Very messy. Very tiny.)
-   :sdescription '(you are in your bedroom. You should seriously think
+   :fdescription '(the bedroom. Very messy. Very tiny.)
+   :ldescription '(you are in your bedroom. You should seriously think
 		   about cleaning it up.)
-   :uexit '(( west hallway))
+   :uexit '(( west  *hallway*))
    
-   :nexit '(east (did you seriously think about leaving by the window?
-		  I know you had a rough night but please use the door
-		  like other normal people.))
+   :nexit '(( east (did you seriously think about leaving by the window?
+		    I know you had a rough night but please use the door
+		    like other normal people.)))
    :things '(*laptop* *clothes* *poster*)))
 
 
@@ -51,8 +56,8 @@
    :ldescription '(the hallway. A narrow thing leading from your bedroom
 		   to the east to your frontdoor leading into town to the
 		   west.)
-   :uexit '((east bedroom)
-	    (west frontdoor))))
+   :uexit '((east *bedroom*)
+	    (west *frontdoor*))))
 
 
 (defparameter *frontdoor*
@@ -63,6 +68,18 @@
    :sdescription '(you stand outside of your house.)
    :uexit '((east *hallway*) (west *park-entrance*) (nw *main-road*))))
 
+(defparameter *park-entrance-east*
+  (make-room
+   :fdescription '(This is the entrance to a beautiful little park. A gorgeous
+		   english garden with some nice shady spots and plenty of
+		   benches to rest.)
+   :ldescription '(You are at the east entrance of a park.)
+   :uexit '((west *frontdoor*) (east *park-lane-east*))))
+
+(defparameter *park-lane-east*
+  (make-room
+   :fdescription '(You are in the town park. There is a path leading from east to west.)))
+
 
 
 (defparameter *laptop*
@@ -71,8 +88,8 @@
    :synonym '(notebook laptop computer )
    :fdescription '(on a table near the exit to the west is a laptop.)
    :ldescription '(your old sturdy laptop. Not the latest and shiniest
-		   model but money is very expensive so you still
-		   make do with it.)
+		   but money is very expensive so you still
+		   make do with it. )
    :sdescription '(your laptop. It used to be black.
 		   Whats the color of grime again?)
    :location '(*bedroom*)
@@ -101,8 +118,7 @@
 
 
 
-(defun non-exits (room)
-  (first ( rest (room-nexit room))))
+
 
 (defun u-exits (room)
   (slot-value room 'uexit))
@@ -139,6 +155,36 @@
   (first ( rest (assoc verb verb-synonyms))))
 
 
+(defun read-directions (room)
+  "Return a list of all possible directions in a location."
+  (append (room-uexit room) (room-cexit room) (room-nexit room)))
+
+(defun uexits-next-location (direction uexit-lst)
+  "Takes a direction and the list of uexits in a location.
+   Returns either the next room if the desired direction is 
+   a member of uexits-lst or nil."
+  (cond
+    ((null uexit-lst) nil)
+    ((member direction (first uexit-lst)) (second (first uexit-lst)))
+    (t (uexits-next-location direction (rest uexit-lst)))))
+
+(defun nexit-next-location (direction nexit-lst)
+  "return possible nexit of direction in a location."
+  (cond
+    ((null nexit-lst) nil)
+    ((member direction (first nexit-lst)) (second (first nexit-lst)))
+    (t (nexit-next-location direction (rest nexit-lst)))))
+
+(defun walk-direction (direction room)
+  "Return next location of a entered direction in a location."
+  (let ((ue (room-uexit room))
+	(ne (room-nexit room)))
+    (cond
+      ((uexits-next-location direction ue) (uexits-next-location direction ue))
+      ((nexit-next-location direction ne) (nexit-next-location direction ne))
+      (t nil))))
+
+
 
 
 (defun game-repl ()
@@ -156,7 +202,7 @@
 	     (list 'quote x)))
       (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
-(defparameter *allowed-commands* '(look go take move get pick))
+(defparameter *allowed-commands* '(look go take move get pick start))
 
 (defun game-eval (sexp)
   (if (member (car sexp) *allowed-commands*)
@@ -189,9 +235,20 @@
   "Return list of descriptions of all items in a room."
   (mapcar #'(lambda (x) (item-fdescription (symbol-value x))) (room-things room))) 
 
-(defun describe-room (room)
-  (game-print (room-ldescription room))
-  (game-print (flatten ( describe-list-of-items-in-location room))))
+(defun describe-list-of-items-in-location-later (room)
+  "Return the ldescription of all itemns in a room."
+  (mapcar #'(lambda (x) (item-ldescription (symbol-value x))) (room-things room)))
+
+(defun describe-room (time room)
+  "Use lol's game-print function to print first the description of the
+   room you are in, then describe all items in the location."
+  (if (equal time 'initial)
+      (progn
+	(game-print (room-fdescription room))
+	(game-print (flatten ( describe-list-of-items-in-location room))))
+      (progn
+	(game-print (room-ldescription room))
+	(game-print (flatten (describe-list-of-items-in-location-later room))))))
 
 (defun items-in-room (room)
   "Return all items in a location."
@@ -201,20 +258,22 @@
 (clunit:defsuite Room-suite ())
 (clunit:defsuite Parse-suite ())
 
-(clunit:deftest test-non-exits (Room-suite)
-  (clunit:assert-equal '(did you seriously think about leaving by the window?
-			 I know you had a rough night but please use the door
-			 like other normal people.) (non-exits *bedroom*)))
 
 (clunit:deftest test-u-exits (Room-suite)
-  (clunit:assert-equal '((west hallway)) (u-exits *bedroom*))
-  (clunit:assert-equal '((east bedroom) (west frontdoor)) (u-exits *hallway*)))
+  (clunit:assert-equal '((west *hallway*)) (u-exits *bedroom*))
+  (clunit:assert-equal '((east *bedroom*) (west *frontdoor*)) (u-exits *hallway*)))
 
 (deftest test-items-in-room (Room-suite)
   (clunit:assert-equal '(*laptop* *clothes* *poster*) (items-in-room *bedroom*)))
 
+(deftest test-uexits-next-location (Room-suite)
+  (clunit:assert-equal '*bedroom* (uexits-next-location 'east (room-uexit *hallway*))))
+
 (deftest test-describe-list-of-items-in-location (Room-suite)
   (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.) (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.) (ON THE WALL YOU CAN SEE AN OLD POSTER.)) (describe-list-of-items-in-location *bedroom*)))
+
+(deftest test-walk-direction (Room-suite)
+  (clunit:assert-equal '*hallway* (walk-direction 'west *bedroom*)))
 
 (clunit:deftest test-return-synonym (Parse-suite)
   (clunit:assert-equal 'start-v (return-synonym 'power))
