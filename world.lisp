@@ -20,6 +20,7 @@
   (uexit '())
   (nexit '())
   (cexit '())
+
   (things '()))
 
 (defstruct (item)
@@ -108,8 +109,8 @@
    :sdescription '(your laptop. It used to be black.
 		   Whats the color of grime again?)
    :location '(*bedroom*)
-   :action '((use-v  use-laptop)
-	     (start-v power-on-laptop) (type-pass-v crack-password-p))
+   :action '((use-v  use-laptop-f)
+	     (start-v power-on-laptop-f) (type-pass-v crack-password-p))
    :flags '(poweroff )))
 
 (defparameter *clothes*
@@ -129,11 +130,7 @@
 		   make out a painted scene of rows of white crosses in a field.)
    :ldescription '(Oh you joyful Master of Puppets. You mother of all metal records.)
    :location '(*bedroom*)
-   :action '((look-closer-v describe-poster-f))))
-
-
-
-
+   :action '((look-closer-v describe-poster-f))))                                                       
 
 (defun u-exits (room)
   (slot-value room 'uexit))
@@ -167,7 +164,19 @@
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
-  (first ( rest (assoc verb verb-synonyms))))
+  (first ( rest (assoc verb verb-synonyms)))) 
+
+(defun object-action-list (itemlist)
+  "Return a list of all possible actions of all items
+   for one location. (Helper Function for actions-for-location."
+  (cond
+    ((null itemlist) nil)
+    (t (append (item-action (symbol-value (first itemlist)))
+	       (object-action-list (rest itemlist))))))
+
+(defun actions-for-location ()
+  "Return alist for possible actions in the present location."
+  (object-action-list (room-things (symbol-value *location*))))
 
 
 (defun read-directions (room)
@@ -196,10 +205,8 @@
 	(ne (room-nexit room)))
     (cond
       ((uexits-next-location direction ue) (uexits-next-location direction ue))
-      ((nexit-next-location direction ne) (nexit-next-location direction ne))
+      ((nexit-next-location direction ne) (nexit-next-location direction ne))        
       (t nil))))
-
-
 
 
 (defun game-repl ()
@@ -209,7 +216,6 @@
       (game-repl))))
 
 
-
 (defun game-read ()
   (let ((cmd (read-from-string
 	      (concatenate 'string "(" (read-line) ")"))))
@@ -217,12 +223,20 @@
 	     (list 'quote x)))
       (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
-(defparameter *allowed-commands* '(look go take move get pick start))
+(defparameter *allowed-commands* '( use-laptop-f))
 
 (defun game-eval (sexp)
-  (if (member (car sexp) *allowed-commands*)
-      (eval sexp)
+  (if (member sexp *allowed-commands*)
+      (funcall sexp)
       '(I do not know this command.)))
+
+
+(defun game-reader (exp)
+  "Evaluate player input"
+  (cond
+    ((walk-direction exp (symbol-value *location*)) (change-location exp))
+    ((assoc exp (actions-for-location)) (funcall (second (assoc exp (actions-for-location)))))
+    (t nil)))
 
 (defun tweak-text (lst caps lit)
   (when lst
@@ -244,7 +258,11 @@
 		 'string))
   (fresh-line))
 
-
+(defun change-location (time direction)
+  "When changing locations, set global-variable *location* to new location.
+   Describe room either with first or later description."
+  (setf *location* (walk-direction direction (symbol-value *location*)))
+  (describe-room time (symbol-value *location*)))
 
 (defun describe-list-of-items-in-location (room)
   "Return list of descriptions of all items in a room."
@@ -284,8 +302,11 @@
 (deftest test-uexits-next-location (Room-suite)
   (clunit:assert-equal '*bedroom* (uexits-next-location 'east (room-uexit *hallway*))))
 
-(deftest test-describe-list-of-items-in-location (Room-suite)
-  (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.) (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.) (ON THE WALL YOU CAN SEE AN OLD POSTER.)) (describe-list-of-items-in-location *bedroom*)))
+(deftest test-describe-list-of-items-in-location (Room-suite)                         
+  (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.)
+			 (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.)
+			 (ON THE WALL YOU CAN SEE AN OLD POSTER.))
+      (describe-list-of-items-in-location *bedroom*)))
 
 (deftest test-walk-direction (Room-suite)
   (clunit:assert-equal '*hallway* (walk-direction 'west *bedroom*)))
@@ -303,3 +324,5 @@
 
 (clunit:run-suite 'Room-suite)
 (clunit:run-suite 'Parse-suite)
+
+
