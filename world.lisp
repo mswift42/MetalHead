@@ -153,6 +153,7 @@
    the password.")
 
 (defun wear-clothes ()
+  "if not wearing clothes, print out text . Else change location to hallway."
   (if (eq (symbol-value (item-flags *clothes*)) :notwearing)
       '(you are not wearing any clothes. I am terribly sorry but you should not inflict
 	your gross naked body on other people. There are plenty beautiful sights in this
@@ -309,15 +310,6 @@
 	(game-print (room-ldescription room))
 	(game-print (flatten (describe-list-of-items-in-location-later room))))))
 
-
-
-
-
-
-
-
-
-
 (defun items-in-room (room)
   "Return all items in a location."
   (room-things room))
@@ -349,7 +341,7 @@
   (clunit:assert-equal '*bedroom* (walk-direction 'east *hallway*)))
 
 (clunit:deftest test-return-synonym (Parse-suite)
-  (clunit:assert-equal 'start-v (return-synonym 'power))
+p  (clunit:assert-equal 'start-v (return-synonym 'power))
   (clunit:assert-equal 'use-v (return-synonym 'use)))
 
 (clunit:deftest test-read-direction (Parse-suite)
@@ -357,9 +349,5 @@
   (clunit:assert-equal 'west (read-direction 'west))
   (clunit:assert-equal 'northeast (read-direction 'ne)))
 
-
-
 (clunit:run-suite 'Room-suite)
 (clunit:run-suite 'Parse-suite)
-
-
