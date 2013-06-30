@@ -20,7 +20,7 @@
   (uexit '())
   (nexit '())
   (cexit '())
-
+  (flags '())
   (things '()))
 
 (defstruct (item)
@@ -34,13 +34,16 @@
   (action '())
   (flags '()))
 
-(defparameter *location* '*bedroom*)
+(defparameter *location*
+  '*bedroom*
+  "location of the player character in the game world.")
 
 (defparameter *inventory* '())
 
 (defparameter  *directions-synonyms*
     '((e  east) (w  west) (s  south) (n  north) (d  down)
-    (u  up) (se  southeast) (sw  southwest) (ne  northeast) (nw  northwest)))
+    (u  up) (se  southeast) (sw  southwest) (ne  northeast) (nw  northwest))
+  "alist for abbreviations of directions.")
 
 (defparameter *directions*
   '(east west south north down up southeast southwest northeast northwest))
@@ -59,12 +62,13 @@
    :fdescription '(the bedroom. Very messy. Very tiny.)
    :ldescription '(you are in your bedroom. You should seriously think
 		   about cleaning it up.)
-   :uexit '(( west  *hallway*))
+   :cexit '(( west  *hallway* wear-clothes))
    
    :nexit '(( east (did you seriously think about leaving by the window?
 		    I know you had a rough night but please use the door
 		    like other normal people.)))
-   :things '(*laptop* *clothes* *poster*)))
+   :things '(*laptop* *clothes* *poster*)
+   :flags :notseen))
 
 
 (defparameter *hallway*
@@ -111,7 +115,7 @@
    :location '(*bedroom*)
    :action '((use-v  use-laptop-f)
 	     (start-v power-on-laptop-f) (type-pass-v crack-password-p))
-   :flags '(poweroff )))
+   :flags '(poweroff notseen)))
 
 (defparameter *clothes*
   (make-item
@@ -148,6 +152,12 @@
    One Cup of Tee later, and you start at the login screen. I hope you haven't forgotten
    the password.")
 
+(defun wear-clothes ()
+  '(you are not wearing any clothes. I am terribly sorry but you should not inflict
+    your gross naked body on other people. There are plenty beautiful sights in this
+    world. You are not one of them.
+    When God made you he was either drunk or bored. Maybe he was just spiteful
+    but for Fuck Sake please put on some clothes.))
 
 (defun take-laptop-f ()
   "You cannot take it. It's too heavy, the battery is not working and it's highly unlikely 
@@ -183,6 +193,10 @@
   "Return a list of all possible directions in a location."
   (append (room-uexit room) (room-cexit room) (room-nexit room)))
 
+(defun cexit-read-condition (direction)
+  "return predicate necessary to use conditional exit."
+  (third (assoc direction (room-cexit (symbol-value *location*)))))
+
 (defun uexits-next-location (direction uexit-lst)
   "Takes a direction and the list of uexits in a location.
    Returns either the next room if the desired direction is 
@@ -204,6 +218,7 @@
   (let ((ue (room-uexit room))
 	(ne (room-nexit room)))
     (cond
+      ((cexit-read-condition direction) (funcall ( cexit-read-condition direction)))
       ((uexits-next-location direction ue) (uexits-next-location direction ue))
       ((nexit-next-location direction ne) (nexit-next-location direction ne))        
       (t nil))))
@@ -234,7 +249,7 @@
 (defun game-reader (exp)
   "Evaluate player input"
   (cond
-    ((walk-direction exp (symbol-value *location*)) (change-location exp))
+    ((walk-direction exp (symbol-value *location*)) (change-location  exp))
     ((assoc exp (actions-for-location)) (funcall (second (assoc exp (actions-for-location)))))
     (t nil)))
 
@@ -258,11 +273,11 @@
 		 'string))
   (fresh-line))
 
-(defun change-location (time direction)
+(defun change-location ( direction)
   "When changing locations, set global-variable *location* to new location.
    Describe room either with first or later description."
   (setf *location* (walk-direction direction (symbol-value *location*)))
-  (describe-room time (symbol-value *location*)))
+  (describe-room  (symbol-value *location*)))
 
 (defun describe-list-of-items-in-location (room)
   "Return list of descriptions of all items in a room."
@@ -272,16 +287,27 @@
   "Return the ldescription of all itemns in a room."
   (mapcar #'(lambda (x) (item-ldescription (symbol-value x))) (room-things room)))
 
-(defun describe-room (time room)
+(defun describe-room ( room)
   "Use lol's game-print function to print first the description of the
    room you are in, then describe all items in the location."
-  (if (equal time 'initial)
+  (if (eq (symbol-value (room-flags room)) :notseen)
       (progn
 	(game-print (room-fdescription room))
-	(game-print (flatten ( describe-list-of-items-in-location room))))
+	(game-print (flatten ( describe-list-of-items-in-location room)))
+	
+	(setf ( room-flags room) :seen))
       (progn
 	(game-print (room-ldescription room))
 	(game-print (flatten (describe-list-of-items-in-location-later room))))))
+
+
+
+
+
+
+
+
+
 
 (defun items-in-room (room)
   "Return all items in a location."
@@ -293,7 +319,6 @@
 
 
 (clunit:deftest test-u-exits (Room-suite)
-  (clunit:assert-equal '((west *hallway*)) (u-exits *bedroom*))
   (clunit:assert-equal '((east *bedroom*) (west *frontdoor*)) (u-exits *hallway*)))
 
 (deftest test-items-in-room (Room-suite)
@@ -302,6 +327,9 @@
 (deftest test-uexits-next-location (Room-suite)
   (clunit:assert-equal '*bedroom* (uexits-next-location 'east (room-uexit *hallway*))))
 
+(deftest test-cexit-read-condition (Room-suite)
+  (clunit:assert-equal 'wear-clothes (cexit-read-condition 'west)))
+
 (deftest test-describe-list-of-items-in-location (Room-suite)                         
   (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.)
 			 (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.)
@@ -309,7 +337,7 @@
       (describe-list-of-items-in-location *bedroom*)))
 
 (deftest test-walk-direction (Room-suite)
-  (clunit:assert-equal '*hallway* (walk-direction 'west *bedroom*)))
+  (clunit:assert-equal '*bedroom* (walk-direction 'east *hallway*)))
 
 (clunit:deftest test-return-synonym (Parse-suite)
   (clunit:assert-equal 'start-v (return-synonym 'power))
