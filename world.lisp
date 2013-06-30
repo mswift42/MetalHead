@@ -124,7 +124,7 @@
    :ldescription '(jeans and a t-shirt. nothing fancy.)
    :location '(*bedroom*)
    :action '((wear-v put-on-clothes))
-   :flags '(not-wearing)))
+   :flags :notwearing))
 
 (defparameter *poster*
   (make-item
@@ -153,11 +153,20 @@
    the password.")
 
 (defun wear-clothes ()
-  '(you are not wearing any clothes. I am terribly sorry but you should not inflict
-    your gross naked body on other people. There are plenty beautiful sights in this
-    world. You are not one of them.
-    When God made you he was either drunk or bored. Maybe he was just spiteful
-    but for Fuck Sake please put on some clothes.))
+  (if (eq (symbol-value (item-flags *clothes*)) :notwearing)
+      '(you are not wearing any clothes. I am terribly sorry but you should not inflict
+	your gross naked body on other people. There are plenty beautiful sights in this
+	world. You are not one of them.
+	When God made you he was either drunk or bored. Maybe he was just spiteful
+	but for Fuck Sake please put on some clothes.)
+      (progn
+	(setf *location* *hallway*)
+	(describe-room *hallway*))))
+
+(defun put-on-clothes ()
+  (princ'(with the grace of a young gazelle you put on your clothes. Within seconds your appearance
+	  changes from ugly as hell to well below average handsome. Well done.))
+  (setf (item-flags *clothes*) :wearing))
 
 (defun take-laptop-f ()
   "You cannot take it. It's too heavy, the battery is not working and it's highly unlikely 
@@ -218,7 +227,7 @@
   (let ((ue (room-uexit room))
 	(ne (room-nexit room)))
     (cond
-      ((cexit-read-condition direction) (funcall ( cexit-read-condition direction)))
+      ((and ( cexit-read-condition direction)) (funcall ( cexit-read-condition direction)))
       ((uexits-next-location direction ue) (uexits-next-location direction ue))
       ((nexit-next-location direction ne) (nexit-next-location direction ne))        
       (t nil))))
