@@ -1,8 +1,6 @@
 (load "~/quicklisp/setup.lisp")
 (ql:quickload "clunit")
 
-
-
 (defpackage :world
   (:use :cl ))
 
@@ -49,15 +47,6 @@
 (defparameter *directions*
   '(east west south north down up southeast southwest northeast northwest))
 
-(defun read-direction (input)
-  "look up entered direction in directions-synonyms and directions.
-   If synonym return full name. If full name entered return it."
-  (cond
-    ((member input *directions*) input)
-    ((assoc input *directions-synonyms*) (second (assoc input *directions-synonyms*)))
-    (t nil)))
-
-
 (defparameter *bedroom*
   (make-room
    :fdescription '(the bedroom. Very messy. Very tiny.)
@@ -80,7 +69,6 @@
    :uexit '((east *bedroom*)
 	    (west *frontdoor*))))
 
-
 (defparameter *frontdoor*
   (make-room
    :ldescription '(You leave your house and find yourself at an absolutely
@@ -100,8 +88,6 @@
 (defparameter *park-lane-east*
   (make-room
    :fdescription '(You are in the town park. There is a path leading from east to west.)))
-
-
 
 (defparameter *laptop*
   (make-item 
@@ -137,23 +123,6 @@
    :location '(*bedroom*)
    :action '((look-closer-v describe-poster-f))))                                                       
 
-(defun u-exits (room)
-  (slot-value room 'uexit))
-
-(defun use-laptop-f ()
-  (if (equal 'poweroff (first (item-flags *laptop*)))
-      "Your laptop is turned off"
-      "you could browse your favorite websites all day, you good old procrastinator, however
-       I'd propose you simply check your Email."))
-
-
-(defun take-laptop-f ()
-  "You cannot take it. It's too heavy, the battery is not working and it's highly unlikely 
-   that it would survive any form of transport.")
-
-;; (defun describe-poster ()
-;;   (item-sdescription *poster*))
-
 (defparameter verb-synonyms
   '((use use-v)
     (utilize use-v)
@@ -184,7 +153,6 @@
   (if (member sexp *allowed-commands*)
       (funcall sexp)
       '(I do not know this command.)))
-
 
 (defun game-reader (exp)
   "Evaluate player input"

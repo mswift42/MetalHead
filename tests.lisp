@@ -1,5 +1,4 @@
 (ql:quickload "clunit")
-(load "world.lisp")
 (load "actions.lisp")
 
 
@@ -14,7 +13,7 @@
 
 
 (clunit:deftest test-u-exits (Room-suite)
-  (clunit:assert-equal '((east *bedroom*) (west *frontdoor*)) (u-exits *hallway*)))
+  (clunit:assert-equal '((east *bedroom*) (west *frontdoor*)) (action::u-exits *hallway*)))
 
 (deftest test-items-in-room (Room-suite)
   (clunit:assert-equal '(*laptop* *clothes* *poster*) (action::items-in-room *bedroom*)))
@@ -39,9 +38,9 @@
   (clunit:assert-equal 'use-v (return-synonym 'use)))
 
 (clunit:deftest test-read-direction (Parse-suite)
-  (clunit:assert-equal 'up (read-direction 'u))
-  (clunit:assert-equal 'west (read-direction 'west))
-  (clunit:assert-equal 'northeast (read-direction 'ne)))
+  (clunit:assert-equal 'up (action::read-direction 'u))
+  (clunit:assert-equal 'west (action::read-direction 'west))
+  (clunit:assert-equal 'northeast (action::read-direction 'ne)))
 
 (clunit:run-suite 'Room-suite)
 (clunit:run-suite 'Parse-suite)

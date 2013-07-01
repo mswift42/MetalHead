@@ -8,7 +8,13 @@
 
 (in-package :action)
 
-
+(defun read-direction (input)
+  "look up entered direction in directions-synonyms and directions.
+   If synonym return full name. If full name entered return it."
+  (cond
+    ((member input *directions*) input)
+    ((assoc input *directions-synonyms*) (second (assoc input *directions-synonyms*)))
+    (t nil)))
 
 (defun power-on-laptop-f ()
   (setf (item-flags *laptop*
@@ -16,6 +22,18 @@
   "You press the power button. You hear some funny noises, and it actually starts booting.
    One Cup of Tee later, and you start at the login screen. I hope you haven't forgotten
    the password.")
+
+(defun use-laptop-f ()
+  (if (equal 'poweroff (first (item-flags *laptop*)))
+      "Your laptop is turned off"
+      "you could browse your favorite websites all day, you good old procrastinator, however
+       I'd propose you simply check your Email."))
+
+
+(defun take-laptop-f ()
+  "You cannot take it. It's too heavy, the battery is not working and it's highly unlikely 
+   that it would survive any form of transport.")
+
 
 (defun wear-clothes ()
   "if not wearing clothes, print out text . Else change location to hallway."
@@ -116,7 +134,8 @@
   "Return all items in a location."
   (room-things room))
 
-
+(defun u-exits (room)
+  (slot-value room 'uexit))
 
 
 
