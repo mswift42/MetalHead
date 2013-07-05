@@ -295,7 +295,8 @@
 
 (defun describe-list-of-items-in-location-later (room)
   "Return the ldescription of all itemns in a room."
-  (mapcar #'(lambda (x) (item-ldescription (symbol-value x))) (room-things room)))
+  (mapcar #'(lambda (x) (item-ldescription (symbol-value x)))
+	  (room-things room)))
 
 (defun describe-room ( room)
   "Use lol's game-print function to print first the description of the
@@ -308,7 +309,8 @@
 	(setf ( room-flags room) :seen))
       (progn
 	(game-print (room-ldescription room))
-	(game-print (flatten (describe-list-of-items-in-location-later room))))))
+	(game-print (flatten
+		     (describe-list-of-items-in-location-later room))))))
 
 (defun items-in-room (room)
   "Return all items in a location."
@@ -320,18 +322,21 @@
 
 
 (clunit:deftest test-u-exits (Room-suite)
-  (clunit:assert-equal '((east *bedroom*) (west *frontdoor*)) (u-exits *hallway*)))
+  (clunit:assert-equal '((east *bedroom*) (west *frontdoor*))
+		       (u-exits *hallway*)))
 
 (deftest test-items-in-room (Room-suite)
-  (clunit:assert-equal '(*laptop* *clothes* *poster*) (items-in-room *bedroom*)))
+  (clunit:assert-equal '(*laptop* *clothes* *poster*)
+		       (items-in-room *bedroom*)))
 
 (deftest test-uexits-next-location (Room-suite)
-  (clunit:assert-equal '*bedroom* (uexits-next-location 'east (room-uexit *hallway*))))
+  (clunit:assert-equal '*bedroom* (uexits-next-location 'east
+							(room-uexit *hallway*))))
 
 (deftest test-cexit-read-condition (Room-suite)
   (clunit:assert-equal 'wear-clothes (cexit-read-condition 'west)))
 
-(deftest test-describe-list-of-items-in-location (Room-suite)                         
+(deftest test-describe-list-of-items-in-location (Room-suite)                     
   (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.)
 			 (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.)
 			 (ON THE WALL YOU CAN SEE AN OLD POSTER.))
