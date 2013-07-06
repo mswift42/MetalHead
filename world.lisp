@@ -130,9 +130,11 @@
   (make-item
    :name '(a poster)
    :fdescription '(On the wall you can see an old poster.)
-   :sdescription '(It is a very old nearly completely faded poster. You can only
-		   make out a painted scene of rows of white crosses in a field.)
-   :ldescription '(Oh you joyful Master of Puppets. You mother of all metal records.)
+   :sdescription '(It is a very old nearly completely faded poster.
+		   You can only make out a painted scene of rows of
+		   white crosses in a field.)
+   :ldescription '(Oh you joyful Master of Puppets. You mother of
+		   all metal records.)
    :location '(*bedroom*)
    :action '((look-closer-v describe-poster-f))))                                                       
 
@@ -142,15 +144,15 @@
 (defun use-laptop-f ()
   (if (equal 'poweroff (first (item-flags *laptop*)))
       "Your laptop is turned off"
-      "you could browse your favorite websites all day, you good old procrastinator, however
-       I'd propose you simply check your Email."))
+      "you could browse your favorite websites all day, you good old 
+       procrastinator, however I'd propose you simply check your Email."))
 
 (defun power-on-laptop-f ()
   (setf (item-flags *laptop*
 		    ) '(poweron))
-  "You press the power button. You hear some funny noises, and it actually starts booting.
-   One Cup of Tee later, and you start at the login screen. I hope you haven't forgotten
-   the password.")
+  "You press the power button. You hear some funny noises, and it actually 
+   starts booting. One Cup of Tee later, and you start at the login 
+   screen. I hope you haven't forgotten the password.")
 
 (defun wear-clothes ()
   "if not wearing clothes, print out text . Else change location to hallway."
@@ -231,7 +233,8 @@
   (let ((ue (room-uexit room))
 	(ne (room-nexit room)))
     (cond
-      ((and ( cexit-read-condition direction)) (funcall ( cexit-read-condition direction)))
+      ((and ( cexit-read-condition direction))
+       (funcall ( cexit-read-condition direction)))
       ((uexits-next-location direction ue) (uexits-next-location direction ue))
       ((nexit-next-location direction ne) (nexit-next-location direction ne))        
       (t nil))))
@@ -263,7 +266,8 @@
   "Evaluate player input"
   (cond
     ((walk-direction exp (symbol-value *location*)) (change-location  exp))
-    ((assoc exp (actions-for-location)) (funcall (second (assoc exp (actions-for-location)))))
+    ((assoc exp (actions-for-location))
+     (funcall (second (assoc exp (actions-for-location)))))
     (t nil)))
 
 (defun tweak-text (lst caps lit)
@@ -294,7 +298,8 @@
 
 (defun describe-list-of-items-in-location (room)
   "Return list of descriptions of all items in a room."
-  (mapcar #'(lambda (x) (item-fdescription (symbol-value x))) (room-things room))) 
+  (mapcar #'(lambda (x) (item-fdescription (symbol-value x)))
+	  (room-things room))) 
 
 (defun describe-list-of-items-in-location-later (room)
   "Return the ldescription of all itemns in a room."
