@@ -155,23 +155,26 @@
 (defun wear-clothes ()
   "if not wearing clothes, print out text . Else change location to hallway."
   (if (eq (symbol-value (item-flags *clothes*)) :notwearing)
-      '(you are not wearing any clothes. I am terribly sorry but you should not inflict
-	your gross naked body on other people. There are plenty beautiful sights in this
+      '(you are not wearing any clothes. I am terribly sorry but you should
+	not inflict your gross naked body on other people. There
+	are plenty beautiful sights in this
 	world. You are not one of them.
-	When God made you he was either drunk or bored. Maybe he was just spiteful
+	When God made you he was either drunk or bored.
+	Maybe he was just spiteful
 	but for Fuck Sake please put on some clothes.)
       (progn
 	(setf *location* *hallway*)
 	(describe-room *hallway*))))
 
 (defun put-on-clothes ()
-  (princ'(with the grace of a young gazelle you put on your clothes. Within seconds your appearance
-	  changes from ugly as hell to well below average handsome. Well done.))
+  (princ'(with the grace of a young gazelle you put on your clothes. Within
+	  seconds your appearance changes from ugly as hell to well
+	  below average handsome. Well done.))
   (setf (item-flags *clothes*) :wearing))
 
 (defun take-laptop-f ()
-  "You cannot take it. It's too heavy, the battery is not working and it's highly unlikely 
-   that it would survive any form of transport.")
+  "You cannot take it. It's too heavy, the battery is not working and it's
+   highly unlikely that it would survive any form of transport.")
 
 (defun describe-poster ()
   (item-sdescription *poster*))
