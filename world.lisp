@@ -1,9 +1,10 @@
-(load "~/quicklisp/setup.lisp")
 (ql:quickload "clunit")
+
 (load "util.lisp")
 
 (defpackage :world
-  (:use :cl :clunit :utilities))
+  (:use :cl :clunit)
+  (:import-from :utilities flatten))
 
 (in-package :world)
 
@@ -14,9 +15,9 @@
    non-exits (paths that lead nowhere but warrant a non default explanation
    things - describable items in a location"
   (name '())
-  (fdescription '())
-  (ldescription '())
-  (sdescription '())
+  (fdescription "")
+  (ldescription "")
+  (sdescription "")
   (uexit '())
   (nexit '())
   (cexit '())
@@ -59,14 +60,14 @@
 
 (defparameter *bedroom*
   (make-room
-   :fdescription '(the bedroom. Very messy. Very tiny.)
-   :ldescription '(you are in your bedroom. You should seriously think
-		   about cleaning it up.)
+   :fdescription "the bedroom. Very messy. Very tiny."
+   :ldescription "you are in your bedroom. You should seriously think
+		   about cleaning it up."
    :cexit '(( west  *hallway* wear-clothes))
    
-   :nexit '(( east (did you seriously think about leaving by the window?
+   :nexit '(( east ("did you seriously think about leaving by the window?
 		    I know you had a rough night but please use the door
-		    like other normal people.)))
+		    like other normal people.")))
    :things '(*laptop* *clothes* *poster*)
    :flags :notseen))
 
@@ -82,9 +83,7 @@
 
 (defparameter *frontdoor*
   (make-room
-   :ldescription '(You leave your house and find yourself at an absolutely
-		   marvellous spring day. It is warm sunny and the birds are singing.
-		   Its exactly the sort of day that makes nearly everyone happy.)
+   :ldescription "You leave your house and find yourself at an absolutely marvellous spring day. It is warm, sunny and the birds are singing. Its exactly the sort of day that makes nearly everyone happy."
    :sdescription '(you stand outside of your house.)
    :uexit '((east *hallway*) (west *park-entrance*) (nw *main-road*))))
 
@@ -138,41 +137,40 @@
    :location '(*bedroom*)
    :action '((look-closer-v describe-poster-f))))                                                       
 
-(defun u-exits (room)
-  (slot-value room 'uexit))
+;; (defun u-exits (room)
+;;   (slot-value room 'uexit))
 
-(defun use-laptop-f ()
-  (if (equal 'poweroff (first (item-flags *laptop*)))
-      "Your laptop is turned off"
-      "you could browse your favorite websites all day, you good old 
-       procrastinator, however I'd propose you simply check your Email."))
+;; (defun use-laptop-f ()
+;;   (if (equal 'poweroff (first (item-flags *laptop*)))
+;;       "Your laptop is turned off"
+;;       "you could browse your favorite websites all day, you good old 
+;;        procrastinator, however I'd propose you simply check your Email."))
+;; (defun power-on-laptop-f ()
+;;   (setf (item-flags *laptop*
+;; 		    ) '(poweron))
+;;   "You press the power button. You hear some funny noises, and it actually 
+;;    starts booting. One Cup of Tee later, and you start at the login 
+;;    screen. I hope you haven't forgotten the password.")
 
-(defun power-on-laptop-f ()
-  (setf (item-flags *laptop*
-		    ) '(poweron))
-  "You press the power button. You hear some funny noises, and it actually 
-   starts booting. One Cup of Tee later, and you start at the login 
-   screen. I hope you haven't forgotten the password.")
+;; (defun wear-clothes ()
+;;   "if not wearing clothes, print out text . Else change location to hallway."
+;;   (if (eq (symbol-value (item-flags *clothes*)) :notwearing)
+;;       '(you are not wearing any clothes. I am terribly sorry but you should
+;; 	not inflict your gross naked body on other people. There
+;; 	are plenty beautiful sights in this
+;; 	world. You are not one of them.
+;; 	When God made you he was either drunk or bored.
+;; 	Maybe he was just spiteful
+;; 	but for Fuck Sake please put on some clothes.)
+;;       (progn
+;; 	(setf *location* *hallway*)
+;; 	(describe-room *hallway*))))
 
-(defun wear-clothes ()
-  "if not wearing clothes, print out text . Else change location to hallway."
-  (if (eq (symbol-value (item-flags *clothes*)) :notwearing)
-      '(you are not wearing any clothes. I am terribly sorry but you should
-	not inflict your gross naked body on other people. There
-	are plenty beautiful sights in this
-	world. You are not one of them.
-	When God made you he was either drunk or bored.
-	Maybe he was just spiteful
-	but for Fuck Sake please put on some clothes.)
-      (progn
-	(setf *location* *hallway*)
-	(describe-room *hallway*))))
-
-(defun put-on-clothes ()
-  (princ'(with the grace of a young gazelle you put on your clothes. Within
-	  seconds your appearance changes from ugly as hell to well
-	  below average handsome. Well done.))
-  (setf (item-flags *clothes*) :wearing))
+;; (defun put-on-clothes ()
+;;   (princ'(with the grace of a young gazelle you put on your clothes. Within
+;; 	  seconds your appearance changes from ugly as hell to well
+;; 	  below average handsome. Well done.))
+;;   (setf (item-flags *clothes*) :wearing))
 
 (defun take-laptop-f ()
   "You cannot take it. It's too heavy, the battery is not working and it's
@@ -204,9 +202,9 @@
   (object-action-list (room-things (symbol-value *location*))))
 
 
-(defun read-directions (room)
-  "Return a list of all possible directions in a location."
-  (append (room-uexit room) (room-cexit room) (room-nexit room)))
+;; (defun read-directions (room)
+;;   "Return a list of all possible directions in a location."
+;;   (append (room-uexit room) (room-cexit room) (room-nexit room)))
 
 (defun cexit-read-condition (direction)
   "return predicate necessary to use conditional exit."
@@ -228,16 +226,16 @@
     ((member direction (first nexit-lst)) (second (first nexit-lst)))
     (t (nexit-next-location direction (rest nexit-lst)))))
 
-(defun walk-direction (direction room)
-  "Return next location of a entered direction in a location."
-  (let ((ue (room-uexit room))
-	(ne (room-nexit room)))
-    (cond
-      ((and ( cexit-read-condition direction))
-       (funcall ( cexit-read-condition direction)))
-      ((uexits-next-location direction ue) (uexits-next-location direction ue))
-      ((nexit-next-location direction ne) (nexit-next-location direction ne))        
-      (t nil))))
+;; (defun walk-direction (direction room)
+;;   "Return next location of a entered direction in a location."
+;;   (let ((ue (room-uexit room))
+;; 	(ne (room-nexit room)))
+;;     (cond
+;;       ((and ( cexit-read-condition direction))
+;;        (funcall ( cexit-read-condition direction)))
+;;       ((uexits-next-location direction ue) (uexits-next-location direction ue))
+;;       ((nexit-next-location direction ne) (nexit-next-location direction ne))        
+;;       (t nil))))
 
 
 (defun game-repl ()
@@ -316,13 +314,18 @@
 	
 	(setf ( room-flags room) :seen))
       (progn
-	(game-print (room-ldescription room))
+	(game-print (print-list (room-ldescription room)))
 	(game-print (flatten
 		     (describe-list-of-items-in-location-later room))))))
 
 (defun items-in-room (room)
   "Return all items in a location."
   (room-things room))
+
+(defun print-list (lst)
+  "convert list of symbols to string"
+  (loop for i in lst
+     do (princ (format nil "~A " i))))
 
 
 (clunit:defsuite Room-suite ())
@@ -350,11 +353,10 @@
 			 (ON THE WALL YOU CAN SEE AN OLD POSTER.))
       (describe-list-of-items-in-location *bedroom*)))
 
-(deftest test-walk-direction (Room-suite)
-  (clunit:assert-equal '*bedroom* (walk-direction 'east *hallway*)))
+
 
 (clunit:deftest test-return-synonym (Parse-suite)
-p  (clunit:assert-equal 'start-v (return-synonym 'power))
+  (clunit:assert-equal 'start-v (return-synonym 'power))
   (clunit:assert-equal 'use-v (return-synonym 'use)))
 
 (clunit:deftest test-read-direction (Parse-suite)
