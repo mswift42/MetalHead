@@ -139,5 +139,5 @@
 
 
 
-(let ((pack (find-package :world)))
-  (do-all-symbols (sym pack) (when (eql (symbol-package sym) pack) (export sym))))
+;; (let ((pack (find-package :world)))
+;;   (do-all-symbols (sym pack) (when (eql (symbol-package sym) pack) (export sym))))

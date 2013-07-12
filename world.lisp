@@ -1,4 +1,4 @@
-(load "~/quicklisp/setup.lisp")
+
 (ql:quickload "clunit")
 
 (defpackage :world
@@ -184,7 +184,7 @@
 
 
 
-;;; This snippet is taken from Stackoverflow: it exports all symbols in package :world
-;;; i.e. I can access the fields of room and item from  other packages like I do in this package.
-(let ((pack (find-package :world)))
-  (do-all-symbols (sym pack) (when (eql (symbol-package sym) pack) (export sym))))
+;; ;;; This snippet is taken from Stackoverflow: it exports all symbols in package :world
+;; ;;; i.e. I can access the fields of room and item from  other packages like I do in this package.
+;; (let ((pack (find-package :world)))
+;;   (do-all-symbols (sym pack) (when (eql (symbol-package sym) pack) (export sym))))
