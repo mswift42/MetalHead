@@ -1,12 +1,6 @@
-(ql:quickload "clunit")
+(ql:quickload "MetalHead")
+(in-package #:world)
 
-(load "util.lisp")
-
-(defpackage :world
-  (:use :cl :clunit)
-  (:import-from :utilities flatten))
-
-(in-package :world)
 
 
 (defstruct (room)
