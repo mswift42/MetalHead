@@ -10,6 +10,18 @@
 (defparameter *location*
   '*bedroom*)
 
+(defun current-location ()
+  (symbol-value (:location *player*)))
+
+
+(defun take-object (item)
+  (setf (:inventory *player*) (cons item (:inventory *player*)))
+  (setf (:things (current-location)) (delete item (:things (current-location)))))
+
+(defun drop-object (item)
+  (setf (:inventory *player*) (delete item (:inventory *player*)))
+  (setf (:things (current-location)) (cons item (:things (current-location)))))
+
 (defun object-action-list (itemlist)
   "Return a list of all possible actions of all items
    for one location. (Helper Function for actions-for-location."
@@ -29,7 +41,7 @@
 
 (defun cexit-read-condition (direction)
   "return predicate necessary to use conditional exit."
-  (third (assoc direction (:cexit (symbol-value *location*)))))
+  (find-symbol (symbol-name (third (assoc direction (:cexit (current-location)))))))
 
 ;; (defun location ()
 ;;     (:location *player*))
@@ -81,6 +93,9 @@
       (progn
 	(setf *location* *hallway*)
 	(describe-room *hallway*))))
+
+(defun functionstring ()
+  (symbol-name (third (assoc 'world::west (:cexit (current-location))))))
 
 (defun put-on-clothes ()
   (princ'(with the grace of a young gazelle you put on your clothes. Within
@@ -241,10 +256,10 @@
 
 (deftest test-uexits-next-location (Room-suite)
   (clunit:assert-equal '*bedroom* (uexits-next-location 'east
-							(room-uexit *hallway*))))
+							(uexit *hallway*))))
 
 (deftest test-cexit-read-condition (Room-suite)
-  (clunit:assert-equal 'wear-clothes (cexit-read-condition 'west)))
+  (clunit:assert-equal 'wear-clothes (cexit-read-condition 'world::west)))
 
 (deftest test-describe-list-of-items-in-location (Room-suite)                     
   (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.)

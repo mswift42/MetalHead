@@ -2,7 +2,10 @@
 (defpackage #:world
   (:use #:cl )
   (:export loc item player *bedroom* *hallway* *frontdoor* *park-lane-east*
-	   *park-entrance* *park-entrance-east* *laptop* *poster* *clothes*))
+	   *park-entrance* *park-entrance-east* *laptop* *poster* *clothes*
+	   *player* :fdescription :sdescription :ldescription :uexit
+	   :nexit :cexit :flags :things :name :synonym  :action
+	   :flags))
 (in-package #:world)
 
 
@@ -24,13 +27,16 @@
    (fdescription :initarg :fdescription :initform '() :accessor :fdescription)
    (ldescription :initarg :ldescription :initform '() :accessor :ldescription)
    (sdescription :initarg :sdescription :initform '() :accessor :sdescription)
-   (location :initarg :location :initform '() :accessor :location)
    (action :initarg :action :initform '() :accessor :action)
    (flags :initarg :flags :initform '() :accessor :flags)))
 
 (defclass player ()
   ((location :initarg :location :accessor :location)
    (inventory :initarg :inventory :initform '() :accessor :inventory)))
+
+(defparameter *player*
+  (make-instance 'player :location '*bedroom*
+		 :inventory '()))
 
 (defparameter *bedroom*
   (make-instance 'loc 
@@ -88,7 +94,6 @@
 		   make do with it." )
    :sdescription '("your laptop. It used to be black.
 		   Whats the color of grime again?")
-   :location '(*bedroom*)
    :action '((use-v  use-laptop-f)
 	     (start-v power-on-laptop-f) (type-pass-v crack-password-p))
    :flags '(poweroff notseen)))
@@ -98,7 +103,6 @@
    :name '(your clothes)
    :fdescription '("strewn all over the floor are your clothes.")
    :ldescription '("jeans and a t-shirt. nothing fancy.")
-   :location '(*bedroom*)
    :action '((wear-v put-on-clothes))
    :flags :notwearing))
 
@@ -111,7 +115,6 @@
 		   "of white crosses in a field.")
    :ldescription '("Oh you joyful Master of Puppets. You mother "
 		   "of all metal records.")
-   :location '(*bedroom*)
    :action '((look-closer-v describe-poster-f))))                                                       
 
 
