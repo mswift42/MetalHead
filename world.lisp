@@ -49,25 +49,28 @@
 
 (defparameter *hallway*
   (make-instance 'loc
-   :ldescription '(the hallway. A narrow thing leading from your bedroom
-		   to the east to your frontdoor leading into town to the
-		   west.)
+   :ldescription '("the hallway. A narrow thing leading from "
+		   "your bedroom to the east to your frontdoor "
+		   "leading into town to the west.")
    :uexit '((east *bedroom*)
 	    (west *frontdoor*))))
 
 
 (defparameter *frontdoor*
   (make-instance 'loc
-   :ldescription '("You leave your house and find yourself at an absolutely marvellous spring day. It is warm, sunny and the birds are singing. Its exactly the sort of day that makes nearly everyone happy.")
-   :sdescription '(you stand outside of your house.)
+   :ldescription '("You leave your house and find yourself at an "
+		   "absolutely marvellous spring day. It is warm, "
+		   "sunny and the birds are singing. Its exactly "
+		   "the sort of day that makes nearly everyone happy.")
+   :sdescription '("you stand outside of your house.")
    :uexit '((east *hallway*) (west *park-entrance*) (nw *main-road*))))
 
 (defparameter *park-entrance-east*
   (make-instance 'loc 
-   :fdescription '(This is the entrance to a beautiful little park. A gorgeous
-		   english garden with some nice shady spots and plenty of
-		   benches to rest.)
-   :ldescription '(You are at the east entrance of a park.)
+   :fdescription '("This is the entrance to a beautiful little park. "
+		   "A gorgeous english garden with some nice shady "
+		   "spots and plenty of benches to rest.")
+   :ldescription '("You are at the east entrance of a park.")
    :uexit '((west *frontdoor*) (east *park-lane-east*))))
 
 (defparameter *park-lane-east*
@@ -79,12 +82,12 @@
   (make-instance 'item 
    :name '(a laptop)
    :synonym '(notebook laptop computer )
-   :fdescription '(on a table near the exit to the west is a laptop.)
-   :ldescription '(your old sturdy laptop. Not the latest and shiniest
+   :fdescription '("on a table near the exit to the west is a laptop.")
+   :ldescription '("your old sturdy laptop. Not the latest and shiniest
 		   but money is very expensive so you still
-		   make do with it. )
-   :sdescription '(your laptop. It used to be black.
-		   Whats the color of grime again?)
+		   make do with it." )
+   :sdescription '("your laptop. It used to be black.
+		   Whats the color of grime again?")
    :location '(*bedroom*)
    :action '((use-v  use-laptop-f)
 	     (start-v power-on-laptop-f) (type-pass-v crack-password-p))
@@ -93,8 +96,8 @@
 (defparameter *clothes*
   (make-instance 'item
    :name '(your clothes)
-   :fdescription '(strewn all over the floor are your clothes.)
-   :ldescription '(jeans and a t-shirt. nothing fancy.)
+   :fdescription '("strewn all over the floor are your clothes.")
+   :ldescription '("jeans and a t-shirt. nothing fancy.")
    :location '(*bedroom*)
    :action '((wear-v put-on-clothes))
    :flags :notwearing))
@@ -102,12 +105,12 @@
 (defparameter *poster*
   (make-instance 'item
    :name '(a poster)
-   :fdescription '(On the wall you can see an old poster.)
-   :sdescription '(It is a very old nearly completely faded poster.
-		   You can only make out a painted scene of rows of
-		   white crosses in a field.)
-   :ldescription '(Oh you joyful Master of Puppets. You mother of
-		   all metal records.)
+   :fdescription '("On the wall you can see an old poster.")
+   :sdescription '("It is a very old nearly completely faded poster."
+		   " You can only make out a painted scene of rows "
+		   "of white crosses in a field.")
+   :ldescription '("Oh you joyful Master of Puppets. You mother "
+		   "of all metal records.")
    :location '(*bedroom*)
    :action '((look-closer-v describe-poster-f))))                                                       
 
