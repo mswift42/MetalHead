@@ -223,7 +223,7 @@
   (if (eq (symbol-value (:flags room)) :notseen)
       (progn
 	(game-print (:fdescription room))
-	(game-print (flatten ( describe-list-of-items-in-location room)))
+	(print-list (flatten ( describe-list-of-items-in-location room)))
 	
 	(setf ( :flags room) :seen))
       (progn
@@ -247,24 +247,24 @@
 
 
 (clunit:deftest test-u-exits (Room-suite)
-  (clunit:assert-equal '((east *bedroom*) (west *frontdoor*))
-		       (u-exits *hallway*)))
+  (clunit:assert-equal '((world::east *bedroom*) (world::west *frontdoor*))
+		       (:uexit *hallway*)))
 
 (deftest test-items-in-room (Room-suite)
   (clunit:assert-equal '(*laptop* *clothes* *poster*)
 		       (items-in-room *bedroom*)))
 
 (deftest test-uexits-next-location (Room-suite)
-  (clunit:assert-equal '*bedroom* (uexits-next-location 'east
-							(uexit *hallway*))))
+  (clunit:assert-equal '*bedroom* (uexits-next-location 'world::east
+							(:uexit *hallway*))))
 
 (deftest test-cexit-read-condition (Room-suite)
   (clunit:assert-equal 'wear-clothes (cexit-read-condition 'world::west)))
 
 (deftest test-describe-list-of-items-in-location (Room-suite)                     
-  (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.)
-			 (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.)
-			 (ON THE WALL YOU CAN SEE AN OLD POSTER.))
+  (clunit:assert-equal '(("on a table near the exit to the west is a laptop.")
+			 ("strewn all over the floor are your clothes.")
+			 ("On the wall you can see an old poster."))
       (describe-list-of-items-in-location *bedroom*)))
 
 
