@@ -1,6 +1,8 @@
+(defpackage #:utilities
+  (:use :cl)
+  (:export flatten))
 
-
-(in-package :utilities)
+(in-package #:utilities)
 
 (defun flatten (structure)
   (cond ((null structure) nil)

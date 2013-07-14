@@ -1,33 +1,59 @@
-(ql:quickload "MetalHead")
+(load "util.lisp")
+(ql:quickload "clunit")
+
+(defpackage #:world
+  (:use #:cl #:clunit #:utilities))
 (in-package #:world)
 
 
+(defclass room ()
+  ((name :initarg :name :initform '() :accessor :name)
+   (fdescription :initarg :fdescription :initform '() :accessor :fdescription)
+   (ldescription :initarg :ldescription :initform '() :accessor :ldescription)
+   (sdescription :initarg :sdescription :initform '() :accessor :sdescription)
+   (uexit :initarg :uexit :initform '() :accessor :uexit)
+   (nexit :initarg :nexit :initform '() :accessor :nexit)
+   (cexit :initarg :cexit :initform '() :accessor :cexit)
+   (flags :initarg :flags :initform '() :accessor :flags)
+   (things :initarg :things :initform '() :accessor :things)))
 
-(defstruct (room)
-  "Holds a initial and a later descriptions for locations.
-   Unconditional exits, conditional exits (a door you need a key for)
-   non-exits (paths that lead nowhere but warrant a non default explanation
-   things - describable items in a location"
-  (name '())
-  (fdescription "")
-  (ldescription "")
-  (sdescription "")
-  (uexit '())
-  (nexit '())
-  (cexit '())
-  (flags '())
-  (things '()))
 
-(defstruct (item)
-  "Holds inventory items in the game."
-  (name '())
-  (synonym '())
-  (fdescription '())
-  (ldescription '())
-  (sdescription '())
-  (location '())
-  (action '())
-  (flags '()))
+
+;; (defstruct (room)
+;;   "Holds a initial and a later descriptions for locations.
+;;    Unconditional exits, conditional exits (a door you need a key for)
+;;    non-exits (paths that lead nowhere but warrant a non default explanation
+;;    things - describable items in a location"
+;;   (name '())
+;;   (fdescription "")
+;;   (ldescription "")
+;;   (sdescription "")
+;;   (uexit '())
+;;   (nexit '())
+;;   (cexit '())
+;;   (flags '())
+;;   (things '()))
+
+;; (defstruct (item)
+;;   "Holds inventory items in the game."
+;;   (name '())
+;;   (synonym '())
+;;   (fdescription '())
+;;   (ldescription '())
+;;   (sdescription '())
+;;   (location '())
+;;   (action '())
+;;   (flags '()))
+
+(defclass item ()
+  ((name :initarg :name :initform '() :accessor :name)
+   (synonym :initarg :synonym :initform '() :accessor :synonym)
+   (fdescription :initarg :fdescription :initform '() :accessor :fdescription)
+   (ldescription :initarg :ldescription :initform '() :accessor :ldescription)
+   (sdescription :initarg :sdescription :initform '() :accessor :sdescription)
+   (location :initarg :location :initform '() :accessor :location)
+   (action :initarg :action :initform '() :accessor :action)
+   (flags :initarg :flags :initform '() :accessor :flags)))
 
 (defparameter *location*
   '*bedroom*
@@ -53,10 +79,11 @@
 
 
 (defparameter *bedroom*
-  (make-room
-   :fdescription "the bedroom. Very messy. Very tiny."
-   :ldescription "you are in your bedroom. You should seriously think
-		   about cleaning it up."
+  (make-instance 'room 
+		 :fdescription '("the bedroom. Very messy. Very tiny.")
+		 :ldescription '("you are in your bedroom. You "
+				 "should seriously think about "
+				 "cleaning it up.")
    :cexit '(( west  *hallway* wear-clothes))
    
    :nexit '(( east ("did you seriously think about leaving by the window?
@@ -67,7 +94,7 @@
 
 
 (defparameter *hallway*
-  (make-room
+  (make-instance 'room
    :ldescription '(the hallway. A narrow thing leading from your bedroom
 		   to the east to your frontdoor leading into town to the
 		   west.)
@@ -76,13 +103,13 @@
 
 
 (defparameter *frontdoor*
-  (make-room
-   :ldescription "You leave your house and find yourself at an absolutely marvellous spring day. It is warm, sunny and the birds are singing. Its exactly the sort of day that makes nearly everyone happy."
+  (make-instance 'room
+   :ldescription '("You leave your house and find yourself at an absolutely marvellous spring day. It is warm, sunny and the birds are singing. Its exactly the sort of day that makes nearly everyone happy.")
    :sdescription '(you stand outside of your house.)
    :uexit '((east *hallway*) (west *park-entrance*) (nw *main-road*))))
 
 (defparameter *park-entrance-east*
-  (make-room
+  (make-instance 'room 
    :fdescription '(This is the entrance to a beautiful little park. A gorgeous
 		   english garden with some nice shady spots and plenty of
 		   benches to rest.)
@@ -90,13 +117,13 @@
    :uexit '((west *frontdoor*) (east *park-lane-east*))))
 
 (defparameter *park-lane-east*
-  (make-room
+  (make-instance 'room
    :fdescription '(You are in the town park. There is a path leading from east to west.)))
 
 
 
 (defparameter *laptop*
-  (make-item 
+  (make-instance 'item 
    :name '(a laptop)
    :synonym '(notebook laptop computer )
    :fdescription '(on a table near the exit to the west is a laptop.)
@@ -111,7 +138,7 @@
    :flags '(poweroff notseen)))
 
 (defparameter *clothes*
-  (make-item
+  (make-instance 'item
    :name '(your clothes)
    :fdescription '(strewn all over the floor are your clothes.)
    :ldescription '(jeans and a t-shirt. nothing fancy.)
@@ -120,7 +147,7 @@
    :flags :notwearing))
 
 (defparameter *poster*
-  (make-item
+  (make-instance 'item
    :name '(a poster)
    :fdescription '(On the wall you can see an old poster.)
    :sdescription '(It is a very old nearly completely faded poster.
@@ -131,8 +158,8 @@
    :location '(*bedroom*)
    :action '((look-closer-v describe-poster-f))))                                                       
 
-;; (defun u-exits (room)
-;;   (slot-value room 'uexit))
+(defun u-exits (room)
+  (:uexit room))
 
 ;; (defun use-laptop-f ()
 ;;   (if (equal 'poweroff (first (item-flags *laptop*)))
@@ -166,12 +193,12 @@
 ;; 	  below average handsome. Well done.))
 ;;   (setf (item-flags *clothes*) :wearing))
 
-(defun take-laptop-f ()
-  "You cannot take it. It's too heavy, the battery is not working and it's
-   highly unlikely that it would survive any form of transport.")
+;; (defun take-laptop-f ()
+;;   "You cannot take it. It's too heavy, the battery is not working and it's
+;;    highly unlikely that it would survive any form of transport.")
 
 (defun describe-poster ()
-  (item-sdescription *poster*))
+  (:sdescription *poster*))
 
 (defparameter verb-synonyms
   '((use use-v)
@@ -188,175 +215,175 @@
    for one location. (Helper Function for actions-for-location."
   (cond
     ((null itemlist) nil)
-    (t (append (item-action (symbol-value (first itemlist)))
+    (t (append (:action (symbol-value (first itemlist)))
 	       (object-action-list (rest itemlist))))))
 
 (defun actions-for-location ()
   "Return alist for possible actions in the present location."
-  (object-action-list (room-things (symbol-value *location*))))
+  (object-action-list (:things (symbol-value *location*))))
 
 
-;; (defun read-directions (room)
-;;   "Return a list of all possible directions in a location."
-;;   (append (room-uexit room) (room-cexit room) (room-nexit room)))
+;; ;; (defun read-directions (room)
+;; ;;   "Return a list of all possible directions in a location."
+;; ;;   (append (room-uexit room) (room-cexit room) (room-nexit room)))
 
-(defun cexit-read-condition (direction)
-  "return predicate necessary to use conditional exit."
-  (third (assoc direction (room-cexit (symbol-value *location*)))))
+;; (defun cexit-read-condition (direction)
+;;   "return predicate necessary to use conditional exit."
+;;   (third (assoc direction (room-cexit (symbol-value *location*)))))
 
-(defun uexits-next-location (direction uexit-lst)
-  "Takes a direction and the list of uexits in a location.
-   Returns either the next room if the desired direction is 
-   a member of uexits-lst or nil."
-  (cond
-    ((null uexit-lst) nil)
-    ((member direction (first uexit-lst)) (second (first uexit-lst)))
-    (t (uexits-next-location direction (rest uexit-lst)))))
+;; (defun uexits-next-location (direction uexit-lst)
+;;   "Takes a direction and the list of uexits in a location.
+;;    Returns either the next room if the desired direction is 
+;;    a member of uexits-lst or nil."
+;;   (cond
+;;     ((null uexit-lst) nil)
+;;     ((member direction (first uexit-lst)) (second (first uexit-lst)))
+;;     (t (uexits-next-location direction (rest uexit-lst)))))
 
-(defun nexit-next-location (direction nexit-lst)
-  "return possible nexit of direction in a location."
-  (cond
-    ((null nexit-lst) nil)
-    ((member direction (first nexit-lst)) (second (first nexit-lst)))
-    (t (nexit-next-location direction (rest nexit-lst)))))
+;; (defun nexit-next-location (direction nexit-lst)
+;;   "return possible nexit of direction in a location."
+;;   (cond
+;;     ((null nexit-lst) nil)
+;;     ((member direction (first nexit-lst)) (second (first nexit-lst)))
+;;     (t (nexit-next-location direction (rest nexit-lst)))))
 
-;; (defun walk-direction (direction room)
-;;   "Return next location of a entered direction in a location."
-;;   (let ((ue (room-uexit room))
-;; 	(ne (room-nexit room)))
-;;     (cond
-;;       ((and ( cexit-read-condition direction))
-;;        (funcall ( cexit-read-condition direction)))
-;;       ((uexits-next-location direction ue) (uexits-next-location direction ue))
-;;       ((nexit-next-location direction ne) (nexit-next-location direction ne))        
-;;       (t nil))))
-
-
-(defun game-repl ()
-  (let ((cmd (game-read)))
-    (unless (eq (car cmd) 'quit)
-      (game-print (game-eval cmd))
-      (game-repl))))
+;; ;; (defun walk-direction (direction room)
+;; ;;   "Return next location of a entered direction in a location."
+;; ;;   (let ((ue (room-uexit room))
+;; ;; 	(ne (room-nexit room)))
+;; ;;     (cond
+;; ;;       ((and ( cexit-read-condition direction))
+;; ;;        (funcall ( cexit-read-condition direction)))
+;; ;;       ((uexits-next-location direction ue) (uexits-next-location direction ue))
+;; ;;       ((nexit-next-location direction ne) (nexit-next-location direction ne))        
+;; ;;       (t nil))))
 
 
-(defun game-read ()
-  (let ((cmd (read-from-string
-	      (concatenate 'string "(" (read-line) ")"))))
-    (flet ((quote-it (x)
-	     (list 'quote x)))
-      (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
-
-(defparameter *allowed-commands* '( use-laptop-f))
-
-(defun game-eval (sexp)
-  (if (member sexp *allowed-commands*)
-      (funcall sexp)
-      '(I do not know this command.)))
+;; (defun game-repl ()
+;;   (let ((cmd (game-read)))
+;;     (unless (eq (car cmd) 'quit)
+;;       (game-print (game-eval cmd))
+;;       (game-repl))))
 
 
-(defun game-reader (exp)
-  "Evaluate player input"
-  (cond
-    ((walk-direction exp (symbol-value *location*)) (change-location  exp))
-    ((assoc exp (actions-for-location))
-     (funcall (second (assoc exp (actions-for-location)))))
-    (t nil)))
+;; (defun game-read ()
+;;   (let ((cmd (read-from-string
+;; 	      (concatenate 'string "(" (read-line) ")"))))
+;;     (flet ((quote-it (x)
+;; 	     (list 'quote x)))
+;;       (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
-(defun tweak-text (lst caps lit)
-  (when lst
-    (let ((item (car lst))
-	  (rest (cdr lst)))
-      (cond ((eq item #\space) (cons item (tweak-text rest caps lit)))
-	    ((member item '(#\! #\? #\.)) (cons item (tweak-text rest t lit)))
-	    ((eq item #\") (tweak-text rest caps (not lit)))
-	    (lit (cons item (tweak-text rest nil lit)))
-	    ((or caps lit) (cons (char-upcase item) ( tweak-text rest nil lit)))
-	    (t (cons (char-downcase item) (tweak-text rest nil nil)))))))
+;; (defparameter *allowed-commands* '( use-laptop-f))
 
-(defun game-print (lst)
-  (princ (coerce (tweak-text (coerce (string-trim "() "
-						  (prin1-to-string lst))
-				     'list)
-			     t
-			     nil)
-		 'string))
-  (fresh-line))
+;; (defun game-eval (sexp)
+;;   (if (member sexp *allowed-commands*)
+;;       (funcall sexp)
+;;       '(I do not know this command.)))
 
-(defun change-location ( direction)
-  "When changing locations, set global-variable *location* to new location.
-   Describe room either with first or later description."
-  (setf *location* (walk-direction direction (symbol-value *location*)))
-  (describe-room  (symbol-value *location*)))
 
-(defun describe-list-of-items-in-location (room)
-  "Return list of descriptions of all items in a room."
-  (mapcar #'(lambda (x) (item-fdescription (symbol-value x)))
-	  (room-things room))) 
+;; (defun game-reader (exp)
+;;   "Evaluate player input"
+;;   (cond
+;;     ((walk-direction exp (symbol-value *location*)) (change-location  exp))
+;;     ((assoc exp (actions-for-location))
+;;      (funcall (second (assoc exp (actions-for-location)))))
+;;     (t nil)))
 
-(defun describe-list-of-items-in-location-later (room)
-  "Return the ldescription of all itemns in a room."
-  (mapcar #'(lambda (x) (item-ldescription (symbol-value x)))
-	  (room-things room)))
+;; (defun tweak-text (lst caps lit)
+;;   (when lst
+;;     (let ((item (car lst))
+;; 	  (rest (cdr lst)))
+;;       (cond ((eq item #\space) (cons item (tweak-text rest caps lit)))
+;; 	    ((member item '(#\! #\? #\.)) (cons item (tweak-text rest t lit)))
+;; 	    ((eq item #\") (tweak-text rest caps (not lit)))
+;; 	    (lit (cons item (tweak-text rest nil lit)))
+;; 	    ((or caps lit) (cons (char-upcase item) ( tweak-text rest nil lit)))
+;; 	    (t (cons (char-downcase item) (tweak-text rest nil nil)))))))
 
-(defun describe-room ( room)
-  "Use lol's game-print function to print first the description of the
-   room you are in, then describe all items in the location."
-  (if (eq (symbol-value (room-flags room)) :notseen)
-      (progn
-	(game-print (room-fdescription room))
-	(game-print (flatten ( describe-list-of-items-in-location room)))
+;; (defun game-print (lst)
+;;   (princ (coerce (tweak-text (coerce (string-trim "() "
+;; 						  (prin1-to-string lst))
+;; 				     'list)
+;; 			     t
+;; 			     nil)
+;; 		 'string))
+;;   (fresh-line))
+
+;; (defun change-location ( direction)
+;;   "When changing locations, set global-variable *location* to new location.
+;;    Describe room either with first or later description."
+;;   (setf *location* (walk-direction direction (symbol-value *location*)))
+;;   (describe-room  (symbol-value *location*)))
+
+;; (defun describe-list-of-items-in-location (room)
+;;   "Return list of descriptions of all items in a room."
+;;   (mapcar #'(lambda (x) (item-fdescription (symbol-value x)))
+;; 	  (room-things room))) 
+
+;; (defun describe-list-of-items-in-location-later (room)
+;;   "Return the ldescription of all itemns in a room."
+;;   (mapcar #'(lambda (x) (item-ldescription (symbol-value x)))
+;; 	  (room-things room)))
+
+;; (defun describe-room ( room)
+;;   "Use lol's game-print function to print first the description of the
+;;    room you are in, then describe all items in the location."
+;;   (if (eq (symbol-value (room-flags room)) :notseen)
+;;       (progn
+;; 	(game-print (room-fdescription room))
+;; 	(game-print (flatten ( describe-list-of-items-in-location room)))
 	
-	(setf ( room-flags room) :seen))
-      (progn
-	(game-print (print-list (room-ldescription room)))
-	(game-print (flatten
-		     (describe-list-of-items-in-location-later room))))))
+;; 	(setf ( room-flags room) :seen))
+;;       (progn
+;; 	(game-print (print-list (room-ldescription room)))
+;; 	(game-print (flatten
+;; 		     (describe-list-of-items-in-location-later room))))))
 
-(defun items-in-room (room)
-  "Return all items in a location."
-  (room-things room))
+;; (defun items-in-room (room)
+;;   "Return all items in a location."
+;;   (room-things room))
 
-(defun print-list (lst)
-  "convert list of symbols to string"
-  (loop for i in lst
-     do (princ (format nil "~A " i))))
-
-
-(clunit:defsuite Room-suite ())
-(clunit:defsuite Parse-suite ())
+;; (defun print-list (lst)
+;;   "convert list of symbols to string"
+;;   (loop for i in lst
+;;      do (princ (format nil "~A " i))))
 
 
-(clunit:deftest test-u-exits (Room-suite)
-  (clunit:assert-equal '((east *bedroom*) (west *frontdoor*))
-		       (u-exits *hallway*)))
-
-(deftest test-items-in-room (Room-suite)
-  (clunit:assert-equal '(*laptop* *clothes* *poster*)
-		       (items-in-room *bedroom*)))
-
-(deftest test-uexits-next-location (Room-suite)
-  (clunit:assert-equal '*bedroom* (uexits-next-location 'east
-							(room-uexit *hallway*))))
-
-(deftest test-cexit-read-condition (Room-suite)
-  (clunit:assert-equal 'wear-clothes (cexit-read-condition 'west)))
-
-(deftest test-describe-list-of-items-in-location (Room-suite)                     
-  (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.)
-			 (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.)
-			 (ON THE WALL YOU CAN SEE AN OLD POSTER.))
-      (describe-list-of-items-in-location *bedroom*)))
+;; (clunit:defsuite Room-suite ())
+;; (clunit:defsuite Parse-suite ())
 
 
+;; (clunit:deftest test-u-exits (Room-suite)
+;;   (clunit:assert-equal '((east *bedroom*) (west *frontdoor*))
+;; 		       (u-exits *hallway*)))
 
-(clunit:deftest test-return-synonym (Parse-suite)
-  (clunit:assert-equal 'start-v (return-synonym 'power))
-  (clunit:assert-equal 'use-v (return-synonym 'use)))
+;; (deftest test-items-in-room (Room-suite)
+;;   (clunit:assert-equal '(*laptop* *clothes* *poster*)
+;; 		       (items-in-room *bedroom*)))
 
-(clunit:deftest test-read-direction (Parse-suite)
-  (clunit:assert-equal 'up (read-direction 'u))
-  (clunit:assert-equal 'west (read-direction 'west))
-  (clunit:assert-equal 'northeast (read-direction 'ne)))
+;; (deftest test-uexits-next-location (Room-suite)
+;;   (clunit:assert-equal '*bedroom* (uexits-next-location 'east
+;; 							(room-uexit *hallway*))))
 
-(clunit:run-suite 'Room-suite)
-(clunit:run-suite 'Parse-suite)
+;; (deftest test-cexit-read-condition (Room-suite)
+;;   (clunit:assert-equal 'wear-clothes (cexit-read-condition 'west)))
+
+;; (deftest test-describe-list-of-items-in-location (Room-suite)                     
+;;   (clunit:assert-equal '((ON A TABLE NEAR THE EXIT TO THE WEST IS A LAPTOP.)
+;; 			 (STREWN ALL OVER THE FLOOR ARE YOUR CLOTHES.)
+;; 			 (ON THE WALL YOU CAN SEE AN OLD POSTER.))
+;;       (describe-list-of-items-in-location *bedroom*)))
+
+
+
+;; (clunit:deftest test-return-synonym (Parse-suite)
+;;   (clunit:assert-equal 'start-v (return-synonym 'power))
+;;   (clunit:assert-equal 'use-v (return-synonym 'use)))
+
+;; (clunit:deftest test-read-direction (Parse-suite)
+;;   (clunit:assert-equal 'up (read-direction 'u))
+;;   (clunit:assert-equal 'west (read-direction 'west))
+;;   (clunit:assert-equal 'northeast (read-direction 'ne)))
+
+;; (clunit:run-suite 'Room-suite)
+;; (clunit:run-suite 'Parse-suite)
