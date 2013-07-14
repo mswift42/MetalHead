@@ -15,12 +15,16 @@
 
 
 (defun take-object (item)
-  (setf (:inventory *player*) (cons item (:inventory *player*)))
-  (setf (:things (current-location)) (delete item (:things (current-location)))))
+  "put item into inventory, delete item from location."
+  (push item (:inventory *player*))
+  (setf (:things (current-location))
+	(delete item (:things (current-location)))))
 
 (defun drop-object (item)
+  "remove item from inventory, put item into location list."
   (setf (:inventory *player*) (delete item (:inventory *player*)))
-  (setf (:things (current-location)) (cons item (:things (current-location)))))
+  (push item (:things (current-location))))
+
 
 (defun object-action-list (itemlist)
   "Return a list of all possible actions of all items
@@ -146,8 +150,10 @@
     (cond
       ((and ( cexit-read-condition direction))
        (funcall ( cexit-read-condition direction)))
-      ((uexits-next-location direction ue) (uexits-next-location direction ue))
-      ((nexit-next-location direction ne) (nexit-next-location direction ne))        
+      ((uexits-next-location direction ue)
+       (uexits-next-location direction ue))
+      ((nexit-next-location direction ne)
+       (nexit-next-location direction ne))        
       (t nil))))
 
 

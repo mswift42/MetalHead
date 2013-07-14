@@ -1,9 +1,10 @@
 (load "~/quicklisp/setup.lisp")
 (ql:quickload "ltk")
+(load "actions.lisp")
 
 (defpackage :gui
-  (:use :cl :ltk)
-  (:export :*text-field :make-frame))
+  (:use :cl :ltk :actions) 
+  (:export *text-field make-frame))
 
 (in-package :gui)
 
@@ -32,7 +33,9 @@
   "Print inputstring with newlines and > ."
   (append-text target (format nil "~%~%> ~A~%~%" (text *text-field*)))
   (clear-text *text-field*)
-  (print-silly-stuff target))
+  (print-silly-stuff target)
+  (append-text target
+	       (format nil "~A"  (actions::describe-room (actions::current-location)))))
 
 
 (defun copy-text (target)
