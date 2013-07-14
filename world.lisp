@@ -1,9 +1,8 @@
-<<<<<<< HEAD
-
 (ql:quickload "clunit")
+(load "util.lisp")
 
 (defpackage :world
-  (:use :cl ))
+  (:use :cl :utilities))
 
 (in-package :world)
 
@@ -125,8 +124,6 @@
    :location '(*bedroom*)
    :action '((look-closer-v describe-poster-f))))                                                       
 
-<<<<<<< HEAD
-=======
 ;; (defun u-exits (room)
 ;;   (slot-value room 'uexit))
 
@@ -169,7 +166,6 @@
 (defun describe-poster ()
   (item-sdescription *poster*))
 
->>>>>>> experiment
 (defparameter verb-synonyms
   '((use use-v)
     (utilize use-v)
@@ -180,8 +176,7 @@
 (defun return-synonym (verb)
   (first ( rest (assoc verb verb-synonyms)))) 
 
-<<<<<<< HEAD
-=======
+
 (defun object-action-list (itemlist)
   "Return a list of all possible actions of all items
    for one location. (Helper Function for actions-for-location."
@@ -231,7 +226,6 @@
 ;;       (t nil))))
 
 
->>>>>>> experiment
 (defun game-repl ()
   (let ((cmd (game-read)))
     (unless (eq (car cmd) 'quit)
@@ -281,9 +275,6 @@
 		 'string))
   (fresh-line))
 
-<<<<<<< HEAD
-
-=======
 (defun change-location ( direction)
   "When changing locations, set global-variable *location* to new location.
    Describe room either with first or later description."
@@ -354,7 +345,6 @@
 (clunit:deftest test-return-synonym (Parse-suite)
   (clunit:assert-equal 'start-v (return-synonym 'power))
   (clunit:assert-equal 'use-v (return-synonym 'use)))
->>>>>>> experiment
 
 
 

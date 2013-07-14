@@ -1,4 +1,6 @@
-
+(defpackage :utilities
+  (:use :cl)
+  (:export flatten))
 
 (in-package :utilities)
 
