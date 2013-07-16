@@ -1,10 +1,10 @@
 (load "util.lisp")
 (load "world.lisp")
-(ql:quickload "clunit")
+(ql:quickload "fiveam")
 
 
 (defpackage #:actions
-  (:use :cl :clunit :utilities :world))
+  (:use :cl :fiveam :utilities :world))
 
 (in-package #:actions)
 
@@ -252,42 +252,40 @@
      do (princ (format nil "~A " i))))
 
 
-(clunit:defsuite Room-suite ())
-(clunit:defsuite Parse-suite ())
+;; (clunit:defsuite Room-suite ())
+;; (clunit:defsuite Parse-suite ())
 
 
-(clunit:deftest test-u-exits (Room-suite)
-  (clunit:assert-equal '(("east" *bedroom*) ("west" *frontdoor*))
-		       (:uexit *hallway*)))
+(test test-u-exits 
+  (is (equal '(("east" *bedroom*) ("west" *frontdoor*))
+	 (:uexit *hallway*))))
 
-(deftest test-items-in-room (Room-suite)
-  (clunit:assert-equal '(*laptop* *clothes* *poster*)
-		       (items-in-room *bedroom*)))
+(test test-items-in-room
+  (is (equal '(*laptop* *clothes* *poster*)
+	     (items-in-room *bedroom*))))
 
-(deftest test-uexits-next-location (Room-suite)
-  (clunit:assert-equal '*bedroom* (uexits-next-location "east"
-							(:uexit *hallway*))))
+(test test-uexits-next-location 
+      (is (equal '*bedroom* (uexits-next-location "east"
+						  (:uexit *hallway*)))))
 
-(deftest test-cexit-read-condition (Room-suite)
-  (clunit:assert-equal 'wear-clothes (cexit-read-condition "west")))
+(test test-cexit-read-condition 
+      (is (equal 'wear-clothes (cexit-read-condition "west"))))
 
-(deftest test-describe-list-of-items-in-location (Room-suite)                     
-  (clunit:assert-equal '(("on a table near the exit to the west is a laptop.")
-			 ("strewn all over the floor are your clothes.")
-			 ("On the wall you can see an old poster."))
-      (describe-list-of-items-in-location *bedroom*)))
+(test test-describe-list-of-items-in-location                      
+    (is (equal '(("on a table near the exit to the west is a laptop.")
+		 ("strewn all over the floor are your clothes.")
+		 ("On the wall you can see an old poster."))
+	       (describe-list-of-items-in-location *bedroom*))))
+
+(test test-return-synonym
+  (is (equal 'start-v (return-synonym 'power)))
+  (is (equal  'use-v (return-synonym 'use))))
+
+(test test-read-direction
+  (is (equal 'up (read-direction 'u)))
+  (is (equal 'west (read-direction 'west)))
+  (is (equal 'northeast (read-direction 'ne))))
 
 
 
-(clunit:deftest test-return-synonym (Parse-suite)
-  (clunit:assert-equal 'start-v (return-synonym 'power))
-  (clunit:assert-equal 'use-v (return-synonym 'use)))
-
-(clunit:deftest test-read-direction (Parse-suite)
-  (clunit:assert-equal 'up (read-direction 'u))
-  (clunit:assert-equal 'west (read-direction 'west))
-  (clunit:assert-equal 'northeast (read-direction 'ne)))
-
-(clunit:run-suite 'Room-suite )
-(clunit:run-suite 'Parse-suite )
-
+(fiveam:run!)
