@@ -3,9 +3,9 @@
   (:use #:cl )
   (:export loc item player *bedroom* *hallway* *frontdoor* *park-lane-east*
 	   *park-entrance* *park-entrance-east* *laptop* *poster* *clothes*
-	   *player* :fdescription :sdescription :ldescription :uexit
-	   :nexit :cexit :flags :things :name :synonym  :action
-	   :flags))
+	   *player* :fdescription :sdescription :ldescription :uexit *fish*
+	   :nexit :cexit :flags :things :name :synonym  :action cexit-read-con
+	   :flags *park-center* *park-lane-east* *pond*))
 (in-package #:world)
 
 
@@ -34,9 +34,7 @@
   ((location :initarg :location :accessor :location)
    (inventory :initarg :inventory :initform '() :accessor :inventory)))
 
-(defparameter *player*
-  (make-instance 'player :location '*bedroom*
-		 :inventory '()))
+
 
 (defparameter *bedroom*
   (make-instance 'loc 
@@ -44,9 +42,9 @@
 		 :ldescription '("you are in your bedroom. You "
 				 "should seriously think about "
 				 "cleaning it up.")
-   :cexit '(( west  *hallway* wear-clothes))
+   :cexit '(( "west"  *hallway* wear-clothes))
    
-   :nexit '(( east ("did you seriously think about leaving by the window?
+   :nexit '(( "east" ("did you seriously think about leaving by the window?
 		    I know you had a rough night but please use the door
 		    like other normal people.")))
    :things '(*laptop* *clothes* *poster*)
@@ -58,8 +56,8 @@
    :ldescription '("the hallway. A narrow thing leading from "
 		   "your bedroom to the east to your frontdoor "
 		   "leading into town to the west.")
-   :uexit '((east *bedroom*)
-	    (west *frontdoor*))))
+   :uexit '(("east" *bedroom*)
+	    ("west" *frontdoor*))))
 
 
 (defparameter *frontdoor*
@@ -69,7 +67,8 @@
 		   "sunny and the birds are singing. Its exactly "
 		   "the sort of day that makes nearly everyone happy.")
    :sdescription '("you stand outside of your house.")
-   :uexit '((east *hallway*) (west *park-entrance*) (nw *main-road*))))
+   :uexit '(("east" *hallway*) ("west" *park-entrance*)
+	    ("northwest" *main-road*))))
 
 (defparameter *park-entrance-east*
   (make-instance 'loc 
@@ -77,11 +76,43 @@
 		   "A gorgeous english garden with some nice shady "
 		   "spots and plenty of benches to rest.")
    :ldescription '("You are at the east entrance of a park.")
-   :uexit '((west *frontdoor*) (east *park-lane-east*))))
+   :uexit '(("west" *frontdoor*) ("east" *park-lane-east*))))
 
 (defparameter *park-lane-east*
   (make-instance 'loc
-   :fdescription '(You are in the town park. There is a path leading from east to west.)))
+   :fdescription '("You are on a small footpath in a beautiful park. "
+		   "Tall chestnut trees provide a welcome shadow on "
+		   "this marvellous day. To the west you can reach "
+		   "the center of this park, to the east leads a "
+		   "path towards your house.")
+   :ldescription '("you are on a small path in the park.")
+   :sdescription '()
+   :uexit '(("west" *park-center*)
+	    ("east" *park-entrance-east*))
+   :flags :notseen))
+
+(defparameter *park-center*
+  (make-instance 'loc
+   :fdescription '("This is the centerpiece of this municipal "
+		   "master piece. A wide english lawn inviting "
+		   "you to lie down and have a nap, or to play "
+		   "a round of some football.")
+   :ldescription '("this is the center of the little city park.")
+   :uexit '(("south" *pond* '("to the south you can see a little pond."))
+	    ("east" *park-lane-east* '("There is a path leading from "
+				       "east to west through the park."))
+	    ("west" *park-lane-west*))
+   :flags :notseen))
+
+(defparameter *pond*
+  (make-instance 'loc
+   :fdescription '("You are at a tiny pond, holding very clear water, "
+		   "so clear in fact, that you can count all its fish.")
+   :ldescription '("You stand at a tiny little pond.")
+   :uexit '(("north" *park-center* '("to the north you can get "
+				     "back to the park center.")))
+   :things '(*fish*)
+   :flags :notseen))
 
 
 (defparameter *laptop*
@@ -94,7 +125,7 @@
 		   make do with it." )
    :sdescription '("your laptop. It used to be black.
 		   Whats the color of grime again?")
-   :action '((use-v  use-laptop-f)
+   :action '((:use-v  use-laptop-f)
 	     (start-v power-on-laptop-f) (type-pass-v crack-password-p))
    :flags '(poweroff notseen)))
 
@@ -115,6 +146,20 @@
 		   "of white crosses in a field.")
    :ldescription '("Oh you joyful Master of Puppets. You mother "
 		   "of all metal records.")
-   :action '((look-closer-v describe-poster-f))))                                                       
+   :action '((look-closer-v describe-poster-f))))
+
+(defparameter *fish*
+  (make-instance 'item
+   :fdescription '("There is one big trout in the pond.")
+   :synonym '("tasty looking" "healthy")
+   :ldescription '("you are looking at a very healthy and "
+		   "most probably good tasting rainbow trout.")
+   :flags '((taken 0))
+   :action '((pick-up pick-up-trout-f))))
+
+(defparameter *player*
+  (make-instance 'player :location *bedroom*
+		 :inventory '()))
+
 
 

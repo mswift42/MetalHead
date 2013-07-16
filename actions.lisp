@@ -2,16 +2,19 @@
 (load "world.lisp")
 (ql:quickload "clunit")
 
+
 (defpackage #:actions
   (:use :cl :clunit :utilities :world))
 
 (in-package #:actions)
 
-(defparameter *location*
-  '*bedroom*)
+
 
 (defun current-location ()
-  (symbol-value (:location *player*)))
+   (:location *player*))
+
+(defmethod change-loc ((p player) loc)
+  (setf (:location p) loc))
 
 
 (defun take-object (item)
@@ -36,7 +39,7 @@
 
 (defun actions-for-location ()
   "Return alist for possible actions in the present location."
-  (object-action-list (:things (symbol-value *location*))))
+  (object-action-list (:things (current-location))))
 
 
 (defun read-directions (room)
@@ -45,10 +48,14 @@
 
 (defun cexit-read-condition (direction)
   "return predicate necessary to use conditional exit."
-  (find-symbol (symbol-name (third (assoc direction (:cexit (current-location)))))))
+  (find-symbol (symbol-name (third (assoc direction (:cexit (current-location)) :test #'equal)))))
 
-;; (defun location ()
-;;     (:location *player*))
+
+(defun unworldify (lst)
+  "convert world::bla to bla"
+  (mapcar #'(lambda (x) (find-symbol x))
+	  (mapcar #'(lambda (x) (symbol-name x))
+		  lst)))
 
 (defparameter *inventory* '())
 
@@ -95,7 +102,7 @@
 	Maybe he was just spiteful
 	but for Fuck Sake please put on some clothes.)
       (progn
-	(setf *location* *hallway*)
+	(change-loc *player* *hallway*)
 	(describe-room *hallway*))))
 
 (defun functionstring ()
@@ -105,7 +112,8 @@
   (princ'(with the grace of a young gazelle you put on your clothes. Within
 	  seconds your appearance changes from ugly as hell to well
 	  below average handsome. Well done.))
-  (setf (:flags *clothes*) :wearing))
+  (setf (:flags *clothes*) :wearing)
+  (take-object '*clothes*))
 
 (defun take-laptop-f ()
   "You cannot take it. It's too heavy, the battery is not working and it's
@@ -123,9 +131,7 @@
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
-  (first ( rest (assoc verb verb-synonyms)))) 
-
-
+  (first (rest (assoc verb verb-synonyms)))) 
 
 (defun uexits-next-location (direction uexit-lst)
   "Takes a direction and the list of uexits in a location.
@@ -133,7 +139,8 @@
    a member of uexits-lst or nil."
   (cond
     ((null uexit-lst) nil)
-    ((member direction (first uexit-lst)) (second (first uexit-lst)))
+    ((member direction (first uexit-lst) :test #'equal)
+     (second (first uexit-lst)))
     (t (uexits-next-location direction (rest uexit-lst)))))
 
 (defun nexit-next-location (direction nexit-lst)
@@ -156,13 +163,11 @@
        (nexit-next-location direction ne))        
       (t nil))))
 
-
 (defun game-repl ()
   (let ((cmd (game-read)))
     (unless (eq (car cmd) 'quit)
       (game-print (game-eval cmd))
       (game-repl))))
-
 
 (defun game-read ()
   (let ((cmd (read-from-string
@@ -182,7 +187,7 @@
 (defun game-reader (exp)
   "Evaluate player input"
   (cond
-    ((walk-direction exp (symbol-value *location*)) (change-location  exp))
+    ((walk-direction exp (current-location)) (change-location  exp))
     ((assoc exp (actions-for-location))
      (funcall (second (assoc exp (actions-for-location)))))
     (t nil)))
@@ -207,11 +212,11 @@
 		 'string))
   (fresh-line))
 
-(defun change-location ( direction)
+(defun change-location (direction)
   "When changing locations, set global-variable *location* to new location.
    Describe room either with first or later description."
-  (setf *location* (walk-direction direction (symbol-value *location*)))
-  (describe-room  (symbol-value *location*)))
+  (change-loc *player* (walk-direction direction (current-location)))
+  (describe-room  (current-location)))
 
 (defun describe-list-of-items-in-location (room)
   "Return list of descriptions of all items in a room."
@@ -247,13 +252,12 @@
      do (princ (format nil "~A " i))))
 
 
-
 (clunit:defsuite Room-suite ())
 (clunit:defsuite Parse-suite ())
 
 
 (clunit:deftest test-u-exits (Room-suite)
-  (clunit:assert-equal '((world::east *bedroom*) (world::west *frontdoor*))
+  (clunit:assert-equal '(("east" *bedroom*) ("west" *frontdoor*))
 		       (:uexit *hallway*)))
 
 (deftest test-items-in-room (Room-suite)
@@ -261,11 +265,11 @@
 		       (items-in-room *bedroom*)))
 
 (deftest test-uexits-next-location (Room-suite)
-  (clunit:assert-equal '*bedroom* (uexits-next-location 'world::east
+  (clunit:assert-equal '*bedroom* (uexits-next-location "east"
 							(:uexit *hallway*))))
 
 (deftest test-cexit-read-condition (Room-suite)
-  (clunit:assert-equal 'wear-clothes (cexit-read-condition 'world::west)))
+  (clunit:assert-equal 'wear-clothes (cexit-read-condition "west")))
 
 (deftest test-describe-list-of-items-in-location (Room-suite)                     
   (clunit:assert-equal '(("on a table near the exit to the west is a laptop.")
@@ -284,11 +288,6 @@
   (clunit:assert-equal 'west (read-direction 'west))
   (clunit:assert-equal 'northeast (read-direction 'ne)))
 
-(clunit:run-suite 'Room-suite)
-(clunit:run-suite 'Parse-suite)
-;; (defparameter *location*
-;;   '*bedroom*
-;;   "location of the player character in the game world.")
-;; (defparameter *player*
-;;   (make-instance 'player
-;; 		 :location *bedroom* :inventory '()))
+(clunit:run-suite 'Room-suite )
+(clunit:run-suite 'Parse-suite )
+
