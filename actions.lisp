@@ -44,11 +44,6 @@
   (find-symbol (symbol-name (third (equalassoc direction (:cexit (current-location)))))))
 
 
-(defun unworldify (lst)
-  "convert world::bla to bla"
-  (mapcar #'(lambda (x) (find-symbol x))
-	  (mapcar #'(lambda (x) (symbol-name x))
-		  lst)))
 
 (defun string-to-symbol (sym)
     "convert symbol name to string minus earmuffs."
@@ -120,6 +115,7 @@
    highly unlikely that it would survive any form of transport.")
 
 (defun increment-fish-counter ()
+  "Increase :taken counter of item *fish*"
   (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
     (setf (second (equalassoc "taken" (:flags *fish*))) (1+ counter))))
 
