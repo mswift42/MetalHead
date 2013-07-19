@@ -1,13 +1,22 @@
 (defpackage #:utilities
   (:use :cl)
-  (:export flatten))
+  (:export flatten equalassoc))
 
 (in-package #:utilities)
 
 (defun flatten (structure)
+  "flatten a list."
   (cond ((null structure) nil)
         ((atom structure) `(,structure))
         (t (mapcan #'flatten structure))))
+
+(defmacro equalassoc (exp list)
+  "test assoc for equal to work with strings."
+  `(assoc ,exp ,list :test #'equal))
+
+
+
+
 
 
 

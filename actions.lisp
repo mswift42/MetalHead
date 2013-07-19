@@ -2,20 +2,17 @@
 (load "world.lisp")
 (ql:quickload "fiveam")
 
-
 (defpackage #:actions
   (:use :cl :fiveam :utilities :world))
 
 (in-package #:actions)
 
 
-
 (defun current-location ()
-   (:location *player*))
+  (:location *player*))
 
-(defmethod change-loc ((p player) loc)
-  (setf (:location p) loc))
-
+(defmethod change-loc ((self player) loc)
+  (setf (:location self) loc))
 
 (defun take-object (item)
   "put item into inventory, delete item from location."
@@ -28,27 +25,23 @@
   (setf (:inventory *player*) (delete item (:inventory *player*)))
   (push item (:things (current-location))))
 
-
 (defun object-action-list (itemlist)
   "Return a list of all possible actions of all items
    for one location. (Helper Function for actions-for-location."
-  (cond
-    ((null itemlist) nil)
-    (t (append (:action (symbol-value (first itemlist)))
-	       (object-action-list (rest itemlist))))))
+  (mapcar #'(lambda (x) (:action (symbol-value x))) itemlist))
 
 (defun actions-for-location ()
   "Return alist for possible actions in the present location."
   (object-action-list (:things (current-location))))
 
-
 (defun read-directions (room)
   "Return a list of all possible directions in a location."
   (append (:uexit room) (:cexit room) (:nexit room)))
 
+
 (defun cexit-read-condition (direction)
   "return predicate necessary to use conditional exit."
-  (find-symbol (symbol-name (third (assoc direction (:cexit (current-location)) :test #'equal)))))
+  (find-symbol (symbol-name (third (equalassoc direction (:cexit (current-location)))))))
 
 
 (defun unworldify (lst)
@@ -56,6 +49,12 @@
   (mapcar #'(lambda (x) (find-symbol x))
 	  (mapcar #'(lambda (x) (symbol-name x))
 		  lst)))
+
+(defun string-to-symbol (sym)
+    "convert symbol name to string minus earmuffs."
+    (let* ((name (symbol-name sym))
+	   (len (length name)))
+      (subseq name 1 (1- len))))
 
 (defparameter *inventory* '())
 
@@ -85,8 +84,7 @@
       "you could browse your favorite websites all day, you good old 
        procrastinator, however I'd propose you simply check your Email."))
 (defun power-on-laptop-f ()
-  (setf (:flags *laptop*
-		    ) '(poweron))
+  (setf (:flags *laptop*) '(poweron))
   "You press the power button. You hear some funny noises, and it actually 
    starts booting. One Cup of Tee later, and you start at the login 
    screen. I hope you haven't forgotten the password.")
@@ -105,8 +103,9 @@
 	(change-loc *player* *hallway*)
 	(describe-room *hallway*))))
 
-(defun functionstring ()
-  (symbol-name (third (assoc 'world::west (:cexit (current-location))))))
+
+(defmethod update-flag ((i item) value)
+  (setf (:flags i) value))
 
 (defun put-on-clothes ()
   (princ'(with the grace of a young gazelle you put on your clothes. Within
@@ -118,6 +117,47 @@
 (defun take-laptop-f ()
   "You cannot take it. It's too heavy, the battery is not working and it's
    highly unlikely that it would survive any form of transport.")
+
+(defun increment-fish-counter ()
+  (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
+    (setf (second (equalassoc "taken" (:flags *fish*))) (1+ counter))))
+
+(defun pick-up-trout-f ()
+  "take the fish out off the pond."
+  (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
+    (case counter
+      (0 
+       (progn
+	 (print-list
+	  '("With the grace of a young Mark Spitz you jump into "
+	    "the pond in order to grab the fish. Of course, now "
+	    "realising, that you are not in any way related to a Grizzly "
+	    "Bear and noticing the puzzled looks of other people in "
+	    "the park, you slowly and shyly make your way out of the "
+	    "water. Bravo, You are an IDIOT!"))
+	 (increment-fish-counter)))
+      (1 
+	 (progn
+	   (princ (print-list
+		   '("I'm sorry but are you seriously trying to pull that "
+		     "stupid stunt again? Please, step back for a "
+		     "moment and think : "
+		     "How on earth do you expect to grab a fish with your "
+		     "bare hands? No answer? Nothing? Nada? Please stop being "
+		     "such a stupid muppet. Thanks. ")))
+	   (increment-fish-counter)))
+     (t
+      (progn (print-list
+	      '("Ok, Ok, I give up. Carefully you wade into the pond "
+		"snatnch the fish and put it into your trouser pocket. "
+		"Full of confidence you wade out of the water and "
+		"enjoy the cheer of at least 20 people who stare at "
+		"you admiringly.\n\nWell I made the last bit up, "
+		"people stare at you, but certainly not admiringly "
+		"mostly of course, because you now have twice gone "
+		"into a fish pond, and you have a stinking fish in "
+		"your jeans. (This is not a metaphor)"))
+	  (take-object *fish*))))))
 
 
 (defun describe-poster ()
@@ -131,6 +171,7 @@
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
+  "return the function synonym to the entered verb."
   (first (rest (assoc verb verb-synonyms)))) 
 
 (defun uexits-next-location (direction uexit-lst)
@@ -242,18 +283,14 @@
 	(game-print (flatten
 		     (describe-list-of-items-in-location-later room))))))
 
-(defun items-in-room (room)
-  "Return all items in a location."
-  (:things room))
+(defmethod items-in-room ((self loc))
+  (:things self))
 
 (defun print-list (lst)
   "convert list of symbols to string"
   (loop for i in lst
      do (princ (format nil "~A " i))))
 
-
-;; (clunit:defsuite Room-suite ())
-;; (clunit:defsuite Parse-suite ())
 
 
 (test test-u-exits 
@@ -286,6 +323,9 @@
   (is (equal 'west (read-direction 'west)))
   (is (equal 'northeast (read-direction 'ne))))
 
+(test test-string-to-symbol
+  (is (equal "FISH" (string-to-symbol '*fish*)))
+  (is (equal "LAPTOP" (string-to-symbol '*laptop*))))
 
 
 (fiveam:run!)

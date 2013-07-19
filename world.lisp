@@ -5,7 +5,7 @@
 	   *park-entrance* *park-entrance-east* *laptop* *poster* *clothes*
 	   *player* :fdescription :sdescription :ldescription :uexit *fish*
 	   :nexit :cexit :flags :things :name :synonym  :action cexit-read-con
-	   :flags *park-center* *park-lane-east* *pond*))
+	   :flags *park-center* *park-lane-east* pond))
 (in-package #:world)
 
 
@@ -104,7 +104,7 @@
 	    ("west" *park-lane-west*))
    :flags :notseen))
 
-(defparameter *pond*
+(defparameter pond
   (make-instance 'loc
    :fdescription '("You are at a tiny pond, holding very clear water, "
 		   "so clear in fact, that you can count all its fish.")
@@ -150,11 +150,12 @@
 
 (defparameter *fish*
   (make-instance 'item
+   :name '("healty rainbow trout.")
    :fdescription '("There is one big trout in the pond.")
    :synonym '("tasty looking" "healthy")
    :ldescription '("you are looking at a very healthy and "
 		   "most probably good tasting rainbow trout.")
-   :flags '((taken 0))
+   :flags '(("taken" 0))
    :action '((pick-up pick-up-trout-f))))
 
 (defparameter *player*
