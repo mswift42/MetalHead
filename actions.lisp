@@ -292,8 +292,6 @@
   (loop for i in lst
      do (princ (format nil "~A " i))))
 
-
-
 (test test-u-exits 
   (is (equal '(("east" *bedroom*) ("west" *frontdoor*))
 	 (:uexit *hallway*))))
