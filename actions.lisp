@@ -83,6 +83,7 @@
       "Your laptop is turned off"
       "you could browse your favorite websites all day, you good old 
        procrastinator, however I'd propose you simply check your Email."))
+
 (defun power-on-laptop-f ()
   (setf (:flags *laptop*) '(poweron))
   "You press the power button. You hear some funny noises, and it actually 
