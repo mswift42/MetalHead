@@ -35,7 +35,7 @@
   (append-text target (format nil "~%~%> ~A~%~%" (text *text-field*)))
   (clear-text *text-field*)
   (print-silly-stuff target)
-  (append-text target (prin1-to-string (:fdescription (actions::current-location)))))
+  (print-string (:fdescription actions::*hallway*) target))
 
 
 (defun copy-text ()
@@ -55,7 +55,7 @@
 
 (defun print-string (str target)
   (loop for i in str
-        do (append-text target (format nil "~%~A" i))))
+        do (append-text target (format nil "~&~%~A" i))))
 
 
 

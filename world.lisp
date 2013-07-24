@@ -1,17 +1,17 @@
-
 (defpackage #:world
   (:use #:cl )
   (:export loc item player *bedroom* *hallway* *frontdoor* *park-lane-east*
 	   *park-entrance* *park-entrance-east* *laptop* *poster* *clothes*
-	   *player* :fdescription :sdescription :ldescription :uexit *fish*
-	   :nexit :cexit :flags :things :name :synonym  :action cexit-read-con
-	   :flags *park-center* *park-lane-east* pond))
+	   *player* *housefront* :fdescription :sdescription :ldescription
+	   :uexit *fish* :nexit :cexit :flags :things :name :synonym
+	   :action cexit-read-con :flags *park-center* *park-lane-east*
+	   *pond* *wear-clothes?* *bench*))
 (in-package #:world)
 
 
 (defclass loc ()
   ((name :initarg :name :initform '() :accessor :name)
-   (fdescription :initarg :fdescription :initform '() :accessor :fdescription)
+   (fdescription :initarg :fdescription :initform '() :reader :fdescription)
    (ldescription :initarg :ldescription :initform '() :accessor :ldescription)
    (sdescription :initarg :sdescription :initform '() :accessor :sdescription)
    (uexit :initarg :uexit :initform '() :accessor :uexit)
@@ -37,37 +37,47 @@
 
 
 (defparameter *bedroom*
-  (make-instance 'loc 
+  (make-instance 'loc
 		 :fdescription '("the bedroom. Very messy. Very tiny.")
 		 :ldescription '("you are in your bedroom. You "
 				 "should seriously think about "
 				 "cleaning it up.")
-   :cexit '(( "west"  *hallway* wear-clothes))
+   :cexit '(("west" *hallway* wear-clothes nil))
    
-   :nexit '(( "east" ("did you seriously think about leaving by the window?
+   :nexit '(("east" ("did you seriously think about leaving by the window?
 		    I know you had a rough night but please use the door
 		    like other normal people.")))
    :things '(*laptop* *clothes* *poster*)
-   :flags :notseen))
+   :flags '(:notseen)))
 
 
 (defparameter *hallway*
   (make-instance 'loc
+   :fdescription '("You are in your hallway leading from your "
+		   "bedroom in the west to the frontdoor in the west. "
+		   "It's wallpaper has this lovely charming colormixture "
+		   "of nicotine stain and sun faded cardboard. yikes.")
    :ldescription '("the hallway. A narrow thing leading from "
 		   "your bedroom to the east to your frontdoor "
 		   "leading into town to the west.")
    :uexit '(("east" *bedroom*)
-	    ("west" *frontdoor*))))
+	    ("west" *housefront*))
+   :flags '(:notseen)))
 
-(defparameter *frontdoor*
+
+
+(defparameter *housefront*
   (make-instance 'loc
-   :ldescription '("You leave your house and find yourself at an "
-		   "absolutely marvellous spring day. It is warm, "
-		   "sunny and the birds are singing. Its exactly "
-		   "the sort of day that makes nearly everyone happy.")
-   :sdescription '("you stand outside of your house.")
-   :uexit '(("east" *hallway*) ("west" *park-entrance*)
-	    ("northwest" *main-road*))))
+    :fdescription '("You leave your house and find yourself at an "
+		    "absolutely marvellous spring day. It is warm, "
+		    "sunny an the birds are singing. It's exactly "
+		    "the sort of day that makes everyone happy, the "
+		    "kind of day where heros are made (you know "
+		    "in the bees and flowers having sex sort of way).")
+    :ldescription '("You stand outside of your house.")
+    :uexit '(("east" *hallway*) ("west" *park-entrance-east*)
+	     ("northwest" *main-road*))))
+    :flags '(:notseen)
 
 (defparameter *park-entrance-east*
   (make-instance 'loc 
@@ -75,7 +85,7 @@
 		   "A gorgeous english garden with some nice shady "
 		   "spots and plenty of benches to rest.")
    :ldescription '("You are at the east entrance of a park.")
-   :uexit '(("west" *frontdoor*) ("east" *park-lane-east*))))
+   :uexit '(("west" *park-lane-east*) ("east" *housefront*))))
 
 (defparameter *park-lane-east*
   (make-instance 'loc
@@ -88,7 +98,7 @@
    :sdescription '()
    :uexit '(("west" *park-center*)
 	    ("east" *park-entrance-east*))
-   :flags :notseen))
+   :flags '(:notseen)))
 
 (defparameter *park-center*
   (make-instance 'loc
@@ -101,9 +111,10 @@
 	    ("east" *park-lane-east* '("There is a path leading from "
 				       "east to west through the park."))
 	    ("west" *park-lane-west*))
-   :flags :notseen))
+   :things '(*bench*)
+   :flags '(:notseen)))
 
-(defparameter pond
+(defparameter *pond*
   (make-instance 'loc
    :fdescription '("You are at a tiny pond, holding very clear water, "
 		   "so clear in fact, that you can count all its fish.")
@@ -111,7 +122,7 @@
    :uexit '(("north" *park-center* '("to the north you can get "
 				     "back to the park center.")))
    :things '(*fish*)
-   :flags :notseen))
+   :flags '(:notseen)))
 
 
 (defparameter *laptop*
@@ -119,14 +130,14 @@
    :name '(a laptop)
    :synonym '(notebook laptop computer )
    :fdescription '("on a table near the exit to the west is a laptop.")
-   :ldescription '("your old sturdy laptop. Not the latest and shiniest
-		   but money is very expensive so you still
-		   make do with it." )
+   :ldescription '("your old sturdy laptop. Not the latest and shiniest "
+		   "but money is very expensive so you still "
+		   "make do with it." )
    :sdescription '("your laptop. It used to be black.
 		   Whats the color of grime again?")
-   :action '((:use-v  use-laptop-f)
+   :action '((use-v  use-laptop-f)
 	     (start-v power-on-laptop-f) (type-pass-v crack-password-p))
-   :flags '(poweroff notseen)))
+   :flags '(:poweroff :notseen)))
 
 (defparameter *clothes*
   (make-instance 'item
@@ -134,7 +145,7 @@
    :fdescription '("strewn all over the floor are your clothes.")
    :ldescription '("jeans and a t-shirt. nothing fancy.")
    :action '((wear-v put-on-clothes))
-   :flags :notwearing))
+   :flags '(:notwearing)))
 
 (defparameter *poster*
   (make-instance 'item
@@ -157,9 +168,22 @@
    :flags '(("taken" 0))
    :action '((pick-up pick-up-trout-f))))
 
+(defparameter *bench*
+  (make-instance 'item
+   :name '("ridiculously comfortable looking bench.")
+   :fdescription '("You can see a ridiculously comfortable looking "
+		   "bench here.")
+   :ldescription '("this is a very comfortable looking bench. ")
+   :sdescription '("As you examine the bench you notice that there's "
+	           "something scratched into the wood.")
+   :synonym '("comfortable" "cosy" "comfy" "inviting")
+   :flags '((:fixed))
+   :action '(look-closer-v read-inscription-f)))
+
 (defparameter *player*
   (make-instance 'player :location *bedroom*
 		 :inventory '()))
+
 
 
 

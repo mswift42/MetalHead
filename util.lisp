@@ -1,6 +1,6 @@
 (defpackage #:utilities
   (:use :cl)
-  (:export flatten equalassoc))
+  (:export flatten equalassoc equalmember))
 
 (in-package #:utilities)
 
@@ -12,7 +12,11 @@
 
 (defmacro equalassoc (exp list)
   "test assoc for equal to work with strings."
-  `(assoc ,exp ,list :test #'equal))
+  `(assoc ,exp ,list :test #'string-equal))
+
+(defmacro equalmember (exp list)
+  "test member for equal to work with stirngs."
+  `(member ,exp ,list :test #'string-equal))
 
 
 
