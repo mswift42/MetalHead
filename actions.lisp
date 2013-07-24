@@ -237,7 +237,7 @@
   (:things self))
 
 (defun print-list (lst)
-  "convert list of symbols to string"
+  "concatenate list of strings to one single string."
   (reduce #'(lambda (x y) (concatenate 'string x y)) lst))
 
 (test test-u-exits 
