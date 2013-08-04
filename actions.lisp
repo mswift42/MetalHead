@@ -1,9 +1,18 @@
-(load "util.lisp")
-(load "world.lisp")
+(load "~/MetalHead/util.lisp")
+(load "~/MetalHead/world.lisp")
 (ql:quickload "fiveam")
 
 (defpackage #:actions
-  (:use :cl :fiveam :utilities :world))
+  (:use :cl :fiveam :utilities :world)
+  (:export change-loc exit-lst take-object drop-object current-location
+	   walk-direction object-action-list actions-for-location
+	   *directions-synonyms* *directions* read-direction move-p
+	   use-laptop-f power-on-laptop-f put-on-clothes wear-clothes update-flag
+	   increment-fish-counter pick-up-trout-f take-laptop-f
+	   describe-poster read-inscription-f verb-synonyms return-synonym
+	   change-location describe-list-of-items-in-location
+	   describe-list-of-items-in-location-later describe-room
+	   items-in-room print-list is-direction-p))
 
 (in-package #:actions)
 
@@ -59,7 +68,8 @@
 
 (defparameter  *directions-synonyms*
   '(("e"  "east") ("w"  "west") ("s" "south") ("n"  "north") ("d"  "down")
-    ("u"  "up") ("se"  "southeast") ("sw"  "southwest") ("ne"  "northeast") ("nw"  "northwest"))
+    ("u"  "up") ("se"  "southeast") ("sw"  "southwest")
+    ("ne"  "northeast") ("nw"  "northwest"))
   "alist for abbreviations of directions.")
 
 (defparameter *directions*
@@ -73,7 +83,11 @@
     ((equalmember input *directions*) input)
     ((equalassoc input *directions-synonyms*)
      (second (equalassoc input *directions-synonyms*)))
-    (t nil)))
+     (t nil)))
+
+(defun move-p (string)
+  "return if string is a movement command."
+   (equalmember string '("go" "move" "walk")))
 
 (defun use-laptop-f ()
   (if (equal 'poweroff (first (:flags *laptop*)))
@@ -107,7 +121,7 @@
   (princ'(with the grace of a young gazelle you put on your clothes. Within
 	  seconds your appearance changes from ugly as hell to well
 	  below average handsome. Well done.))
-  (setf (:flags *clothes*) '(:wearing))
+   (setf (:flags *clothes*) '(:wearing))
   (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
   (take-object '*clothes*))
 
@@ -144,7 +158,7 @@
 		   "bare hands? No answer? Nothing? Nada? Please stop being "
 		   "such a stupid muppet. Thanks. ")))
 	 (increment-fish-counter)))
-      (t
+       (t
        (progn (print-list
 	       '("Ok, Ok, I give up. Carefully you wade into the pond "
 		 "snatch the fish and put it into your trouser pocket. "
@@ -196,7 +210,7 @@
 
 
 (defun no-exit ()
-  (print-list '("you cannot go that way" "there is no exit that way")))
+  (random-string '("you cannot go that way" "there is no exit that way")))
 
 
 (defparameter *allowed-commands* '(use-laptop-f))
@@ -214,7 +228,7 @@
   (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
 	  (:things room))) 
 
-(defun describe-list-of-items-in-location-later (room)
+ (defun describe-list-of-items-in-location-later (room)
   "Return the ldescription of all itemns in a room."
   (mapcar #'(lambda (x) (:ldescription (symbol-value x)))
 	  (:things room)))
@@ -224,21 +238,48 @@
    room you are in, then describe all items in the location."
   (if (eq (first (:flags room)) :notseen)
       (progn
-	(print-list (:fdescription room))
-	(print-list (flatten ( describe-list-of-items-in-location room)))
+	(print (print-list (:fdescription room)))
+	(format nil
+		(print-list (flatten
+			     (describe-list-of-items-in-location room))))
 	
-	(setf ( :flags room) '(:seen)))
+	(setf (:flags room) '(:seen)))
       (progn
-	(print-list (print-list (:ldescription room)))
-	(print-list (flatten
-		     (describe-list-of-items-in-location-later room))))))
+	(format nil (print-list (:ldescription room)))
+	(format nil (print-list (flatten
+			    (describe-list-of-items-in-location-later room)))))))
 
 (defmethod items-in-room ((self loc))
   (:things self))
 
-(defun print-list (lst)
+(defun print-list (list)
   "concatenate list of strings to one single string."
-  (reduce #'(lambda (x y) (concatenate 'string x y)) lst))
+  (apply #'concatenate 'string list))
+
+(defun is-direction-p (input)
+  "return if input is a change-location command
+   '('go' 'west') -> 'west' '('west') -> 'west' '('eat' 'salad') nil"
+  (let ((len (length input)))
+    (cond
+      ((and (= 1 len)
+	    (read-direction (first input))) (first input))
+      ((and (= 2 len)
+	    (move-p (first input))
+	    (read-direction (second input))) (second input))
+      (t nil))))
+
+;; (defun is-look-p (list)
+;;   "return if input is a 'look' command."
+;;   (let ((len (length list)))
+;;     (cond
+;;       ((and (= 1 len)
+;; 	    (string-equal "look" (first list)))
+;;        (describe-room (current-location)))
+;;       (()))))
+
+(defun is-look-p (exp)
+   "return if command is member of synonyms for 'look'"
+   (equalmember exp '("look" "examine" "study" "view" "scan" "parse")))
 
 (test test-u-exits 
   (is (equal '(("east" *bedroom*) ("west" *housefront*))
@@ -247,6 +288,15 @@
 (test test-items-in-room
   (is (equal '(*laptop* *clothes* *poster*)
 	     (items-in-room *bedroom*))))
+
+(test test-is-direction-p
+  (is-true (is-direction-p '("go" "north")))
+  (is-true (is-direction-p '("west")))
+  (is-true (is-direction-p '("move" "se")))
+  (is-false (is-direction-p '("eat" "salad"))))
+
+(test test-is-look-p
+  (is-true (is-look-p "EXAMINE")))
 
 
 (test test-describe-list-of-items-in-location                      

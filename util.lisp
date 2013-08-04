@@ -1,6 +1,6 @@
 (defpackage #:utilities
   (:use :cl)
-  (:export flatten equalassoc equalmember))
+  (:export flatten equalassoc equalmember random-string))
 
 (in-package #:utilities)
 
@@ -17,6 +17,11 @@
 (defmacro equalmember (exp list)
   "test member for equal to work with stirngs."
   `(member ,exp ,list :test #'string-equal))
+
+(defun random-string (list)
+  "pick a random string from a list of strings."
+  (let ((len (length list)))
+    (nth (random len) list)))
 
 
 
