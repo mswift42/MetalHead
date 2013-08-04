@@ -42,9 +42,11 @@
 
 (defun parse-command ()
   (let ((commandlist (entnewlinify *store-string*)))
-    (if (is-direction-p commandlist)
-	(walk-direction (is-direction-p commandlist))
-	nil)))
+    (cond
+      ((is-direction-p commandlist)
+       (walk-direction (is-direction-p commandlist)))
+       ((look-command-p commandlist) (look-command-p commandlist))
+      (t nil))))
 
 
 (defun split-string (string)

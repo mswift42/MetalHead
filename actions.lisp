@@ -7,12 +7,12 @@
   (:export change-loc exit-lst take-object drop-object current-location
 	   walk-direction object-action-list actions-for-location
 	   *directions-synonyms* *directions* read-direction move-p
-	   use-laptop-f power-on-laptop-f put-on-clothes wear-clothes update-flag
-	   increment-fish-counter pick-up-trout-f take-laptop-f
+	   use-laptop-f power-on-laptop-f put-on-clothes wear-clothes
+	   update-flag increment-fish-counter pick-up-trout-f take-laptop-f
 	   describe-poster read-inscription-f verb-synonyms return-synonym
 	   change-location describe-list-of-items-in-location
 	   describe-list-of-items-in-location-later describe-room
-	   items-in-room print-list is-direction-p))
+	   items-in-room print-list is-direction-p is-look-p look-command-p))
 
 (in-package #:actions)
 
@@ -91,9 +91,10 @@
 
 (defun use-laptop-f ()
   (if (equal 'poweroff (first (:flags *laptop*)))
-      "Your laptop is turned off"
-      "you could browse your favorite websites all day, you good old 
-       procrastinator, however I'd propose you simply check your Email."))
+      '("Your laptop is turned off")
+      '("you could browse your favorite websites "
+       "all day, you good old procrastinator, "
+       "however I'd propose you simply check your Email.")))
 
 (defun power-on-laptop-f ()
   (setf (:flags *laptop*) '(poweron))
@@ -104,13 +105,13 @@
 (defun wear-clothes ()
   "if not wearing clothes, print out text . Else change location to hallway."
   (if (eq (first  (:flags *clothes*)) :notwearing)
-      '("you are not wearing any clothes. I am terribly sorry but you "
+      (print-list '("you are not wearing any clothes. I am terribly sorry but you "
 	"should not inflict your gross naked body on other people. "
 	"There are plenty beautiful sights in this "
 	"world. You are not one of them. "
 	"When God made you he was either drunk or bored. "
 	"Maybe he was just spiteful "
-	"but for Fuck Sake please put on some clothes.")
+	"but for Fuck Sake please put on some clothes."))
       (change-location *hallway*)))
 
 
@@ -118,16 +119,19 @@
   (setf (:flags i) value))
 
 (defun put-on-clothes ()
-  (princ'(with the grace of a young gazelle you put on your clothes. Within
-	  seconds your appearance changes from ugly as hell to well
-	  below average handsome. Well done.))
+  (print-list '("with the grace of a young gazelle "
+		"you put on your clothes. Within "
+	        "seconds your appearance changes from "
+		"ugly as hell to well below average handsome. Well done."))
    (setf (:flags *clothes*) '(:wearing))
   (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
   (take-object '*clothes*))
 
 (defun take-laptop-f ()
-  "You cannot take it. It's too heavy, the battery is not working and it's
-   highly unlikely that it would survive any form of transport.")
+  (print-list'("You cannot take it. It's too heavy, "
+	       "the battery is not working and it's "
+	       "highly unlikely that it would survive "
+	       "any form of transport.")))
 
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
@@ -268,19 +272,24 @@
 	    (read-direction (second input))) (second input))
       (t nil))))
 
-;; (defun is-look-p (list)
-;;   "return if input is a 'look' command."
-;;   (let ((len (length list)))
-;;     (cond
-;;       ((and (= 1 len)
-;; 	    (string-equal "look" (first list)))
-;;        (describe-room (current-location)))
-;;       (()))))
+(defun look-command-p (list)
+  "return if input is a 'look' command."
+  (let ((len (length list)))
+    (cond
+      ((and (= 1 len)
+	    (is-look-p (first list)))
+       (describe-room (current-location)))
+      (t nil))))
 
 (defun is-look-p (exp)
    "return if command is member of synonyms for 'look'"
-   (equalmember exp '("look" "examine" "study" "view" "scan" "parse")))
+   (equalmember exp '("look" "examine" "study" "view" "scan" "parse"
+		      "explore")))
 
+
+
+
+;;; Tests ;;;
 (test test-u-exits 
   (is (equal '(("east" *bedroom*) ("west" *housefront*))
 	     (:uexit *hallway*))))
@@ -296,7 +305,8 @@
   (is-false (is-direction-p '("eat" "salad"))))
 
 (test test-is-look-p
-  (is-true (is-look-p "EXAMINE")))
+  (is-true (is-look-p "EXAMINE"))
+  (is-true (is-look-p "StuDy")))
 
 
 (test test-describe-list-of-items-in-location                      
