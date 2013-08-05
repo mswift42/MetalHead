@@ -133,7 +133,7 @@
    :ldescription '("you are on a small path in the park.")
    :sdescription '()
    :uexit '(("west" *park-center*)
-	    ("east" *park-entrance-east*))
+	    ("east" *park-entrance-east*))                                   
    :flags '(:notseen)))
 
 (defparameter *park-center*
@@ -143,7 +143,7 @@
 		   "you to lie down and have a nap, or to play "
 		   "a round of some football.\n"
 		   "To the south you can see a little pond and a path "
-		   "leads throu the park from east to west.")
+		   "leads through the park from east to west.")
    :ldescription '("this is the center of the little city park."
 		   "To the south you can see a little pond and a path "
 		   "leads through the park from east to west.")
@@ -183,10 +183,11 @@
    :ldescription '("your old sturdy laptop. Not the latest and shiniest "
 		   "but money is very expensive so you still "
 		   "make do with it." )
-   :sdescription '("your laptop. It used to be black.
-		   Whats the color of grime again?")
-   :action '((use-v  use-laptop-f)
-	     (start-v power-on-laptop-f) (type-pass-v crack-password-p))
+   :sdescription '("your laptop. It used to be black. "
+		   "Whats the color of grime again?")
+   :action '((:use-v  :use-laptop-f)
+	     (:start-v :power-on-laptop-f)
+	     (:type-pass-v :crack-password-p))                        
    :flags '(:poweroff :notseen)))
 
 (defparameter *clothes*
@@ -194,7 +195,7 @@
    :name '("your clothes")
    :fdescription '("strewn all over the floor are your clothes.")
    :ldescription '("jeans and a t-shirt. nothing fancy.")
-   :action '((wear-v put-on-clothes))
+   :action '((:wear-v :put-on-clothes))
    :flags '(:notwearing)))
 
 (defparameter *poster*
@@ -206,7 +207,7 @@
 		   "of white crosses in a field.")
    :ldescription '("Oh you joyful Master of Puppets. You mother "
 		   "of all metal records.")
-   :action '((look-closer-v describe-poster-f))))
+   :action '((:look-closer-v :describe-poster-f))))
 
 (defparameter *fish*
    (make-instance 'item
@@ -216,7 +217,7 @@
    :ldescription '("you are looking at a very healthy and "
 		   "most probably good tasting rainbow trout.")
    :flags '(("taken" 0))
-   :action '((pick-up pick-up-trout-f))))
+   :action '((:pick-up :pick-up-trout-f))))
  
 (defparameter *bench*
   (make-instance 'item
@@ -228,7 +229,7 @@
 	           "something scratched into the wood.")
    :synonym '("comfortable" "cosy" "comfy" "inviting")
    :flags '((:fixed))
-   :action '(look-closer-v read-inscription-f)))
+   :action '(:look-closer-v :read-inscription-f)))
 
 (defparameter *outside-shop*
   (make-instance 'loc

@@ -1,5 +1,6 @@
 (load "~/MetalHead/util.lisp")
 (load "~/MetalHead/world.lisp")
+
 (ql:quickload "fiveam")
 
 (defpackage #:actions
@@ -12,7 +13,8 @@
 	   describe-poster read-inscription-f verb-synonyms return-synonym
 	   change-location describe-list-of-items-in-location
 	   describe-list-of-items-in-location-later describe-room
-	   items-in-room print-list is-direction-p is-look-p look-command-p))
+	   items-in-room print-list is-direction-p is-look-p look-command-p
+	   convert-symbol))
 
 (in-package #:actions)
 
@@ -37,7 +39,7 @@
        (flatten (cons 'ue (equalassoc direction ue))))
       ((equalassoc direction ne)
        (flatten (cons 'ne (equalassoc direction ne))))
-      (t nil))))
+      (t nil))))                                                             
 
 (defun take-object (item)
   "put item into inventory, delete item from location."
@@ -57,7 +59,7 @@
 
 (defun actions-for-location ()
   "Return alist for possible actions in the present location."
-  (object-action-list (:things (current-location))))
+  (first (object-action-list (:things (current-location)))))
 
 
 (defun symbol-to-string (sym)
@@ -99,19 +101,19 @@
 (defun power-on-laptop-f ()
   (setf (:flags *laptop*) '(poweron))
   "You press the power button. You hear some funny noises, and it actually 
-   starts booting. One Cup of Tee later, and you start at the login 
+   starts booting. One cup of Tea later, and you start at the login 
    screen. I hope you haven't forgotten the password.")
 
 (defun wear-clothes ()
   "if not wearing clothes, print out text . Else change location to hallway."
   (if (eq (first  (:flags *clothes*)) :notwearing)
-      (print-list '("you are not wearing any clothes. I am terribly sorry but you "
+      '("you are not wearing any clothes. I am terribly sorry but you "
 	"should not inflict your gross naked body on other people. "
 	"There are plenty beautiful sights in this "
 	"world. You are not one of them. "
 	"When God made you he was either drunk or bored. "
 	"Maybe he was just spiteful "
-	"but for Fuck Sake please put on some clothes."))
+	"but for Fuck Sake please put on some clothes.")
       (change-location *hallway*)))
 
 
@@ -122,7 +124,8 @@
   (print-list '("with the grace of a young gazelle "
 		"you put on your clothes. Within "
 	        "seconds your appearance changes from "
-		"ugly as hell to well below average handsome. Well done."))
+		"ugly as hell to well below average handsome. "
+		"Well done."))
    (setf (:flags *clothes*) '(:wearing))
   (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
   (take-object '*clothes*))
@@ -187,15 +190,25 @@
 		"an opportunity now, can we?")))
 
 (defparameter verb-synonyms
-  '((use use-v)
-    (utilize use-v)
-    (start start-v)
-    (power start-v))
+  '(("use" :use-v)
+    ("utilize" :use-v)
+    ("start" :start-v)
+    ("power" :start-v))
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
   "return the function synonym to the entered verb."
-  (first (rest (assoc verb verb-synonyms)))) 
+  (second (equalassoc verb verb-synonyms))) 
+
+(defun convert-symbol (s)
+  "convert in package world stored symbol to its in package 
+   action function value '(call-symbol :use-laptop-f) -> use-laptop-f"
+  (find-symbol (symbol-name s)))
+
+(defun action-for-verb (verb)
+  "lookup entered verb in verb-synonyms. if entry found, lookup that 
+   entry in actions-for location alist and convert symbol into function."
+  (convert-symbol (second (assoc (return-synonym verb) (actions-for-location)))))
 
 
 (defun walk-direction (direction )
@@ -229,29 +242,25 @@
 
 (defun describe-list-of-items-in-location (room)
   "Return list of descriptions of all items in a room."
-  (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
-	  (:things room))) 
+  (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
+		   (:things room)))) 
 
  (defun describe-list-of-items-in-location-later (room)
   "Return the ldescription of all itemns in a room."
-  (mapcar #'(lambda (x) (:ldescription (symbol-value x)))
-	  (:things room)))
+  (flatten (mapcar #'(lambda (x) (:ldescription (symbol-value x)))
+		   (:things room))))
 
 (defun describe-room ( room)
-  "Use lol's game-print function to print first the description of the
-   room you are in, then describe all items in the location."
+  "if visiting loc for first time return list of :fdesc room
+   appended by description of all items in current loc.
+   If loc has been visited, return :ldescription of loc."
   (if (eq (first (:flags room)) :notseen)
       (progn
-	(print (print-list (:fdescription room)))
-	(format nil
-		(print-list (flatten
-			     (describe-list-of-items-in-location room))))
+	(append  (:fdescription room)
+		 (describe-list-of-items-in-location room))
 	
 	(setf (:flags room) '(:seen)))
-      (progn
-	(format nil (print-list (:ldescription room)))
-	(format nil (print-list (flatten
-			    (describe-list-of-items-in-location-later room)))))))
+      (append (:ldescription room) (describe-list-of-items-in-location room))))
 
 (defmethod items-in-room ((self loc))
   (:things self))
@@ -310,9 +319,9 @@
 
 
 (test test-describe-list-of-items-in-location                      
-  (is (equal '(("on a table near the exit to the west is a laptop.")
-	       ("strewn all over the floor are your clothes.")
-	       ("On the wall you can see an old poster."))
+  (is (equal '("on a table near the exit to the west is a laptop."
+	       "strewn all over the floor are your clothes."
+	       "On the wall you can see an old poster.")
 	     (describe-list-of-items-in-location *bedroom*))))
 
 (test test-equal-lst
@@ -322,8 +331,8 @@
 	     (exit-lst *hallway* "east"))))
 
 (test test-return-synonym
-  (is (equal 'start-v (return-synonym 'power)))
-  (is (equal  'use-v (return-synonym 'use))))
+  (is (equal :start-v (return-synonym 'power)))
+  (is (equal  :use-v (return-synonym 'use))))
 
 (test test-read-direction
   (is (equal "up" (read-direction "u")))
