@@ -41,6 +41,13 @@
        (flatten (cons 'ne (equalassoc direction ne))))
       (t nil))))                                                             
 
+(defmethod find-synonym ((self item) string)
+  "if synonym is in synonym list of item, return item
+   (find-synonym *laptop* 'laptop') -> #<item{af17569}"
+  (if (equalmember string (:synonym self))
+      self
+      nil))
+
 (defun take-object (item)
   "put item into inventory, delete item from location."
   (push item (:inventory *player*))
@@ -226,6 +233,7 @@
 		   (symbol-name (fourth exitlist))))))))
 
 
+
 (defun no-exit ()
   (random-string '("you cannot go that way" "there is no exit that way")))
 
@@ -345,6 +353,10 @@
 
 (test test-print-list
   (is-true (typep (print-list '("hello" " you" " yes" " you")) 'string)))
+
+(test test-find-synonym
+  (is-true (find-synonym *laptop* "notebook"))
+  (is-true (find-synonym *laptop* "LAPTOP")))
 
 
 (fiveam:run!)
