@@ -48,6 +48,11 @@
       self
       nil))
 
+(defun find-synonym-in-location (string)
+  "map find-synonym function to all items in a location"
+  (some #'(lambda (x) (find-synonym (symbol-value x) string))
+	(:things (current-location))))
+
 (defun take-object (item)
   "put item into inventory, delete item from location."
   (push item (:inventory *player*))
@@ -357,6 +362,10 @@
 (test test-find-synonym
   (is-true (find-synonym *laptop* "notebook"))
   (is-true (find-synonym *laptop* "LAPTOP")))
+
+(test test-find-synonym-in-location
+  (is (equal '("a poster") (:name (find-synonym-in-location "poster"))))
+  (is (equal '("laptop") (:name (find-synonym-in-location "laptop")))))
 
 
 (fiveam:run!)

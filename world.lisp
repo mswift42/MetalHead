@@ -193,6 +193,7 @@
 (defparameter *clothes*
   (make-instance 'item
    :name '("your clothes")
+   :synonym '("clothes")
    :fdescription '("strewn all over the floor are your clothes.")
    :ldescription '("jeans and a t-shirt. nothing fancy.")
    :action '((:wear-v :put-on-clothes))
@@ -201,6 +202,7 @@
 (defparameter *poster*
   (make-instance 'item
    :name '("a poster")
+   :synonym '("poster")
    :fdescription '("On the wall you can see an old poster.")
    :sdescription '("It is a very old nearly completely faded poster."
 		   " You can only make out a painted scene of rows "
