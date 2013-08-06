@@ -1,6 +1,7 @@
 (defpackage #:utilities
   (:use :cl)
-  (:export flatten equalassoc equalmember random-string))
+  (:export flatten equalassoc equalmember random-string
+	   last-element))
 
 (in-package #:utilities)
 
@@ -22,6 +23,10 @@
   "pick a random string from a list of strings."
   (let ((len (length list)))
     (nth (random len) list)))
+
+(defun last-element (list)
+  "return last element in a list"
+  (first (last list)))
 
 
 

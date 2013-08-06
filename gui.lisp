@@ -45,8 +45,10 @@
     (cond
       ((is-direction-p commandlist)
        (walk-direction (is-direction-p commandlist)))
-       ((look-command-p commandlist)
-	(look-command-p commandlist))
+      ((look-command-p commandlist)
+       (look-command-p commandlist))
+      ((is-take-p (first commandlist))
+       (take-command commandlist))
       (t nil))))
 
 

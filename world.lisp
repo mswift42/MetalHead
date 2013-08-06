@@ -48,7 +48,7 @@
    :nexit '(("east" ("did you seriously think about leaving by the window?
 		    I know you had a rough night but please use the door
 		    like other normal people.")))
-   :things '(*laptop* *clothes* *poster*)
+   :things '(:*laptop* :*clothes* :*poster*)
    :flags '(:notseen)))
 
 
@@ -160,7 +160,7 @@
    :ldescription '("You stand at a tiny little pond.")
    :uexit '(("north" *park-center* '("to the north you can get "
 				     "back to the park center.")))
-   :things '(*fish*)
+   :things '(:*fish*)
    :flags '(:notseen)))
 
 (defparameter *park-lane-west*
@@ -187,7 +187,8 @@
 		   "Whats the color of grime again?")
    :action '((:use-v  :use-laptop-f)
 	     (:start-v :power-on-laptop-f)
-	     (:type-pass-v :crack-password-p))                        
+	     (:type-pass-v :crack-password-p)
+	     (:pick-up-v :take-laptop-f))                        
    :flags '(:poweroff :notseen)))
 
 (defparameter *clothes*
@@ -196,7 +197,7 @@
    :synonym '("clothes")
    :fdescription '("strewn all over the floor are your clothes.")
    :ldescription '("jeans and a t-shirt. nothing fancy.")
-   :action '((:wear-v :put-on-clothes))
+   :action '((:wear-v :put-on-clothes :pick-up-v :take-clothes-f))
    :flags '(:notwearing)))
 
 (defparameter *poster*
@@ -204,11 +205,12 @@
    :name '("a poster")
    :synonym '("poster")
    :fdescription '("On the wall you can see an old poster.")
-   :sdescription '("It is a very old nearly completely faded poster."
+   :ldescription '("It is a very old nearly completely faded poster."
 		   " You can only make out a painted scene of rows "
 		   "of white crosses in a field.")
-   :ldescription '("Oh you joyful Master of Puppets. You mother "
+   :sdescription '("Oh you joyful Master of Puppets. You mother "
 		   "of all metal records.")
+   :flags '(:fixed)
    :action '((:look-closer-v :describe-poster-f))))
 
 (defparameter *fish*
@@ -219,7 +221,7 @@
    :ldescription '("you are looking at a very healthy and "
 		   "most probably good tasting rainbow trout.")
    :flags '(("taken" 0))
-   :action '((:pick-up :pick-up-trout-f))))
+   :action '((:pick-up-v :pick-up-trout-f))))
  
 (defparameter *bench*
   (make-instance 'item

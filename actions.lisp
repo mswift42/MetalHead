@@ -14,7 +14,7 @@
 	   change-location describe-list-of-items-in-location
 	   describe-list-of-items-in-location-later describe-room
 	   items-in-room print-list is-direction-p is-look-p look-command-p
-	   convert-symbol))
+	   convert-symbol is-take-p take-command))
 
 (in-package #:actions)
 
@@ -50,7 +50,7 @@
 
 (defun find-synonym-in-location (string)
   "map find-synonym function to all items in a location"
-  (some #'(lambda (x) (find-synonym (symbol-value x) string))
+  (some #'(lambda (x) (find-synonym (symbol-value (convert-symbol x)) string))
 	(:things (current-location))))
 
 (defun take-object (item)
@@ -148,6 +148,12 @@
 	       "highly unlikely that it would survive "
 	       "any form of transport.")))
 
+(defun take-clothes-f ()
+  "Text to return when taking clothes"
+  '("You take your clothes. Rather awkwardly you are "
+    "now standing there like a bloody idiot holding "
+    "your clothes in your hands."))
+
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
   (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
@@ -214,13 +220,14 @@
 
 (defun convert-symbol (s)
   "convert in package world stored symbol to its in package 
-   action function value '(call-symbol :use-laptop-f) -> use-laptop-f"
+   action function value '(convert-symbol :use-laptop-f) -> use-laptop-f"
   (find-symbol (symbol-name s)))
 
 (defun action-for-verb (verb)
   "lookup entered verb in verb-synonyms. if entry found, lookup that 
    entry in actions-for location alist and convert symbol into function."
-  (convert-symbol (second (assoc (return-synonym verb) (actions-for-location)))))
+  (convert-symbol (second (assoc (return-synonym verb)
+				  (actions-for-location)))))
 
 
 (defun walk-direction (direction )
@@ -255,12 +262,12 @@
 
 (defun describe-list-of-items-in-location (room)
   "Return list of descriptions of all items in a room."
-  (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
+  (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value (convert-symbol x))))
 		   (:things room)))) 
 
  (defun describe-list-of-items-in-location-later (room)
   "Return the ldescription of all itemns in a room."
-  (flatten (mapcar #'(lambda (x) (:ldescription (symbol-value x)))
+  (flatten (mapcar #'(lambda (x) (:ldescription (symbol-value (convert-symbol x))))
 		   (:things room))))
 
 (defun describe-room ( room)
@@ -301,12 +308,49 @@
       ((and (= 1 len)
 	    (is-look-p (first list)))
        (describe-room (current-location)))
+      ((and (> len 1)
+	    (is-look-p (first list))
+	    (find-synonym-in-location (last-element list)))
+       (:ldescription
+	(find-synonym-in-location (last-element list))))
       (t nil))))
 
 (defun is-look-p (exp)
    "return if command is member of synonyms for 'look'"
    (equalmember exp '("look" "examine" "study" "view" "scan" "parse"
-		      "explore")))
+		      "explore" "l")))
+
+(defun is-take-p (exp)
+  "return if command if member of synonyms for 'take'"
+  (equalmember exp '("t" "take" "grab" "snatch" "get")))
+
+(defun take-command (list)
+  (let ((obj (find-synonym-in-location (last-element list))))
+    (cond
+      ((not obj) (no-object))
+      ((assoc :pick-up-v (:action obj))
+       (funcall (convert-symbol (second (assoc :pick-up-v (:action obj))))))
+      ((not (member :fixed (:flags obj)))
+       (take-object (last-element list)))
+      (t '("You cannot take that!")))))
+
+(defun is-action-p (list)
+  "return action flag from verb synonyms if entered command is 
+   a action command"
+  (cond
+    ((equalassoc (first list) verb-synonyms)
+     (second (equalassoc (first list) verb-synonyms)))
+    ((equalassoc (build-substring list) verb-synonyms)
+     (second (equalassoc (build-substring list) verb-synonyms)))
+    (t nil)))
+
+
+(defun no-object ()
+  '("There is no such thing here"))
+
+
+
+
 
 
 
@@ -317,7 +361,7 @@
 	     (:uexit *hallway*))))
 
 (test test-items-in-room
-  (is (equal '(*laptop* *clothes* *poster*)
+  (is (equal '(:*laptop* :*clothes* :*poster*)
 	     (items-in-room *bedroom*))))
 
 (test test-is-direction-p
@@ -366,6 +410,15 @@
 (test test-find-synonym-in-location
   (is (equal '("a poster") (:name (find-synonym-in-location "poster"))))
   (is (equal '("laptop") (:name (find-synonym-in-location "laptop")))))
+
+(test test-look-command
+  (is (equal '("your old sturdy laptop. Not the latest and shiniest "
+ "but money is very expensive so you still " "make do with it.")
+	     (look-command-p '("examine" "laptop"))))
+  (is (equal '("It is a very old nearly completely faded poster."
+ " You can only make out a painted scene of rows "
+ "of white crosses in a field.")
+	     (look-command-p '("study" "poster")))))
 
 
 (fiveam:run!)
