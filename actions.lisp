@@ -14,7 +14,8 @@
 	   change-location describe-list-of-items-in-location
 	   describe-list-of-items-in-location-later describe-room
 	   items-in-room print-list is-direction-p is-look-p look-command-p
-	   convert-symbol is-take-p take-command))
+	   convert-symbol is-take-p take-command build-substring
+	   is-action-p ))
 
 (in-package #:actions)
 
@@ -50,7 +51,7 @@
 
 (defun find-synonym-in-location (string)
   "map find-synonym function to all items in a location"
-  (some #'(lambda (x) (find-synonym (symbol-value (convert-symbol x)) string))
+  (some #'(lambda (x) (find-synonym (symbol-value x) string))
 	(:things (current-location))))
 
 (defun take-object (item)
@@ -211,7 +212,10 @@
   '(("use" :use-v)
     ("utilize" :use-v)
     ("start" :start-v)
-    ("power" :start-v))
+    ("power" :start-v)
+    ("put on" :wear-v)
+    ("wear" :wear-v)
+    ("dress with" :wear-v))
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
@@ -262,12 +266,12 @@
 
 (defun describe-list-of-items-in-location (room)
   "Return list of descriptions of all items in a room."
-  (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value (convert-symbol x))))
+  (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
 		   (:things room)))) 
 
  (defun describe-list-of-items-in-location-later (room)
   "Return the ldescription of all itemns in a room."
-  (flatten (mapcar #'(lambda (x) (:ldescription (symbol-value (convert-symbol x))))
+  (flatten (mapcar #'(lambda (x) (:ldescription (symbol-value x)))
 		   (:things room))))
 
 (defun describe-room ( room)
@@ -344,6 +348,11 @@
      (second (equalassoc (build-substring list) verb-synonyms)))
     (t nil)))
 
+(defun build-substring (list)
+  "concatenate first and second word in list to single string"
+  (concatenate 'string (first list) " " (second list)))
+
+
 
 (defun no-object ()
   '("There is no such thing here"))
@@ -361,7 +370,7 @@
 	     (:uexit *hallway*))))
 
 (test test-items-in-room
-  (is (equal '(:*laptop* :*clothes* :*poster*)
+  (is (equal '(*laptop* *clothes* *poster*)
 	     (items-in-room *bedroom*))))
 
 (test test-is-direction-p
@@ -419,6 +428,10 @@
  " You can only make out a painted scene of rows "
  "of white crosses in a field.")
 	     (look-command-p '("study" "poster")))))
+
+(test test-is-action-p
+  (is (eq :wear-v (is-action-p '("put" "on" "clothes"))))
+  (is (eq :wear-v (is-action-p '("wear" "clothes")))))
 
 
 (fiveam:run!)

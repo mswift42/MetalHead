@@ -48,7 +48,7 @@
    :nexit '(("east" ("did you seriously think about leaving by the window?
 		    I know you had a rough night but please use the door
 		    like other normal people.")))
-   :things '(:*laptop* :*clothes* :*poster*)
+   :things '(*laptop* *clothes* *poster*)
    :flags '(:notseen)))
 
 
@@ -160,7 +160,7 @@
    :ldescription '("You stand at a tiny little pond.")
    :uexit '(("north" *park-center* '("to the north you can get "
 				     "back to the park center.")))
-   :things '(:*fish*)
+   :things '(*fish*)
    :flags '(:notseen)))
 
 (defparameter *park-lane-west*
