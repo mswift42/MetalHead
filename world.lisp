@@ -216,8 +216,8 @@
 (defparameter *fish*
    (make-instance 'item
    :name '("healty rainbow trout.")
+   :synonym '("trout" "fish")
    :fdescription '("There is one big trout in the pond.")
-   :synonym '("tasty looking" "healthy")
    :ldescription '("you are looking at a very healthy and "
 		   "most probably good tasting rainbow trout.")
    :flags '(("taken" 0))

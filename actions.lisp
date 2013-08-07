@@ -165,37 +165,35 @@
   (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
     (case counter
       (0 
-       (progn
-	 (print-list
-	  '("With the grace of a young Mark Spitz you jump into "
-	    "the pond in order to grab the fish. Of course, now "
-	    "realising, that you are not in any way related to a Grizzly "
-	    "Bear and noticing the puzzled looks of other people in "
-	    "the park, you slowly and shyly make your way out of the "
-	    "water. Bravo, You are an IDIOT!"))
+       (multiple-value-prog1
+	   '("With the grace of a young Mark Spitz you jump into "
+	     "the pond in order to grab the fish. Of course, now "
+	     "realising, that you are not in any way related to a Grizzly "
+	     "Bear and noticing the puzzled looks of other people in "
+	     "the park, you slowly and shyly make your way out of the "
+	     "water. Bravo, You are an IDIOT!")
 	 (increment-fish-counter)))
       (1 
-       (progn
-	 (princ (print-list
-		 '("I'm sorry but are you seriously trying to pull that "
-		   "stupid stunt again? Please, step back for a "
-		   "moment and think : "
-		   "How on earth do you expect to grab a fish with your "
-		   "bare hands? No answer? Nothing? Nada? Please stop being "
-		   "such a stupid muppet. Thanks. ")))
+       (multiple-value-prog1
+	   '("I'm sorry but are you seriously trying to pull that "
+	     "stupid stunt again? Please, step back for a "
+	     "moment and think : "
+	     "How on earth do you expect to grab a fish with your "
+	     "bare hands? No answer? Nothing? Nada? Please stop being "
+	     "such a stupid muppet. Thanks. ")
 	 (increment-fish-counter)))
        (t
-       (progn (print-list
-	       '("Ok, Ok, I give up. Carefully you wade into the pond "
-		 "snatch the fish and put it into your trouser pocket. "
-		 "Full of confidence you wade out of the water and "
-		 "enjoy the cheer of at least 20 people who stare at "
-		 "you admiringly.\n\nWell I made the last bit up, "
-		 "people stare at you, but certainly not admiringly "
-		 "mostly of course, because you now have twice gone "
-		 "into a fish pond, and you have a stinking fish in "
-		 "your jeans. (This is not a metaphor)"))
-	      (take-object *fish*))))))
+       (multiple-value-prog1
+	'("Ok, Ok, I give up. Carefully you wade into the pond "
+	  "snatch the fish and put it into your trouser pocket. "
+	  "Full of confidence you wade out of the water and "
+	  "enjoy the cheer of at least 20 people who stare at "
+	  "you admiringly.~%~%Well I made the last bit up, "
+	  "people stare at you, but certainly not admiringly "
+	  "mostly of course, because you now have twice gone "
+	  "into a fish pond, and you have a stinking fish in "
+	  "your jeans. (This is not a metaphor)")
+	 (take-object *fish*))))))
 
 (defun describe-poster ()
   (:sdescription *poster*))
@@ -255,7 +253,7 @@
 
 
 (defun no-exit ()
-  (random-string '("you cannot go that way" "there is no exit that way")))
+  (list (random-string '("you cannot go that way" "there is no exit that way"))))
 
 
 (defparameter *allowed-commands* '(use-laptop-f))
@@ -303,10 +301,10 @@
   (let ((len (length input)))
     (cond
       ((and (= 1 len)
-	    (read-direction (first input))) (first input))
+	    (read-direction (first input))) (read-direction (first input)))
       ((and (= 2 len)
 	    (move-p (first input))
-	    (read-direction (second input))) (second input))
+	    (read-direction (second input))) (read-direction (second input)))
       (t nil))))
 
 (defun look-command-p (list)

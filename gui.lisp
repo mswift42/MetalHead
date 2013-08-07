@@ -25,7 +25,7 @@
       (configure outtext :font "monospaced"
 		 :background "#e4d2c9" :wrap :word )
       (pack scroll :anchor :nw :expand t :fill :both :ipady 100 )
-      (pack *text-field* :side :bottom :expand nil)
+      (pack *text-field* :side  :bottom :expand nil)
       (bind *text-field* "<KeyPress-Return>"
 	    (lambda (event) (format-output outtext)))
       (configure f :borderwidth 2))))
@@ -38,7 +38,7 @@
   (append-text target (format nil "~%~%> ~A" (text *text-field*)))
   (push (split-string (text *text-field*)) *store-string*)
   (clear-text *text-field*)
-  (append-text target (print-list (parse-command))))
+  (append-text target (format nil (print-list (parse-command)))))
 
 (defun parse-command ()
   (let ((commandlist (entnewlinify *store-string*)))
