@@ -134,20 +134,20 @@
   (setf (:flags i) value))
 
 (defun put-on-clothes ()
-  (print-list'("with the grace of a young gazelle "
-	       "you put on your clothes. Within "
-	       "seconds your appearance changes from "
-	       "ugly as hell to well below average handsome. "
-	       "Well done."))
-   (setf (:flags *clothes*) '(:wearing))
-   (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
-   (take-object '*clothes*))
+  (multiple-value-prog1 '("with the grace of a young gazelle "
+			"you put on your clothes. Within "
+			"seconds your appearance changes from "
+			"ugly as hell to well below average handsome. "
+			  "Well done.")
+    (setf (:flags *clothes*) '(:wearing))
+    (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
+    (take-object '*clothes*)))
 
 (defun take-laptop-f ()
-  (print-list'("You cannot take it. It's too heavy, "
-	       "the battery is not working and it's "
-	       "highly unlikely that it would survive "
-	       "any form of transport.")))
+  '("You cannot take it. It's too heavy, "
+    "the battery is not working and it's "
+    "highly unlikely that it would survive "
+    "any form of transport."))
 
 (defun take-clothes-f ()
   "Text to return when taking clothes"
@@ -285,10 +285,10 @@
   (if (eq (first (:flags room)) :notseen)
       (progn
 	(append  (:fdescription room)
-		 (describe-list-of-items-in-location room))
-	
-	(setf (:flags room) '(:seen)))
-      (append (:ldescription room) (describe-list-of-items-in-location room))))
+		 (describe-list-of-items-in-location room)))
+      (multiple-value-prog1
+	  (append (:ldescription room) (describe-list-of-items-in-location room))
+	  (setf (:flags room) :seen))))
 
 (defmethod items-in-room ((self loc))
   (:things self))
