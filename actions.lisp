@@ -1,10 +1,9 @@
 (load "~/MetalHead/util.lisp")
 (load "~/MetalHead/world.lisp")
 
-(ql:quickload "fiveam")
 
 (defpackage #:actions
-  (:use :cl :fiveam :utilities :world)
+  (:use :cl  :utilities :world)
   (:export change-loc exit-lst take-object drop-object current-location
 	   walk-direction object-action-list actions-for-location
 	   *directions-synonyms* *directions* read-direction move-p
@@ -59,7 +58,8 @@
   "put item into inventory, delete item from location."
   (push item (:inventory *player*))
   (setf (:things (current-location))
-	(remove-if #'(lambda (x) (equal item (symbol-value x))) (:things (current-location)))))
+	(remove-if #'(lambda (x) (equal item (symbol-value x)))
+		   (:things (current-location)))))
 
 (defun drop-object (item)
   "remove item from inventory, put item into location list."
@@ -134,6 +134,10 @@
 (defmethod update-flag ((i item) value)
   (setf (:flags i) value))
 
+;; I'm using multiple-value-prog1 here because it evalutates it's
+;; first argument and returns it, but silently evaluates the proceeding
+;; forms. Otherwise gui.lisp 's format-output function does not know
+;; what to print. 
 (defun put-on-clothes ()
   (multiple-value-prog1 '("with the grace of a young gazelle "
 			"you put on your clothes. Within "
