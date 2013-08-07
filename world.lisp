@@ -5,7 +5,7 @@
 	   *player* *housefront* :fdescription :sdescription :ldescription
 	   :uexit *fish* :nexit :cexit :flags :things :name :synonym
 	   :action cexit-read-con :flags *park-center* *park-lane-east*
-	   *pond* *wear-clothes?* *bench* *park-lane-west*))
+	   *pond*  *bench* *park-lane-west*))
 (in-package #:world)
 
 

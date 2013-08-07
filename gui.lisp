@@ -47,6 +47,8 @@
        (walk-direction (is-direction-p commandlist)))
       ((look-command-p commandlist)
        (look-command-p commandlist))
+      ((is-action-p commandlist)
+       (funcall (action-for-symbol (is-action-p commandlist))))
       ((is-take-p (first commandlist))
        (take-command commandlist))
       (t nil))))

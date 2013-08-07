@@ -15,7 +15,7 @@
 	   describe-list-of-items-in-location-later describe-room
 	   items-in-room print-list is-direction-p is-look-p look-command-p
 	   convert-symbol is-take-p take-command build-substring
-	   is-action-p ))
+	   is-action-p action-for-symbol))
 
 (in-package #:actions)
 
@@ -58,7 +58,7 @@
   "put item into inventory, delete item from location."
   (push item (:inventory *player*))
   (setf (:things (current-location))
-	(delete item (:things (current-location)))))
+	(remove-if #'(lambda (x) (equal item (symbol-value x))) (:things (current-location)))))
 
 (defun drop-object (item)
   "remove item from inventory, put item into location list."
@@ -72,7 +72,7 @@
 
 (defun actions-for-location ()
   "Return alist for possible actions in the present location."
-  (first (object-action-list (:things (current-location)))))
+  (flatten (object-action-list (:things (current-location)))))
 
 
 (defun symbol-to-string (sym)
@@ -134,14 +134,14 @@
   (setf (:flags i) value))
 
 (defun put-on-clothes ()
-  (print-list '("with the grace of a young gazelle "
-		"you put on your clothes. Within "
-	        "seconds your appearance changes from "
-		"ugly as hell to well below average handsome. "
-		"Well done."))
+  (print-list'("with the grace of a young gazelle "
+	       "you put on your clothes. Within "
+	       "seconds your appearance changes from "
+	       "ugly as hell to well below average handsome. "
+	       "Well done."))
    (setf (:flags *clothes*) '(:wearing))
-  (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
-  (take-object '*clothes*))
+   (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
+   (take-object '*clothes*))
 
 (defun take-laptop-f ()
   (print-list'("You cannot take it. It's too heavy, "
@@ -230,8 +230,12 @@
 (defun action-for-verb (verb)
   "lookup entered verb in verb-synonyms. if entry found, lookup that 
    entry in actions-for location alist and convert symbol into function."
-  (convert-symbol (second (assoc (return-synonym verb)
+  (convert-symbol (second (member (return-synonym verb)
 				  (actions-for-location)))))
+
+(defun action-for-symbol (s)
+  "return fitting function to entered symbol. '(:wear-v)-> put-on-clothes"
+  (convert-symbol (second (member s (actions-for-location)))))
 
 
 (defun walk-direction (direction )
@@ -244,7 +248,7 @@
     (cond
       ((null exitlist) (no-exit))
       ((eq 'ue exittype) (change-location (symbol-value (third exitlist))))
-      ((eq 'ne exittype) (print-list (third exitlist)))
+      ((eq 'ne exittype) (third exitlist))
       (t (funcall (find-symbol
 		   (symbol-name (fourth exitlist))))))))
 
@@ -261,7 +265,7 @@
   "When changing locations, set global-variable *location* to new location.
    Describe room either with first or later description."
   (change-loc *player* room)
-  (print-list (:fdescription (current-location)))
+  ;(:fdescription (current-location))
   (describe-room  (current-location)))
 
 (defun describe-list-of-items-in-location (room)
