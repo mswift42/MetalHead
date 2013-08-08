@@ -15,7 +15,7 @@
 	   items-in-room print-list is-direction-p is-look-p look-command-p
 	   convert-symbol is-take-p take-command build-substring
 	   is-action-p action-for-symbol find-synonym-in-location
-	   find-synonym))
+	   find-synonym no-action take-clothes-f))
 
 (in-package #:actions)
 
@@ -158,7 +158,8 @@
   "Text to return when taking clothes"
   '("You take your clothes. Rather awkwardly you are "
     "now standing there like a bloody idiot holding "
-    "your clothes in your hands."))
+    "your clothes in your hands.~%"
+    "You should maybe think about putting them on."))
 
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
@@ -251,14 +252,25 @@
     (cond
       ((null exitlist) (no-exit))
       ((eq 'ue exittype) (change-location (symbol-value (third exitlist))))
-      ((eq 'ne exittype) (third exitlist))
+      ((eq 'ne exittype) (cddr exitlist))
       (t (funcall (find-symbol
 		   (symbol-name (fourth exitlist))))))))
 
 
 
 (defun no-exit ()
-  (list (random-string '("you cannot go that way" "there is no exit that way"))))
+  "list to return when entered direction is not valid."
+  (list (random-string '("you cannot go that way." "there is no exit that way."))))
+
+(defun no-action ()
+  "list to return when command is not understood"
+  (list 
+   (random-string
+    '("This doesn't mean anything to me."
+      "Sorry, but I do not understand you."
+      "I'm not sure what you are trying to say, try harder"
+      "One of us does not understand the English language very well."
+      "I cannot compute that."))))
 
 
 (defparameter *allowed-commands* '(use-laptop-f))
@@ -268,7 +280,6 @@
   "When changing locations, set global-variable *location* to new location.
    Describe room either with first or later description."
   (change-loc *player* room)
-  ;(:fdescription (current-location))
   (describe-room  (current-location)))
 
 (defun describe-list-of-items-in-location (room)
@@ -293,8 +304,8 @@
 	  (append (:ldescription room) (describe-list-of-items-in-location room))
 	  (setf (:flags room) :seen))))
 
-(defmethod items-in-room ((self loc))
-  (:things self))
+;; (defmethod items-in-room ((self loc))
+;;   (:things self))
 
 (defun print-list (list)
   "concatenate list of strings to one single string."
@@ -339,8 +350,10 @@
   (let ((obj (find-synonym-in-location (last-element list))))
     (cond
       ((not obj) (no-object))
-      ((assoc :pick-up-v (:action obj))
-       (funcall (convert-symbol (second (assoc :pick-up-v (:action obj))))))
+      ((memboer :pick-up-v (flatten (:action obj)))
+       (funcall
+	(convert-symbol (second (member :pick-up-v
+					 (flatten (:action obj)))))))
       ((not (member :fixed (:flags obj)))
        (take-object (last-element list)))
       (t '("You cannot take that!")))))

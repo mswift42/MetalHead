@@ -45,9 +45,10 @@
 				 "cleaning it up.")
    :cexit '(("west" *hallway* wear-clothes nil ))
    
-   :nexit '(("east" ("did you seriously think about leaving by the window?
-		    I know you had a rough night but please use the door
-		    like other normal people.")))
+   :nexit '(("east" ("did you seriously think about leaving "
+		     "by the window? I know you had a rough "
+		     "night but please use the door "
+		     "like normal people.")))
    :things '(*laptop* *clothes* *poster*)
    :flags '(:notseen)))
 
@@ -231,7 +232,7 @@
    :ldescription '("this is a very comfortable looking bench. ")
    :sdescription '("As you examine the bench you notice that there's "
 	           "something scratched into the wood.")
-   :synonym '("comfortable" "cosy" "comfy" "inviting")
+   :synonym '("comfortable" "cosy" "comfy" "inviting" "bench" "parkbench")
    :flags '((:fixed))
    :action '(:look-closer-v :read-inscription-f)))
 

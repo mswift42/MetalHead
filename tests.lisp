@@ -10,9 +10,6 @@
   (is (equal '(("east" *bedroom*) ("west" *housefront*))
 	     (:uexit *hallway*))))
 
-(test test-items-in-room
-  (is (equal '(*laptop* *clothes* *poster*)
-	     (items-in-room *bedroom*))))
 
 (test test-is-direction-p
   (is-true (is-direction-p '("go" "north")))

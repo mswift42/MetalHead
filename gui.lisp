@@ -51,7 +51,7 @@
        (funcall (action-for-symbol (is-action-p commandlist))))
       ((is-take-p (first commandlist))
        (take-command commandlist))
-      (t nil))))
+      (t (no-action)))))
 
 
 (defun split-string (string)
