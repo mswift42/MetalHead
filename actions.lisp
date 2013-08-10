@@ -260,7 +260,8 @@
 
 (defun no-exit ()
   "list to return when entered direction is not valid."
-  (list (random-string '("you cannot go that way." "there is no exit that way."))))
+  (list (random-string '
+	 ("you cannot go that way." "there is no exit that way."))))
 
 (defun no-action ()
   "list to return when command is not understood"
@@ -297,11 +298,12 @@
    appended by description of all items in current loc.
    If loc has been visited, return :ldescription of loc."
   (if (eq (first (:flags room)) :notseen)
-      (progn
+      (multiple-value-prog1
 	(append  (:fdescription room)
 		 (describe-list-of-items-in-location room)))
       (multiple-value-prog1
-	  (append (:ldescription room) (describe-list-of-items-in-location room))
+	  (append (:ldescription room)
+		  (describe-list-of-items-in-location room))
 	  (setf (:flags room) :seen))))
 
 ;; (defmethod items-in-room ((self loc))
@@ -350,7 +352,7 @@
   (let ((obj (find-synonym-in-location (last-element list))))
     (cond
       ((not obj) (no-object))
-      ((memboer :pick-up-v (flatten (:action obj)))
+      ((member :pick-up-v (flatten (:action obj)))
        (funcall
 	(convert-symbol (second (member :pick-up-v
 					 (flatten (:action obj)))))))

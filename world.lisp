@@ -98,9 +98,10 @@
 		   "main road. ")
    :ldescription '("this is the southern part of the main road.")
    :uexit '(("north" *main-road-north* '("to the north you can reach "
-					 "the city center.")))))
+					 "the city center.")))
+   :flags '(:notseen)))
 
-(defparameter *main-road-north*
+(defparameter *main-proad-north*
   (make-instance 'loc
    :fdescription '("You are in the center of your mediocre "
 		   "home town. Like many others of its brethren "
@@ -108,7 +109,8 @@
 		   "bad, hey, atleast it is not ,... (insert name "
 		   "of your rivaltown/most disliked town).")
    :ldescription '("This is the north part of your towns main road.")
-   :uexit '(("south" *main-road* '("the road leads from south to north.")))))
+   :uexit '(("south" *main-road* '("the road leads from south to north.")))
+   :flags '(:notseen)))
 
 
 (defparameter *pedestrian-street-west*
@@ -122,7 +124,8 @@
 		   "A gorgeous english garden with some nice shady "
 		   "spots and plenty of benches to rest.")
    :ldescription '("You are at the east entrance of a park.")
-   :uexit '(("west" *park-lane-east*) ("east" *housefront*))))
+   :uexit '(("west" *park-lane-east*) ("east" *housefront*))
+   :flags '(:notseen)))
 
 (defparameter *park-lane-east*
   (make-instance 'loc
@@ -152,7 +155,7 @@
 	    ("east" *park-lane-east* )
 	    ("west" *park-lane-west*))
    :things '(*bench*)
-   :flags '(:notseen)))
+   :flags '(:notseen) ))
 
 (defparameter *pond*
   (make-instance 'loc
@@ -173,7 +176,8 @@
 		   "rising your spirits, while your mp3 player blasts "
 		   "\"Sepulturas' Roots Bloody Roots\"")
    :ldescription '("You are in the western part of the inner city park. "
-		   "")))
+		   "")
+   :flags '(:notseen)))
 
 
 (defparameter *laptop*
