@@ -131,6 +131,7 @@
       (change-location *hallway*)))
 
 
+
 (defmethod update-flag ((i item) value)
   (setf (:flags i) value))
 

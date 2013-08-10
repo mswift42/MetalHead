@@ -5,15 +5,16 @@
 	   *player* *housefront* :fdescription :sdescription :ldescription
 	   :uexit *fish* :nexit :cexit :flags :things :name :synonym
 	   :action cexit-read-con :flags *park-center* *park-lane-east*
-	   *pond*  *bench* *park-lane-west*))
+	   *pond*  *bench* *park-lane-west* *off-licence* *library*
+	   *finnegans*))
 (in-package #:world)
 
 
 (defclass loc ()
   ((name :initarg :name :initform '() :accessor :name)
    (fdescription :initarg :fdescription :initform '() :reader :fdescription)
-   (ldescription :initarg :ldescription :initform '() :accessor :ldescription)
-   (sdescription :initarg :sdescription :initform '() :accessor :sdescription)
+   (ldescription :initarg :ldescription :initform '() :reader :ldescription)
+   (sdescription :initarg :sdescription :initform '() :reader :sdescription)
    (uexit :initarg :uexit :initform '() :accessor :uexit)
    (nexit :initarg :nexit :initform '() :accessor :nexit)
    (cexit :initarg :cexit :initform '() :accessor :cexit)
@@ -81,27 +82,53 @@
 		    "it's foamy head, water slowly condensing on the "
 		    "glass and the glorious sensation of a "
 		    "first sip, which tastes, as some say, like angels "
-		    "pissing in your mouth.")
+		    "pissing in your mouth.~%"
+		    "To the east you can get to your hallway. To the "
+		    "west is the entrance to a park. The main road is "
+		    "in the northwest from you and to the southwest you "
+		    "can see an off licence shop.")
     :ldescription '("You stand outside of your house.")
-    :uexit '(("east" *hallway*
-	      '("To the east you can get to your"
-		"hallway "))
-	     ("west" *park-entrance-east* '("and to west you can see "
-					    "the entrace to a small park."))
-	     ("northwest" *main-road* '("In the northwest you can see "
-					"this towns main road.")))
+    :uexit '(("east" *hallway*)
+	     ("west" *park-entrance-east* )
+	     ("northwest" *main-road* )
+	     ("southwest" *off-licence* ))
     :flags '(:notseen)))
+
+(defparameter *off-licence*
+  (make-instance 'loc
+   :name '("Outside Finnegan's Off-licence")
+   :fdescription '("You stand outside of one of those typical "
+		   "Off-licence / convenience stores. "
+		   "A big sign promises fantastic bargains and "
+		   "weekly special promotions. Well, hopefully "
+		   "they have one of those plenty of beer for very "
+		   "little money weeks.~%"
+		   "To the south is Finnegan's and the street leads from "
+		   "your house in the northeast to the library in "
+		   "the west.")
+   :uexit '(("south" *finnegans*) ("west" *library*)
+	    ("northeast" *housefront*))
+   :flags '(:notseen)))
+
+(defparameter *finnegans*
+  (make-instance 'loc
+   :name '("Finnegans Off-licence")
+   :fdescription '("This is Finnegan's off-licence and convenience "
+		   "store. Shelves packed with everyday goods, and "
+		   "a very nice selection of refreshing and "
+		   "overwhelmingly alcoholc beverages.~")
+   :uexit '("north" *off-licence*)
+   :flags '(:notseen)))
 
 (defparameter *main-road*
   (make-instance 'loc
    :fdescription '("You are at a busy stretch of your tiny towns "
 		   "main road. ")
    :ldescription '("this is the southern part of the main road.")
-   :uexit '(("north" *main-road-north* '("to the north you can reach "
-					 "the city center.")))
+   :uexit '(("north" *main-road-north* ))
    :flags '(:notseen)))
 
-(defparameter *main-proad-north*
+(defparameter *main-road-north*
   (make-instance 'loc
    :fdescription '("You are in the center of your mediocre "
 		   "home town. Like many others of its brethren "
@@ -177,6 +204,32 @@
 		   "\"Sepulturas' Roots Bloody Roots\"")
    :ldescription '("You are in the western part of the inner city park. "
 		   "")
+   :flags '(:notseen)))
+
+(defparameter *library*
+  (make-instance 'loc
+   :name '("Library")
+   :fdescription '("This is your towns library, a tall "
+		   "rather old looking building. Built "
+		   "at the beginning of the 19th century, but "
+		   "recently renovated, it looms before you in "
+		   "all its glory. To the south you can see its "
+		   "huge doors stand invitingly "
+		   "open.~%To to west is your best friends house and "
+		   "in the east you can see a small off-licence shop.")
+   :ldescription '("This is your towns library. Its wide doors are open")
+   :uexit '(("west" *friends-house*) ("east" *off-licence*))
+   :nexit '(("south" ("Really? , I don't know whether you have "
+		      "understood the premise of this game "
+		      "You are supposed to attend the live concert of "
+		      "the year!.~%"
+		      "This game is called~%~%"
+		      "\"Metalhead, the single most fun heavy-metal "
+		      "Mystery Romance Text Adventure\".~%~%"
+		      "It is not, I repeat, It is not called: ~%"
+		      "Bookfan, read a book at the local library.~%"
+		      "Although, now that I think about it, this sounds "
+		      "like a terrific idea for a sequel to this game.")))
    :flags '(:notseen)))
 
 
