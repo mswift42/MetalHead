@@ -171,6 +171,14 @@
   "entering password into laptop"
   '(" "))
 
+(defun press-doorbell-f ()
+  (multiple-value-prog1
+      '("You press the doorbell. With a startling amount "
+	"of noise, you hear the intro to Death's \"Leprosy\"~%"
+	"Maybe 20 seconds later, the door opens and your friend "
+	"beckons you inside.")
+    (setf (:cexit *friends-house*) '(("south" *friends-house* bell-rung t)))))
+
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
   (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
