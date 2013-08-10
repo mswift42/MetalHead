@@ -204,7 +204,8 @@
 		   "\"Sepulturas' Roots Bloody Roots\"")
    :ldescription '("You are in the western part of the inner city park. "
 		   "")
-   :flags '(:notseen)))
+   :flags '(:notseen)
+   :uexit '(("east" *park-center*))))
 
 (defparameter *library*
   (make-instance 'loc

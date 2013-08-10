@@ -181,8 +181,7 @@
 
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
-  (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
-    (setf (second (equalassoc "taken" (:flags *fish*))) (1+ counter))))
+  (incf (second (equalassoc "taken" (:flags *fish*))) ))
 
 (defun pick-up-trout-f ()
   "take the fish out off the pond."
@@ -223,12 +222,12 @@
   (:sdescription *poster*))
 
 (defun read-inscription-f ()
-  (print-list '("As you come closer to read the inscription in the "
-		"bench, you notice two things: A: the bench smells "
-		"of vomit, and B: the text written in the wood reads 
+  '("As you come closer to read the inscription in the "
+    "bench, you notice two things: A: the bench smells "
+    "of vomit, and B: the text written in the wood reads 
                 \"For a heavy time, go into the second toilet stall "
-		"in the golden goose\"\nWell, we can't pass up such "
-		"an opportunity now, can we?")))
+    "in the golden goose\"\nWell, we can't pass up such "
+    "an opportunity now, can we?"))
 
 (defparameter verb-synonyms
   '(("use" :use-v)
@@ -239,7 +238,8 @@
     ("wear" :wear-v)
     ("dress with" :wear-v)
     ("type password" :type-pass-v)
-    ("enter password" :type-pass-v))
+    ("enter password" :type-pass-v)
+    ("press" :use-v))
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
@@ -342,7 +342,7 @@
 	    (read-direction (first input))) (read-direction (first input)))
       ((and (= 2 len)
 	    (move-p (first input))
-	    (read-direction (second input))) (read-direction (second input)))
+ 	    (read-direction (second input))) (read-direction (second input)))
       (t nil))))
 
 (defun look-command-p (list)
