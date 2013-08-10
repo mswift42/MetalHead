@@ -23,6 +23,8 @@
 (defun current-location ()
   (:location *player*))
 
+(defgeneric change-loc (player loc))
+ 
 (defmethod change-loc ((self player) newlocation)
   "update *player* instance with new location."
   (setf (:location self) newlocation))
@@ -41,6 +43,9 @@
       ((equalassoc direction ne)
        (flatten (cons 'ne (equalassoc direction ne))))
       (t nil))))                                                             
+
+(defgeneric find-synonym (item string)
+  (:documentation "return synonym for item if found."))
 
 (defmethod find-synonym ((self item) string)
   "if synonym is in synonym list of item, return item
@@ -162,6 +167,10 @@
     "your clothes in your hands.~%"
     "You should maybe think about putting them on."))
 
+(defun enter-password-f ()
+  "entering password into laptop"
+  '(" "))
+
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
   (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
@@ -220,7 +229,9 @@
     ("power" :start-v)
     ("put on" :wear-v)
     ("wear" :wear-v)
-    ("dress with" :wear-v))
+    ("dress with" :wear-v)
+    ("type password" :type-pass-v)
+    ("enter password" :type-pass-v))
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)

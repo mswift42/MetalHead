@@ -232,6 +232,18 @@
 		      "like a terrific idea for a sequel to this game.")))
    :flags '(:notseen)))
 
+(defparameter *friends-house*
+  (make-instance 'loc
+   :name '("friends house")
+   :fdescription '("This is the small house your friend bought "
+		   "a couple of years ago. Some 30 years old, "
+		   "it is a cute, picturesque estate with a tiny "
+		   "patch of garden in front of it.~%")
+   :ldescription '("This is your friends house.")
+   :uexit '(("east" *library*) ("west" *ticket-office*))
+   :cexit '(("south" *friends-hallway* bell-rung nil))
+   :things '(*doorbell*)))
+
 
 (defparameter *laptop*
   (make-instance 'item 
@@ -245,7 +257,7 @@
 		   "Whats the color of grime again?")
    :action '((:use-v  :use-laptop-f)
 	     (:start-v :power-on-laptop-f)
-	     (:type-pass-v :crack-password-p)
+	     (:type-pass-v :enter-password-f)
 	     (:pick-up-v :take-laptop-f))                        
    :flags '(:poweroff :notseen)))
 
@@ -293,10 +305,15 @@
    :flags '((:fixed))
    :action '(:look-closer-v :read-inscription-f)))
 
-(defparameter *outside-shop*
-  (make-instance 'loc
-   :fdescription '("You stand outside of an small off-licnce shop."
-		   "")))
+(defparameter *doorbell*
+  (make-instance 'item
+   :name '("brass doorbell")
+   :synonym '("doorbell" "brass doorbell" "bell")
+   :fdescription '("You can see a big brass doorbell here.")
+   :flags '((:fixed))
+   :action'(:use-v :press-doorbell-f)))
+
+
 
 (defparameter *player*
   (make-instance 'player :location *bedroom*

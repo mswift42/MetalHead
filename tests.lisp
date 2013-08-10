@@ -1,4 +1,4 @@
-(load "actions.lisp")
+(load "~/MetalHead/actions.lisp")
 (ql:quickload "fiveam")
 
 (defpackage :tests
@@ -67,6 +67,7 @@
 (test test-is-action-p
   (is (eq :wear-v (is-action-p '("put" "on" "clothes"))))
   (is (eq :wear-v (is-action-p '("wear" "clothes")))))
+
 
 
 (fiveam:run!)
