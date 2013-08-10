@@ -1,5 +1,5 @@
 (ql:quickload "ltk")
-(load "actions.lisp")
+(load "~/MetalHead/actions.lisp")
 
 
 

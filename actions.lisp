@@ -15,7 +15,7 @@
 	   items-in-room print-list is-direction-p is-look-p look-command-p
 	   convert-symbol is-take-p take-command build-substring
 	   is-action-p action-for-symbol find-synonym-in-location
-	   find-synonym no-action take-clothes-f))
+	   find-synonym no-action take-clothes-f press-doorbell-f))
 
 (in-package #:actions)
 

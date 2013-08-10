@@ -242,7 +242,8 @@
    :ldescription '("This is your friends house.")
    :uexit '(("east" *library*) ("west" *ticket-office*))
    :cexit '(("south" *friends-hallway* bell-rung nil))
-   :things '(*doorbell*)))
+   :things '(*doorbell*)
+   :flags '(:notseen)))
 
 
 (defparameter *laptop*
