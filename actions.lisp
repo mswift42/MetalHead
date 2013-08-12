@@ -239,7 +239,8 @@
     ("dress with" :wear-v)
     ("type password" :type-pass-v)
     ("enter password" :type-pass-v)
-    ("press" :use-v))
+    ("press" :use-v)
+    ("examine" :look-closer-v))
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
@@ -319,12 +320,12 @@
    If loc has been visited, return :ldescription of loc."
   (if (eq (first (:flags room)) :notseen)
       (multiple-value-prog1
-	(append  (:fdescription room)
-		 (describe-list-of-items-in-location room)))
+	(append  (:name room) (:fdescription room)
+		 (describe-list-of-items-in-location room))
+	(setf (:flags room) '(:seen)) )
       (multiple-value-prog1
-	  (append (:ldescription room)
-		  (describe-list-of-items-in-location room))
-	  (setf (:flags room) :seen))))
+	  (append (:name room) (:ldescription room)
+		  (describe-list-of-items-in-location room)))))
 
 ;; (defmethod items-in-room ((self loc))
 ;;   (:things self))
