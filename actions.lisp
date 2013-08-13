@@ -135,10 +135,19 @@
 	"but for Fuck Sake please put on some clothes.")
       (change-location *hallway*)))
 
+(defgeneric update-flag (instance old new)
+  (:documentation "update flag list of location or item."))
 
+(defmethod update-flag ((l loc) old-value new-value)
+  (setf (:flags l)
+	(cons new-value (remove-if #'(lambda (x) (eq old-value x))
+				   (:flags l)))))
 
-(defmethod update-flag ((i item) value)
-  (setf (:flags i) value))
+(defmethod update-flag ((i item) old-value new-value)
+  (setf (:flags i)
+	(cons new-value (remove-if #'(lambda (x) (eq old-value x))
+				   (:flags i)))))
+
 
 ;; I'm using multiple-value-prog1 here because it evalutates it's
 ;; first argument and returns it, but silently evaluates the proceeding
@@ -150,7 +159,7 @@
 			"seconds your appearance changes from "
 			"ugly as hell to well below average handsome. "
 			  "Well done.")
-    (setf (:flags *clothes*) '(:wearing))
+    (update-flag *clothes* :notwearing :wearing)
     (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
     (take-object '*clothes*)))
 
@@ -217,7 +226,7 @@
 	  "into a fish pond, and you have a stinking fish in "
 	  "your jeans. (This is not a metaphor)")
 	 (take-object *fish*))))))
-
+ 
 (defun describe-poster ()
   (:sdescription *poster*))
 
@@ -318,11 +327,11 @@
   "if visiting loc for first time return list of :fdesc room
    appended by description of all items in current loc.
    If loc has been visited, return :ldescription of loc."
-  (if (eq (first (:flags room)) :notseen)
+  (if (member :notseen (:flags room))
       (multiple-value-prog1
 	(append  (:name room) (:fdescription room)
 		 (describe-list-of-items-in-location room))
-	(setf (:flags room) '(:seen)) )
+	(update-flag room :notseen :seen) )
       (multiple-value-prog1
 	  (append (:name room) (:ldescription room)
 		  (describe-list-of-items-in-location room)))))
@@ -389,7 +398,7 @@
      (second (equalassoc (first list) verb-synonyms)))
     ((equalassoc (build-substring list) verb-synonyms)
      (second (equalassoc (build-substring list) verb-synonyms)))
-    (t nil)))
+     (t nil)))
 
 (defun build-substring (list)
   "concatenate first and second word in list to single string"
