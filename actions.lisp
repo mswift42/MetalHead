@@ -29,6 +29,8 @@
   "update *player* instance with new location."
   (setf (:location self) newlocation))
 
+(defgeneric exit-lst (loc direction))
+
 (defmethod exit-lst ((self loc) direction)
   "return list with type of exit + list of next loc 
    and text/condition for nexit and cexit lists."

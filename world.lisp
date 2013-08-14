@@ -6,7 +6,8 @@
 	   :uexit *fish* :nexit :cexit :flags :things :name :synonym
 	   :action cexit-read-con :flags *park-center* *park-lane-east*
 	   *pond*  *bench* *park-lane-west* *off-licence* *library*
-	   *finnegans* *friends-house* *doorbell*))
+	   *finnegans* *friends-house* *doorbell* *ticket-office*
+	   *pedestrian-street-east* *pedestrian-street-west* ))
 (in-package #:world)
 
 
@@ -38,6 +39,7 @@
 
 (defparameter *bedroom*
   (make-instance 'loc
+		 :name '("bedroom~%~%")
 		 :fdescription '("This is your bedroom. It has the "
 				 "usual bedroom stuff, for example "
 				 "there is a bed and other bedroom stuff.")
@@ -56,6 +58,7 @@
 
 (defparameter *hallway*
   (make-instance 'loc
+   :name '("hallway~%~%")
    :fdescription '("You are in your hallway leading from your "
 		   "bedroom in the east to the frontdoor in the west. "
 		   "It's wallpaper has this lovely charming colormixture "
@@ -71,6 +74,7 @@
 
 (defparameter *housefront*
   (make-instance 'loc
+    :name '("Outside your house~%~%")
     :fdescription '("You leave your house and find yourself at an "
 		    "absolutely marvellous spring day. It is warm, "
 		    "sunny an the birds are singing. It's exactly "
@@ -96,7 +100,7 @@
 
 (defparameter *off-licence*
   (make-instance 'loc
-   :name '("Outside Finnegan's Off-licence")
+   :name '("Outside Finnegan's Off-licence~%~%")
    :fdescription '("You stand outside of one of those typical "
 		   "Off-licence / convenience stores. "
 		   "A big sign promises fantastic bargains and "
@@ -112,7 +116,7 @@
 
 (defparameter *finnegans*
   (make-instance 'loc
-   :name '("Finnegans Off-licence")
+   :name '("Finnegans Off-licence~%~%")
    :fdescription '("This is Finnegan's off-licence and convenience "
 		   "store. Shelves packed with everyday goods, and "
 		   "a very nice selection of refreshing and "
@@ -122,6 +126,7 @@
 
 (defparameter *main-road*
   (make-instance 'loc
+   :name '("main road~%~%")
    :fdescription '("You are at a busy stretch of your tiny towns "
 		   "main road. ")
    :ldescription '("this is the southern part of the main road.")
@@ -130,6 +135,7 @@
 
 (defparameter *main-road-north*
   (make-instance 'loc
+   :name '("main road north~%~%")
    :fdescription '("You are in the center of your mediocre "
 		   "home town. Like many others of its brethren "
 		   "it certainly has seen better times, but not all is "
@@ -142,7 +148,7 @@
 
 (defparameter *pedestrian-street-east*
   (make-instance 'loc
-   :name '("pedestrian street")
+   :name '("pedestrian street~%~%")
    :fdescription '("This is what they call the \"High Street\""
 		   "A cobblestone road and loads of stores and "
 		   "betting shops. ")
@@ -153,7 +159,7 @@
 
 (defparameter *ticket-office*
   (make-instance 'loc
-   :name '("Ticket Office")
+   :name '("Ticket Office~%~%")
    :fdescription '("You stand outside the local concert hall's "
 		   "ticket office. A metal box, about 3 x 2 "
 		   "meters big, it is, except for a small glass "
@@ -186,7 +192,8 @@
    :flags '(:notseen)))
 
 (defparameter *park-entrance-east*
-  (make-instance 'loc 
+  (make-instance 'loc
+   :name '("park entrance east~%~%")
    :fdescription '("This is the entrance to a beautiful little park. "
 		   "A gorgeous english garden with some nice shady "
 		   "spots and plenty of benches to rest.")
@@ -196,6 +203,7 @@
 
 (defparameter *park-lane-east*
   (make-instance 'loc
+   :name '("park lane east~%~%")
    :fdescription '("You are on a small footpath in a beautiful park. "
 		   "Tall chestnut trees provide a welcome shadow on "
 		   "this marvellous day. To the west you can reach "
@@ -209,6 +217,7 @@
 
 (defparameter *park-center*
   (make-instance 'loc
+   :name '("park center~%~%")
    :fdescription '("This is the centerpiece of this municipal "
 		   "master piece. A wide english lawn inviting "
 		   "you to lie down and have a nap, or to play "
@@ -226,6 +235,7 @@
 
 (defparameter *pond*
   (make-instance 'loc
+   :name '("pond~%~%")
    :fdescription '("You are at a tiny pond, holding very clear water, "
 		   "so clear in fact, that you can count all its fish.")
    :ldescription '("You stand at a tiny little pond.")
@@ -236,6 +246,7 @@
 
 (defparameter *park-lane-west*
   (make-instance 'loc
+   :name '("park lane west~%~%")
    :fdescription '("This is the western part of this inner city park. "
 		   "Plenty of trees provide a cooling shadow, "
 		   "the flowers are in quite remarkable shape and "
@@ -249,7 +260,7 @@
 
 (defparameter *library*
   (make-instance 'loc
-   :name '("Library")
+   :name '("Library~%~%")
    :fdescription '("This is your towns library, a tall "
 		   "rather old looking building. Built "
 		   "at the beginning of the 19th century, but "
@@ -275,7 +286,7 @@
 
 (defparameter *friends-house*
   (make-instance 'loc
-   :name '("friends house")
+   :name '("friends house~%~%")
    :fdescription '("This is the small house your friend bought "
 		   "a couple of years ago. Some 30 years old, "
 		   "it is a cute, picturesque estate with a tiny "

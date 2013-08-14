@@ -18,7 +18,8 @@
 
 (defun make-frame ()
   (with-ltk ()
-    (let* ((f (make-instance 'frame :padding "\"3 3 3 3\""))
+    (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
+			     :relief :groove))
 	   (scroll (make-instance 'scrolled-text :master f))
 	   (outtext (textbox scroll)))
       (pack f )
@@ -28,7 +29,7 @@
       (pack *text-field* :side  :bottom :expand nil)
       (bind *text-field* "<KeyPress-Return>"
 	    (lambda (event) (format-output outtext)))
-      (configure f :borderwidth 2))))
+      (configure f :borderwidth 1))))
 
 
 (defun format-output (target)
