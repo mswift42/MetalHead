@@ -390,6 +390,10 @@
        (take-object (last-element list)))
       (t '("You cannot take that!")))))
 
+(defun build-substring (list)
+  "concatenate first and second word in list to single string"
+  (concatenate 'string (first list) " " (second list))) 
+
 (defun is-action-p (list)
   "return action flag from verb synonyms if entered command is 
    a action command"
@@ -400,9 +404,7 @@
      (second (equalassoc (build-substring list) verb-synonyms)))
      (t nil)))
 
-(defun build-substring (list)
-  "concatenate first and second word in list to single string"
-  (concatenate 'string (first list) " " (second list)))
+
 
 
 

@@ -140,10 +140,50 @@
    :flags '(:notseen)))
 
 
+(defparameter *pedestrian-street-east*
+  (make-instance 'loc
+   :name '("pedestrian street")
+   :fdescription '("This is what they call the \"High Street\""
+		   "A cobblestone road and loads of stores and "
+		   "betting shops. ")
+   :ldescription '("The road leads from the main road in the southeast to west")
+   :uexit '(("southeast" *main-road-north*) ("north" *arcade-hall*)
+	    ("west" *pedestrian-street-west*))
+   :flags '(:notseen)))
+
+(defparameter *ticket-office*
+  (make-instance 'loc
+   :name '("Ticket Office")
+   :fdescription '("You stand outside the local concert hall's "
+		   "ticket office. A metal box, about 3 x 2 "
+		   "meters big, it is, except for a small glass "
+		   "window, completely covered with posters "
+		   "depicting recent and upcoming events. "
+		   "To the north is the concert hall and in "
+		   "the northeast you can see your friends house. ")
+   :ldescription '("The ticket office. "
+		   "To the north is the concert hall and in "
+		   "the northeast you can see your friends house. ")
+   :uexit '(("north" *concert-hall*)
+	    ("southeast" *friends-house*))
+   :flags '(:notseen)))
+
+
+
 (defparameter *pedestrian-street-west*
   (make-instance 'loc
-   :fdescription '("A nicely paved pedestrian street marks the "
-		   "beginning of the part of ")))
+   :name '("Outside the Happy Goose")
+   :fdescription '("You are at the end of your town's High Street. "
+		   "People are milling about, doing their shopping "
+		   "or just having a walk, while your eyes get "
+		   "invariably drawn to a pub in the west, where "
+		   "they are already setting up tables outside. ")
+   :ldescription '("This is a pedestrian road going from east to "
+		   "the concert hall in the southwest. "
+		   "In the north you can see a pub. ")
+   :uexit '(("east" *pedestrian-street-west*) ("southwest" *concert-hall*))
+   :cexit '(("north" *pub* :pub-open-v nil))
+   :flags '(:notseen)))
 
 (defparameter *park-entrance-east*
   (make-instance 'loc 
@@ -314,6 +354,9 @@
    :fdescription '("You can see a big brass doorbell here.")
    :flags '((:fixed))
    :action'(:use-v :press-doorbell-f)))
+
+
+
 
 
 
