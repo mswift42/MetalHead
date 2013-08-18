@@ -110,6 +110,10 @@
 		   "To the south is Finnegan's and the street leads from "
 		   "your house in the northeast to the library in "
 		   "the west.")
+   :ldescription '("You are outside of Finnegan's off-licence. To "
+		   "the south is the entrance to the sop and the "
+		   "street leads from your house in the northeast "
+		   "to the library in the west.")
    :uexit '(("south" *finnegans*) ("west" *library*)
 	    ("northeast" *housefront*))
    :flags '(:notseen)))
@@ -120,7 +124,7 @@
    :fdescription '("This is Finnegan's off-licence and convenience "
 		   "store. Shelves packed with everyday goods, and "
 		   "a very nice selection of refreshing and "
-		   "overwhelmingly alcoholc beverages.~")
+		   "overwhelmingly alcoholc beverages.~%")
    :uexit '("north" *off-licence*)
    :flags '(:notseen)))
 
@@ -209,7 +213,9 @@
 		   "this marvellous day. To the west you can reach "
 		   "the center of this park, to the east leads a "
 		   "path towards your house.")
-   :ldescription '("you are on a small path in the park.")
+   :ldescription '("you are on a small path in the park. "
+		   "East is the park entrance and to the west is the "
+		   "center of this little park. ")
    :sdescription '()
    :uexit '(("west" *park-center*)
 	    ("east" *park-entrance-east*))                                   
@@ -237,10 +243,11 @@
   (make-instance 'loc
    :name '("pond~%~%")
    :fdescription '("You are at a tiny pond, holding very clear water, "
-		   "so clear in fact, that you can count all its fish.")
-   :ldescription '("You stand at a tiny little pond.")
-   :uexit '(("north" *park-center* '("to the north you can get "
-				     "back to the park center.")))
+		   "so clear in fact, that you can count all its fish. "
+		   "You can get back to the center of this park in the north. ")
+   :ldescription '("You stand at a tiny little pond. To the north is the "
+		   "park center. ")
+   :uexit '(("north" *park-center* ))
    :things '(*fish*)
    :flags '(:notseen)))
 
@@ -252,11 +259,15 @@
 		   "the flowers are in quite remarkable shape and "
 		   "the air smells fresh and clean. This all helps in "
 		   "rising your spirits, while your mp3 player blasts "
-		   "\"Sepulturas' Roots Bloody Roots\"")
+		   "\"Sepulturas' Roots Bloody Roots\" "
+		   "In your east is the park center and to the west "
+		   "is a park exit.")
    :ldescription '("You are in the western part of the inner city park. "
-		   "")
+		   "This is a small path leading from the center of "
+		   "the park in the east to an park exit to the west.")
    :flags '(:notseen)
-   :uexit '(("east" *park-center*))))
+   :uexit '(("east" *park-center*)
+	    ("west" *park-entrance-west*))))
 
 (defparameter *library*
   (make-instance 'loc
@@ -269,7 +280,9 @@
 		   "huge doors stand invitingly "
 		   "open.~%To to west is your best friends house and "
 		   "in the east you can see a small off-licence shop.")
-   :ldescription '("This is your towns library. Its wide doors are open")
+   :ldescription '("This is your towns library. Its wide doors are open ."
+		   "To the west is your best friends house and in the "
+		   "east you can see a small off-licence shop.")
    :uexit '(("west" *friends-house*) ("east" *off-licence*))
    :nexit '(("south" ("Really? , I don't know whether you have "
 		      "understood the premise of this game "
@@ -290,13 +303,16 @@
    :fdescription '("This is the small house your friend bought "
 		   "a couple of years ago. Some 30 years old, "
 		   "it is a cute, picturesque estate with a tiny "
-		   "patch of garden in front of it.~%")
-   :ldescription '("This is your friends house.")
+		   "patch of garden in front of it.~%"
+		   "To the east is the library and to the "
+		   "west, you can see the ticket office.")
+   :ldescription '("This is your friends house. "
+		   "To the east is the library and to the "
+		   "west is the concert hall ticket office.")
    :uexit '(("east" *library*) ("west" *ticket-office*))
    :cexit '(("south" *friends-hallway* bell-rung nil))
    :things '(*doorbell*)
    :flags '(:notseen)))
-
 
 (defparameter *laptop*
   (make-instance 'item 
@@ -312,7 +328,7 @@
 	     (:start-v :power-on-laptop-f)
 	     (:type-pass-v :enter-password-f)
 	     (:pick-up-v :take-laptop-f))                        
-   :flags '(:poweroff :notseen)))
+    :flags '(:poweroff :notseen)))
 
 (defparameter *clothes*
   (make-instance 'item
@@ -365,7 +381,6 @@
    :fdescription '("You can see a big brass doorbell here.")
    :flags '((:fixed))
    :action'(:use-v :press-doorbell-f)))
-
 
 
 

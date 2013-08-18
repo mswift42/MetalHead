@@ -61,6 +61,8 @@
   (some #'(lambda (x) (find-synonym (symbol-value x) string))
 	(:things (current-location))))
 
+
+
 (defun take-object (item)
   "put item into inventory, delete item from location."
   (push item (:inventory *player*))
@@ -140,15 +142,17 @@
 (defgeneric update-flag (instance old new)
   (:documentation "update flag list of location or item."))
 
-(defmethod update-flag ((l loc) old-value new-value)
-  (setf (:flags l)
+(defmethod update-flag ((self loc) old-value new-value)
+  (setf (:flags self)
 	(cons new-value (remove-if #'(lambda (x) (eq old-value x))
-				   (:flags l)))))
+				   (:flags self)))))
 
-(defmethod update-flag ((i item) old-value new-value)
-  (setf (:flags i)
+(defmethod update-flag ((self item) old-value new-value)
+  (setf (:flags self)
 	(cons new-value (remove-if #'(lambda (x) (eq old-value x))
-				   (:flags i)))))
+				   (:flags self)))))
+
+
 
 
 ;; I'm using multiple-value-prog1 here because it evalutates it's
@@ -164,6 +168,13 @@
     (update-flag *clothes* :notwearing :wearing)
     (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
     (take-object '*clothes*)))
+
+;; (defmacro action-sequence ()
+;;   (if pred
+;;       `(if ,pred
+;; 	   (multiple-value-prog1 ,@body)
+;; 	   (multiple-value-prog1 ,@body2))))
+
 
 (defun take-laptop-f ()
   '("You cannot take it. It's too heavy, "
@@ -411,7 +422,7 @@
 
 
 (defun no-object ()
-  '("There is no such thing here"))
+  '("There is no such thing "))
 
 
 
