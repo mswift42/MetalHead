@@ -169,11 +169,7 @@
     (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
     (take-object '*clothes*)))
 
-;; (defmacro action-sequence ()
-;;   (if pred
-;;       `(if ,pred
-;; 	   (multiple-value-prog1 ,@body)
-;; 	   (multiple-value-prog1 ,@body2))))
+
 
 
 (defun take-laptop-f ()
@@ -250,6 +246,8 @@
                 \"For a heavy time, go into the second toilet stall "
     "in the golden goose\"\nWell, we can't pass up such "
     "an opportunity now, can we?"))
+
+
 
 (defparameter verb-synonyms
   '(("use" :use-v)

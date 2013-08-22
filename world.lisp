@@ -72,6 +72,7 @@
 
 
 
+
 (defparameter *housefront*
   (make-instance 'loc
     :name '("Outside your house~%~%")
@@ -117,6 +118,8 @@
    :uexit '(("south" *finnegans*) ("west" *library*)
 	    ("northeast" *housefront*))
    :flags '(:notseen)))
+
+
 
 (defparameter *finnegans*
   (make-instance 'loc
@@ -177,6 +180,20 @@
    :uexit '(("north" *concert-hall*)
 	    ("southeast" *friends-house*))
    :flags '(:notseen)))
+
+(defparameter *concert-hall*
+  (make-instance 'loc
+   :name '("Concert Hall")
+   :fdescription '("This is the town's concert hall. A modern "
+		   "looking sort of bauhaus style building, "
+		   "it holds some 8000 people, when fully "
+		   "sold out.  Westwards is it's entrance, "
+		   "south is the ticket office and to the northeast "
+		   "you can see a pedestrian street. ") 
+   :ldescription '("This is the town's concert hall. "
+		   "Westwards is it's entrance, south is the ticket office and "
+		   "to the northeast you can see a pedestrian "
+		   "street.")))
 
 
 

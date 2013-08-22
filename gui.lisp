@@ -14,18 +14,19 @@
 
 (defparameter *text-field*
   (make-instance 'text
-		 :font "monospaced"))
+		 :font "monospaced" :background "#242424"
+		 :foreground "#ff9800"))
 
 (defun make-frame ()
   (with-ltk ()
     (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
-			     :relief :groove))
+			     :relief :groove ))
 	   (scroll (make-instance 'scrolled-text :master f))
 	   (outtext (textbox scroll)))
       (pack f )
       (configure outtext :font "monospaced"
-		 :background "#e4d2c9" :wrap :word )
-      (pack scroll :anchor :nw :expand t :fill :both :ipady 100 )
+		 :background "#202020" :foreground "#ffffff" :wrap :word )
+      (pack scroll :anchor :nw :expand t :fill :both :ipady 100)
       (pack *text-field* :side  :bottom :expand nil)
       (bind *text-field* "<KeyPress-Return>"
 	    (lambda (event) (format-output outtext)))
@@ -39,7 +40,8 @@
   (append-text target (format nil "~%~%> ~A" (text *text-field*)))
   (push (split-string (text *text-field*)) *store-string*)
   (clear-text *text-field*)
-  (append-text target (format nil (print-list (parse-command)))))
+  (append-text target (format nil (print-list (parse-command))))
+  (see target "end"))
 
 (defun parse-command ()
   (let ((commandlist (entnewlinify *store-string*)))
