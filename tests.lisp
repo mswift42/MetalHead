@@ -10,7 +10,7 @@
   (is (equal '(("east" *bedroom*) ("west" *housefront*))
 	     (:uexit *hallway*))))
 
-
+(eq )
 (test test-is-direction-p
   (is-true (is-direction-p '("go" "north")))
   (is-true (is-direction-p '("west")))
@@ -67,6 +67,8 @@
 (test test-is-action-p
   (is (eq :wear-v (is-action-p '("put" "on" "clothes"))))
   (is (eq :wear-v (is-action-p '("wear" "clothes")))))
+
+
 
 
 

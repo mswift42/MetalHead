@@ -9,17 +9,18 @@
   (:export *text-field make-frame format-output
 	   *store-string* entnewlinify))
 
+
 (in-package :gui)
 
 
 (defparameter *text-field*
   (make-instance 'text
-		 :font "monospaced" :background "#242424"
+		 :font "monospaced" :background "#343434"
 		 :foreground "#ff9800"))
 
 (defun make-frame ()
   (with-ltk ()
-    (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
+     (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
 			     :relief :groove ))
 	   (scroll (make-instance 'scrolled-text :master f))
 	   (outtext (textbox scroll)))

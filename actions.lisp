@@ -62,7 +62,6 @@
 	(:things (current-location))))
 
 
-
 (defun take-object (item)
   "put item into inventory, delete item from location."
   (push item (:inventory *player*))
@@ -135,7 +134,7 @@
 	"There are plenty beautiful sights in this "
 	"world. You are not one of them. "
 	"When God made you he was either drunk or bored. "
-	"Maybe he was just spiteful "
+ 	"Maybe he was just spiteful "
 	"but for Fuck Sake please put on some clothes.")
       (change-location *hallway*)))
 
@@ -246,6 +245,9 @@
                 \"For a heavy time, go into the second toilet stall "
     "in the golden goose\"\nWell, we can't pass up such "
     "an opportunity now, can we?"))
+
+(defun talk-to-tony-f ()
+   )
 
 
 
@@ -395,8 +397,8 @@
       ((not obj) (no-object))
       ((member :pick-up-v (flatten (:action obj)))
        (funcall
-	(convert-symbol (second (member :pick-up-v
-					 (flatten (:action obj)))))))
+	(convert-symbol
+	 (second (member :pick-up-v (flatten (:action obj)))))))
       ((not (member :fixed (:flags obj)))
        (take-object (last-element list)))
       (t '("You cannot take that!")))))

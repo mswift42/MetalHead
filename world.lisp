@@ -7,7 +7,9 @@
 	   :action cexit-read-con :flags *park-center* *park-lane-east*
 	   *pond*  *bench* *park-lane-west* *off-licence* *library*
 	   *finnegans* *friends-house* *doorbell* *ticket-office*
-	   *pedestrian-street-east* *pedestrian-street-west* ))
+	   *pedestrian-street-east* *pedestrian-street-west*
+	   *friends-hallway* *living-room* *tony*))
+
 (in-package #:world)
 
 
@@ -47,11 +49,6 @@
 				 "should seriously think about "
 				 "cleaning it up.")
    :cexit '(("west" *hallway* wear-clothes nil ))
-   
-   :nexit '(("east" ("did you seriously think about leaving "
-		     "by the window? I know you had a rough "
-		     "night but please use the door "
-		     "like normal people.")))
    :things '(*laptop* *clothes* *poster*)
    :flags '(:notseen)))
 
@@ -60,11 +57,11 @@
   (make-instance 'loc
    :name '("hallway~%~%")
    :fdescription '("You are in your hallway leading from your "
-		   "bedroom in the east to the frontdoor in the west. "
-		   "It's wallpaper has this lovely charming colormixture "
+		   "bedroom in the east to the front door in the west. "
+		   "It's wallpaper has this lovely charming mixture "
 		   "of nicotine stain and sun faded cardboard. yikes.")
    :ldescription '("the hallway. A narrow thing leading from "
-		   "your bedroom to the east to your frontdoor "
+		   "your bedroom to the east to your front door "
 		   "leading into town to the west.")
    :uexit '(("east" *bedroom*)
 	    ("west" *housefront*))
@@ -80,10 +77,10 @@
 		    "absolutely marvellous spring day. It is warm, "
 		    "sunny an the birds are singing. It's exactly "
 		    "the sort of day that makes everyone happy, the "
-		    "kind of day where heros are made (you know "
+		    "kind of day where heroes are made (you know "
 		    "in the bees and flowers having sex sort of "
 		    "way).~%It is also of course the kind of day that "
-		    "makes you crave for a cool pint of Guiness with "
+		    "makes you crave for a cool pint of Guinness with "
 		    "it's foamy head, water slowly condensing on the "
 		    "glass and the glorious sensation of a "
 		    "first sip, which tastes, as some say, like angels "
@@ -123,11 +120,11 @@
 
 (defparameter *finnegans*
   (make-instance 'loc
-   :name '("Finnegans Off-licence~%~%")
+   :name '("Finnegan's Off-licence~%~%")
    :fdescription '("This is Finnegan's off-licence and convenience "
 		   "store. Shelves packed with everyday goods, and "
 		   "a very nice selection of refreshing and "
-		   "overwhelmingly alcoholc beverages.~%")
+		   "overwhelmingly alcoholic beverages.~%")
    :uexit '("north" *off-licence*)
    :flags '(:notseen)))
 
@@ -143,11 +140,11 @@
 (defparameter *main-road-north*
   (make-instance 'loc
    :name '("main road north~%~%")
-   :fdescription '("You are in the center of your mediocre "
+   :fdescription '("You are in the centre of your mediocre "
 		   "home town. Like many others of its brethren "
 		   "it certainly has seen better times, but not all is "
-		   "bad, hey, atleast it is not ,... (insert name "
-		   "of your rivaltown/most disliked town).")
+		   "bad, hey, at least it is not ,... (insert name "
+		   "of your rival town/most disliked town).")
    :ldescription '("This is the north part of your towns main road.")
    :uexit '(("south" *main-road* '("the road leads from south to north.")))
    :flags '(:notseen)))
@@ -185,7 +182,7 @@
   (make-instance 'loc
    :name '("Concert Hall")
    :fdescription '("This is the town's concert hall. A modern "
-		   "looking sort of bauhaus style building, "
+		   "looking sort of Bauhaus style building, "
 		   "it holds some 8000 people, when fully "
 		   "sold out.  Westwards is it's entrance, "
 		   "south is the ticket office and to the northeast "
@@ -228,11 +225,11 @@
    :fdescription '("You are on a small footpath in a beautiful park. "
 		   "Tall chestnut trees provide a welcome shadow on "
 		   "this marvellous day. To the west you can reach "
-		   "the center of this park, to the east leads a "
+		   "the centre of this park, to the east leads a "
 		   "path towards your house.")
    :ldescription '("you are on a small path in the park. "
 		   "East is the park entrance and to the west is the "
-		   "center of this little park. ")
+		   "centre of this little park. ")
    :sdescription '()
    :uexit '(("west" *park-center*)
 	    ("east" *park-entrance-east*))                                   
@@ -240,14 +237,14 @@
 
 (defparameter *park-center*
   (make-instance 'loc
-   :name '("park center~%~%")
-   :fdescription '("This is the centerpiece of this municipal "
+   :name '("park centre~%~%")
+   :fdescription '("This is the centrepiece of this municipal "
 		   "master piece. A wide english lawn inviting "
 		   "you to lie down and have a nap, or to play "
 		   "a round of some football.\n"
 		   "To the south you can see a little pond and a path "
 		   "leads through the park from east to west.")
-   :ldescription '("this is the center of the little city park."
+   :ldescription '("this is the centre of the little city park."
 		   "To the south you can see a little pond and a path "
 		   "leads through the park from east to west.")
    :uexit '(("south" *pond*)
@@ -261,9 +258,9 @@
    :name '("pond~%~%")
    :fdescription '("You are at a tiny pond, holding very clear water, "
 		   "so clear in fact, that you can count all its fish. "
-		   "You can get back to the center of this park in the north. ")
+		   "You can get back to the centre of this park in the north. ")
    :ldescription '("You stand at a tiny little pond. To the north is the "
-		   "park center. ")
+		   "park centre. ")
    :uexit '(("north" *park-center* ))
    :things '(*fish*)
    :flags '(:notseen)))
@@ -277,10 +274,10 @@
 		   "the air smells fresh and clean. This all helps in "
 		   "rising your spirits, while your mp3 player blasts "
 		   "\"Sepulturas' Roots Bloody Roots\" "
-		   "In your east is the park center and to the west "
+		   "In your east is the park centre and to the west "
 		   "is a park exit.")
    :ldescription '("You are in the western part of the inner city park. "
-		   "This is a small path leading from the center of "
+		   "This is a small path leading from the centre of "
 		   "the park in the east to an park exit to the west.")
    :flags '(:notseen)
    :uexit '(("east" *park-center*)
@@ -309,7 +306,7 @@
 		      "\"Metalhead, the single most fun heavy-metal "
 		      "Mystery Romance Text Adventure\".~%~%"
 		      "It is not, I repeat, It is not called: ~%"
-		      "Bookfan, read a book at the local library.~%"
+		      "Book fan, read a book at the local library.~%"
 		      "Although, now that I think about it, this sounds "
 		      "like a terrific idea for a sequel to this game.")))
    :flags '(:notseen)))
@@ -331,6 +328,66 @@
    :things '(*doorbell*)
    :flags '(:notseen)))
 
+
+(defparameter *friends-hallway*
+  (make-instance 'loc
+   :name '("hallway")
+   :fdescription '("You enter a lengthy hallway. "
+		   "If you had a coat, you could "
+		   "hang it on a coat rack next to the "
+		   "door, however, as it's August, you "
+		   "naturally are not wearing one, and I "
+		   "have just wasted 38 words telling you about "
+		   "it. While we are talking, the other day, I saw "
+		   "a guy, maybe 20 years old, wearing the stupidest "
+		   "mustache you could imagine. It was hilariously "
+		   "horrible, like he spent a lot of effort and years "
+		   "in growing it, so he couldn't admit failure "
+		   "and cut the damn thing off. Even if you were a "
+		   "mustache aficionado, and I seriously hope you "
+		   "are not, you'd advise him to shave it, or better "
+		   "still, burn it off. Honestly, it looked like a "
+		   "cheap glue-it-on fake mustache, and to add insult "
+		   "to injury, it was in no way symmetrical, "
+		   "completely crooked, and had the appearance of "
+		   "hair coloured weeds.~%Well, enough ranting, "
+		   "you are still in a hallway, to the north is the exit "
+		   "and Tony is waiting for you to the south in his "
+		   "living room. ")
+   :ldescription '("A lengthy hallway. To the south is a living room "
+		   "and the north is the exit to the street. ")
+   :things '(*coatrack*)
+   :cexit '(("south" *living-room* bough-beer-v nil))
+   :uexit '(("north" *friends-house*))
+   :flags '(:notseen)))
+
+(defparameter *living-room*
+  (make-instance 'loc
+   :name '("Living room")
+   :fdescription '("This is Tony's living room. "
+		   "A spacious 20 sqm, dominated by a huge "
+		   "flatscreen mounted on the wall to the east. "
+		   "You sit down on a big couch, nearly drowning "
+		   "in a rather unmanly amount of pillows. ")
+   :ldescription '("Tony's living room. A big couch and a big "
+		   "telly. To the north is the hallway. ")
+   :things '(*tony*)
+   :uexit '("north" *friends-hallway*)
+   :flags '(:notseen)))
+
+(defparameter *tony*
+  (make-instance 'item
+   :name '("Tony")
+   :synonym '("Tony" "best friend" "friend")
+   :fdescription '("Tony is sitting on the couch and looking at "
+		   "you expectantly. ")
+   :ldescription '("It's you best friend Tony. Sporting a t-shirt "
+		   "showing Maiden's Powerslave cover, and looking "
+		   "thirsty. ")
+   :flags '(:fixed)
+   :action '(:talk-to-v :talk-to-tony-f)))
+
+
 (defparameter *laptop*
   (make-instance 'item 
    :name '("laptop")
@@ -340,7 +397,7 @@
 		   "but money is very expensive so you still "
 		   "make do with it." )
    :sdescription '("your laptop. It used to be black. "
-		   "Whats the color of grime again?")
+		   "Whats the colour of grime again?")
    :action '((:use-v  :use-laptop-f)
 	     (:start-v :power-on-laptop-f)
 	     (:type-pass-v :enter-password-f)
@@ -371,7 +428,7 @@
 
 (defparameter *fish*
    (make-instance 'item
-   :name '("healty rainbow trout.")
+   :name '("healthy rainbow trout.")
    :synonym '("trout" "fish")
    :fdescription '("There is one big trout in the pond.")
    :ldescription '("you are looking at a very healthy and "
@@ -387,7 +444,7 @@
    :ldescription '("this is a very comfortable looking bench. ")
    :sdescription '("As you examine the bench you notice that there's "
 	           "something scratched into the wood.")
-   :synonym '("comfortable" "cosy" "comfy" "inviting" "bench" "parkbench")
+   :synonym '("comfortable" "cosy" "comfy" "inviting" "bench" "park bench")
    :flags '((:fixed))
    :action '(:look-closer-v :read-inscription-f)))
 
@@ -410,3 +467,4 @@
 
 
 
+ 
