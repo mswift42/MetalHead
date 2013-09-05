@@ -186,11 +186,58 @@
 		   "it holds some 8000 people, when fully "
 		   "sold out.  Westwards is it's entrance, "
 		   "south is the ticket office and to the northeast "
-		   "you can see a pedestrian street. ") 
+		   "you can see a pedestrian street. To the "
+		   "northwest is a small back alley. ") 
    :ldescription '("This is the town's concert hall. "
 		   "Westwards is it's entrance, south is the ticket office and "
 		   "to the northeast you can see a pedestrian "
-		   "street.")))
+		   "street. A small back alley is to the northwest. ")
+   :uexit '(("south" *ticket-office*) ("northeast" *pedestrian-street-west*)
+	    ("northwest" *back-alley*))
+   :nexit '(("west" '("You can get only in there with a valid ticket. "
+		      "You don't have one. Ergo, you cannot go there. ")))
+   :flags '(:notseen)))
+
+(defparameter *back-alley*
+  (make-instance 'loc
+   :name '("Concert Hall, Back Alley")
+   :fdescription '("This is a small back alley, belonging to the "
+		   "concert hall. To the southside of the concert hall, "
+		   "you can see a  open window. You can get back to the concert "
+		   "hall front to the southeast. To the southwest is a staircase "
+		   "leading downwards. ")
+   :ldescription '("You are in a small back alley of the concert hall. "
+		   "To the southside of the concert hall, "
+		   "you can see a  open window. You can get back to the concert"
+		   " hall to the southeast and southwestwards is a "
+		   "staircase leading downwards. ")
+   :uexit '(("southeast" *concert-hall*) ("southwest" *staircase*))
+   :nexit '(("south") '("It is a very small window, there's no way "
+			"you would fit through that."))
+   :flags '(:notseen)
+   :things '(*rubble*)))
+
+(defparameter *rubble*
+  (make-instance 'item
+   :name '("Rubble")
+   :synonym '("rubble" "pile" "palettes")
+   :fdescription '("One one side of the alley is a big pile of, well, "
+		   "rubble, discarded wooden palettes, building a huge "
+		   "stack of wood. ")
+   :action '((:burn-v :burn-rubble-f))
+   :flags '(:fixed)))
+
+(defparameter *staircase*
+  (make-instance 'loc
+   :name '("Concert Hall Staircase")
+   :fdescription '("You walk down a stairway ending at a "
+		   "massive iron door to your south. "
+		   "To the northeast is an alleyway. ")
+   :ldescription '("You are on the landing of a stairway "
+		   "leading from a back alley northeast to a massive "
+		   "iron door to the south ")
+   :uexit '(("northeast" *back-alley*))
+   :cexit '(("south" *cellar* has-key nil))))
 
 
 
