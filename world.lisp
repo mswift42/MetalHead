@@ -237,7 +237,72 @@
 		   "leading from a back alley northeast to a massive "
 		   "iron door to the south ")
    :uexit '(("northeast" *back-alley*))
-   :cexit '(("south" *cellar* has-key nil))))
+   :cexit '(("south" *cellar* has-key nil))
+   :flags '(:notseen)))
+
+(defparameter *cellar*
+  (make-instance 'loc
+   :name '("Concert Hall Cellar")
+   :fdescription '("You enter a dimly lit cellar. "
+		   "On one side of it are rows of chairs "
+		   "stacked up neatly upon another. "
+		   "Suddenly you realize a gigantic German Shepard "
+		   "is running towards you. Completely stunned "
+		   "you stand there, your heart racing, watching "
+		   "the dog approach you very quickly, saliva "
+		   "flying from its huge mouth. Boy, do these "
+		   "teeth look sharp. As the dog is in leaping "
+		   "distance from you, he jumps, hits your chest "
+		   "in full stride and knocks you over. "
+		   "Instantly, he is on top of you ~%"
+		   "... and starts licking your face very excitedly. "
+		   "Appearances can be so deceiving.~%"
+		   "Finally, you get up, and after some five minutes "
+		   "of dog petting, you start looking for a way "
+		   "up into the concert area. You find a stairway "
+		   "southwestwards and the exit is to the north. ")
+   :ldescription '("You are in the concert hall's cellar. "
+		   "Northwestwards is an exit leading outside "
+		   "and you can see a stairway to the southwest. ")
+   :uexit '(("north" *staircase*) ("southwest" *corridor*))
+   :things '(*dog*)
+   :flags '(:notseen)))
+
+(defparameter *dog*
+  (make-instance 'item
+   :name '("dog")
+   :synonym '("dog" "german shepard" "shepard")
+   :ldescription '("There is a German Shepard here, happily "
+		   "wagging his tail and looking at you "
+		   "with big hopeful eyes. ")
+   :sdescription '("It's a big friendly dog with very big ears. ")
+   :action '((:pick-up-v :take-dog-f))))
+
+(defparameter *corridor*
+  (make-instance 'loc
+   :name '("Concert Hall Corridor")
+   :fdescription '("As you ascend the stairs, you find yourself "
+		   "in a wide and long corridor, lit by those "
+		   "lovely black neon lights. It seems that "
+		   "you have made it into the inner sanctum "
+		   "of the concert hall, because you can now "
+		   "hear the excited buzz of a big crowd to the "
+		   "west. There are open doors to the southwest "
+		   "and southeast, a locked firedoor to the west "
+		   "and a fierce looking bouncer is blocking a "
+		   "door to the east. Norteastwards is a stairway "
+		   "leading into the cellar. ")
+   :ldescription '("This is a big corridor with open doors to the "
+		   "southwest and southeast, a stairway is to "
+		   "the northeast, a locked firedoor is to the west "
+		   "and a bouncer is blocking a door to your east. ")
+   :uexit '(("northeast" *cellar*) ("southwest" *smoking-room*)
+	    ("southeast" *toilets*))
+   :nexit '(("west" '("What is it about the term \"locked\" "
+		      "that you don't understand? ")))
+   :cexit '(("east" *vip-area* back-stage-pass nil))))
+
+
 
 
 
