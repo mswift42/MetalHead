@@ -249,7 +249,11 @@
 (defun talk-to-tony-f ()
    )
 
-
+(defun take-dog-f ()
+  '("I am sorry, you cannot take him. "
+    "He's not yours, you can't go around and take someone "
+    "home, just because he wags his tail at you. This is "
+    "not San Francisco. "))
 
 (defparameter verb-synonyms
   '(("use" :use-v)
