@@ -255,6 +255,34 @@
     "home, just because he wags his tail at you. This is "
     "not San Francisco. "))
 
+(defun look-litterbox-f ()
+  (if (not member *back-stage-pass* (:things *smoking-room*))
+      (multiple-value-prog1
+	  '("The litterbox, made of some sort of "
+	    "aluminium, has the shape of a big hourglass. "
+	    "The top is filled with sand, where you stub "
+	    "out your cigarettes, the bottom has a wide "
+	    "holde for the usual rubbish. "
+	    "You notice some sort of laminated card lying "
+	    "on the floor behind the box. ")
+	(push '*back-stage-pass* (:things *smoking-room*)))
+      '("A big aluminium litterbox in the shape of a hourglass ")))
+
+(defun look-back-stage-pass-f ()
+  (:sdescription *back-stage-pass*))
+
+(defun take-pass-f ()
+  (multiple-value-prog1
+    '("After realizing that you are holding a backstage pass "
+      "you put it around your neck with shaking hands. "
+      "This is how Harrison Ford must have felt when he "
+      "found the holy grail. After all, you will now "
+      "not only be able to see Metallica live and from "
+      "a great spot, but also to gorge yourself on a "
+      "vip buffet. Free food, free drink and free metal. "
+      "Life can be so fucking fantastic. ")
+    (take-object '*back-stage-pass*))) 
+
 (defparameter verb-synonyms
   '(("use" :use-v)
     ("utilize" :use-v)
