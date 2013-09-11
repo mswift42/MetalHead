@@ -8,7 +8,8 @@
 	   *pond*  *bench* *park-lane-west* *off-licence* *library*
 	   *finnegans* *friends-house* *doorbell* *ticket-office*
 	   *pedestrian-street-east* *pedestrian-street-west*
-	   *friends-hallway* *living-room* *tony*))
+	   *friends-hallway* *living-room* *tony* *corridor* *cellar*
+	   *dog* *smoking-room* *toilets* *litterbin* *back-stage-pass*))
 
 (in-package #:world)
 
@@ -246,7 +247,7 @@
    :fdescription '("You enter a dimly lit cellar. "
 		   "On one side of it are rows of chairs "
 		   "stacked up neatly upon another. "
-		   "Suddenly you realize a gigantic German Shepard "
+		   "Suddenly you realize a gigantic German Shepherd "
 		   "is running towards you. Completely stunned "
 		   "you stand there, your heart racing, watching "
 		   "the dog approach you very quickly, saliva "
@@ -271,8 +272,8 @@
 (defparameter *dog*
   (make-instance 'item
    :name '("dog")
-   :synonym '("dog" "german shepard" "shepard")
-   :ldescription '("There is a German Shepard here, happily "
+   :synonym '("dog" "german shepherd" "shepherd")
+   :ldescription '("There is a German Shepherd here, happily "
 		   "wagging his tail and looking at you "
 		   "with big hopeful eyes. ")
    :sdescription '("It's a big friendly dog with very big ears. ")
@@ -302,9 +303,58 @@
 		      "that you don't understand? ")))
    :cexit '(("east" *vip-area* back-stage-pass nil))))
 
+(defparameter *toilets*
+  (make-instance 'loc
+   :name '("Concert Hall Toilet")
+   :fdescription '("This is one of those typical mass toilets. "
+		   "A room, dominated by a huge stainless stell "
+		   "trough, two stalls, and two wash basins. "
+		   "A fabulous place to meet fellow metal heads, "
+		   "exchange your favourite record titles, "
+		   "to hear made up stories of encounters with "
+		   "the other sex and to take in that ridiculously "
+		   "bad stench of urine, stale beer and sweat. "
+		   "The exit is to the north. ")
+   :ldescription '("The toilet, nothing special to see here, please "
+		   "move along west to the exit. ")
+   :uexit '(("west" *corridor*))
+   :flags '(:notseen)))
 
+(defparameter *smoking-room*
+  (make-instance 'loc
+   :name '("Concert Hall Smoking Room")
+   :fdescription '("You enter the smoking lounge. By habit, you "
+		   "start rolling a cigarette. With great poise "
+		   "you lick the paper and light your roll-up. "
+		   "Relieved, you take a deep drag, slowly exhale "
+		   "while savouring the taste. What a disgusting "
+		   "habit.~%Through all the smoke you can make out "
+		   "the exit to the north. ")
+   :ldescription '("You are in the smoking lounge. The exit is "
+		   "to the north. ")
+   :things '(*litterbox*)
+   :flags '(:notseen)
+   :uexit '(("north" *corridor*))))
 
+(defparameter *litterbin*
+  (make-instance 'item
+   :name '("litterbin")
+   :synonym '("litterbin" "bin" "bin" "litter bin")
+   :fdescription '("In one corner of the room you can see a "
+		   "fancy looking litterbin")
+   :action '((:look-closer-v :look-litterbox-f))
+   :flags '(:fixed)))
 
+(defparameter *back-stage-pass*
+  (make-instance 'item
+   :name '("Backstage Pass")
+   :synonym '("pass" "backstage pass" "card" "laminated card")
+   :fdescription '("In one corner of the room, behind the litter bin, "
+		   "is some card lying on the floor. ")
+   :sdescription '("It says:~%~%BACKSTAGE PASS - Unrestriced Access~%~%"
+		   "Oh boy, this is going to be great. ")
+   :action '((:look-closer-v :look-back-stage-pass-f)
+	     (:pick-up-v :take-pass-f))))
 
 (defparameter *pedestrian-street-west*
   (make-instance 'loc
@@ -320,6 +370,32 @@
    :uexit '(("east" *pedestrian-street-west*) ("southwest" *concert-hall*))
    :cexit '(("north" *pub* :pub-open-v nil))
    :flags '(:notseen)))
+
+(defparameter *pub*
+  (make-instance 'loc
+   :name '("The Happy Goose")
+   :fdescription '("You enter the happy goose, a nice and "
+		   "clean looking pub, with plenty of benches "
+		   "to rest ones troubled feet.~%"
+		   "With remarkable determination you walk up "
+		   "to the bar and order a pint of Guiness. "
+		   "After having paid and waited for the Guiness "
+		   "to settle, you lovingly look at the dark-violet "
+		   "to black of its body and the bright white foam. "
+		   "Slowly, you take a first sip, letting the "
+		   "assortment of flavours explode on your tongue. "
+		   "Aah, the smokiness, the full body, the slight "
+		   "bitterness, oh Mother's Milk, this is wonderful. "
+		   "To the south is the exit and to the north are "
+		   "the toilets. ")
+   :ldescription '("You are inside the happy goose, enjoying your "
+		   "pint(s) of Guiness. The toilets are to the north "
+		   "and the exit is to the south. ")
+   :things '(*ticket-table*)
+   :uexit '(("north" *pub-toilets*) ("south" *pedestrian-street-west*))
+   :flags '(:notseen)))
+
+
 
 (defparameter *park-entrance-east*
   (make-instance 'loc
