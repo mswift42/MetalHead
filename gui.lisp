@@ -1,16 +1,5 @@
-(ql:quickload "ltk")
-(load "~/MetalHead/actions.lisp")
 
-
-
-
-(defpackage :gui
-  (:use :cl :ltk :actions ) 
-  (:export *text-field make-frame format-output
-	   *store-string* entnewlinify))
-
-
-(in-package :gui)
+(in-package #:metalhead)
 
 
 (defparameter *text-field*

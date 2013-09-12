@@ -1,9 +1,5 @@
-(defpackage #:utilities
-  (:use :cl)
-  (:export flatten equalassoc equalmember random-string
-	   last-element))
 
-(in-package #:utilities)
+(in-package #:metalhead)
 
 (defun flatten (structure)
   "flatten a list."

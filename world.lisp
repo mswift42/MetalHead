@@ -1,17 +1,5 @@
-(defpackage #:world
-  (:use #:cl )
-  (:export loc item player *bedroom* *hallway* *frontdoor* *park-lane-east*
-	   *park-entrance* *park-entrance-east* *laptop* *poster* *clothes*
-	   *player* *housefront* :fdescription :sdescription :ldescription
-	   :uexit *fish* :nexit :cexit :flags :things :name :synonym
-	   :action cexit-read-con :flags *park-center* *park-lane-east*
-	   *pond*  *bench* *park-lane-west* *off-licence* *library*
-	   *finnegans* *friends-house* *doorbell* *ticket-office*
-	   *pedestrian-street-east* *pedestrian-street-west*
-	   *friends-hallway* *living-room* *tony* *corridor* *cellar*
-	   *dog* *smoking-room* *toilets* *litterbin* *back-stage-pass*))
 
-(in-package #:world)
+(in-package #:metalhead)
 
 
 (defclass loc ()
@@ -369,7 +357,7 @@
 		   "In the north you can see a pub. ")
    :uexit '(("east" *pedestrian-street-west*) ("southwest" *concert-hall*))
    :cexit '(("north" *pub* :pub-open-v nil))
-   :flags '(:notseen)))
+   :flags '(:notseen)) )
 
 (defparameter *pub*
   (make-instance 'loc

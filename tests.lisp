@@ -1,16 +1,10 @@
-(load "~/MetalHead/actions.lisp")
-(ql:quickload "fiveam")
 
-(defpackage :tests
-  (:use :cl :fiveam :actions :world))
-
-(in-package :tests)
+(in-package #:metalhead)
 
 (test test-u-exits 
   (is (equal '(("east" *bedroom*) ("west" *housefront*))
 	     (:uexit *hallway*))))
 
-(eq )
 (test test-is-direction-p
   (is-true (is-direction-p '("go" "north")))
   (is-true (is-direction-p '("west")))
@@ -29,9 +23,9 @@
 	     (describe-list-of-items-in-location *bedroom*))))
 
 (test test-exit-lst
-  (is (equal '(actions::CE "west" *HALLWAY* WORLD::WEAR-CLOTHES)
+  (is (equal '(CE "west" *HALLWAY* WEAR-CLOTHES)
 	     (exit-lst *bedroom* "west")))
-  (is (equal '(actions::UE "east" *bedroom*)
+  (is (equal '(UE "east" *bedroom*)
 	     (exit-lst *hallway* "east"))))
 
 (test test-return-synonym

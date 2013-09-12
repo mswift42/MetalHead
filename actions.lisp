@@ -1,23 +1,5 @@
-(load "~/MetalHead/util.lisp")
-(load "~/MetalHead/world.lisp")
 
-
-(defpackage #:actions
-  (:use :cl  :utilities :world)
-  (:export change-loc exit-lst take-object drop-object current-location
-	   walk-direction object-action-list actions-for-location
-	   *directions-synonyms* *directions* read-direction move-p
-	   use-laptop-f power-on-laptop-f put-on-clothes wear-clothes
-	   update-flag increment-fish-counter pick-up-trout-f take-laptop-f
-	   describe-poster read-inscription-f verb-synonyms return-synonym
-	   change-location describe-list-of-items-in-location
-	   describe-list-of-items-in-location-later describe-room
-	   items-in-room print-list is-direction-p is-look-p look-command-p
-	   convert-symbol is-take-p take-command build-substring
-	   is-action-p action-for-symbol find-synonym-in-location
-	   find-synonym no-action take-clothes-f press-doorbell-f))
-
-(in-package #:actions)
+(in-package #:metalhead)
 
 
 (defun current-location ()
