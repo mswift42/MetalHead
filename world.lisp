@@ -344,6 +344,34 @@
    :action '((:look-closer-v :look-back-stage-pass-f)
 	     (:pick-up-v :take-pass-f))))
 
+(defparameter *vip-area*
+  (make-instance 'loc
+   :name '("Concert Hall Vip Area")
+   :fdescription '("Proud like you a little kid, who just got "
+		   "his first Heavy Metal record (in the Authors "
+		   "case this was Iron Maiden's Killers), "
+		   "you show the bouncer your backstage pass. "
+		   "With a \"Have a good one, mate\" he opens "
+		   "the door and ushers you inside. ~%"
+		   "Noticing that you are alone in this room, "
+		   "you realize that the show is about to start. "
+		   "To the west is a corridor and to the north "
+		   "is the backstage area. ")
+   :ldescription '("This is the vip room. Westwards is a corridor "
+		   "and the backstage area is to the north.")
+   :things '(*food*)
+   :uexit '(("west" *corridor*) ("north" *backstage-area*))))
+
+(defparameter *food*
+  (make-instance 'item
+   :name '("food")
+   :synonym '("food" "drink" "alcohol")
+   :fdescription '("Tables stacked with food and drink line"
+		   "line one side of the room. ")
+   :action '((:pick-up-v :take-food-f))))
+
+
+
 (defparameter *pedestrian-street-west*
   (make-instance 'loc
    :name '("Outside the Happy Goose")
@@ -382,6 +410,17 @@
    :things '(*ticket-table*)
    :uexit '(("north" *pub-toilets*) ("south" *pedestrian-street-west*))
    :flags '(:notseen)))
+
+(defparameter *ticket-table*
+  (make-instance 'item
+   :name '("Ticket Table")
+   :synonym '("table" "ticket counter" "ticket table")
+   :fdescription '("At the entrance is a small table where you "
+		   "can buy a ticket to participate at today's "
+		   "Pub Quiz. The Price, you are asking? "
+		   "A ticket for tonight's Metallica concert. ")
+   :action '((:buy-v :buy-pub-quiz-ticket-f))
+   :flags '(:fixed)))
 
 
 

@@ -238,7 +238,7 @@
     "not San Francisco. "))
 
 (defun look-litterbox-f ()
-  (if (not member *back-stage-pass* (:things *smoking-room*))
+  (if (not (member *back-stage-pass* (:things *smoking-room*)))
       (multiple-value-prog1
 	  '("The litterbox, made of some sort of "
 	    "aluminium, has the shape of a big hourglass. "
@@ -264,6 +264,12 @@
       "vip buffet. Free food, free drink and free metal. "
       "Life can be so fucking fantastic. ")
     (take-object '*back-stage-pass*))) 
+
+(defun take-food-f ()
+  '("In a very dignified way you stuff some shrimps "
+    "into your mouth and grab a beer to wash it down. "
+    "I'd like to remind you however, that we didn't come "
+    "here for this, did we? "))
 
 (defparameter verb-synonyms
   '(("use" :use-v)
