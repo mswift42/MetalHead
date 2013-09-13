@@ -2,34 +2,35 @@
 (in-package #:metalhead)
 
 
-(defparameter *text-field*
-  (make-instance 'text
-		 :font "monospaced" :background "#343434"
-		 :foreground "#ff9800"))
+;; (defparameter *text-field*
+;;   (make-instance 'text
+;; 		 :font "monospaced" :background "#343434"
+;; 		 :foreground "#ff9800"))
 
 (defun make-frame ()
   (with-ltk ()
      (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
 			     :relief :groove ))
 	   (scroll (make-instance 'scrolled-text :master f))
-	   (outtext (textbox scroll)))
+	   (outtext (textbox scroll))
+	   (text-field (make-instance 'text :font "monospaced")))
       (pack f )
       (configure outtext :font "monospaced"
 		 :background "#202020" :foreground "#ffffff" :wrap :word )
       (pack scroll :anchor :nw :expand t :fill :both :ipady 100)
-      (pack *text-field* :side  :bottom :expand nil)
-      (bind *text-field* "<KeyPress-Return>"
-	    (lambda (event) (format-output outtext)))
+      (pack text-field :side  :bottom :expand nil)
+      (bind text-field "<KeyPress-Return>"
+	    (lambda (event) (format-output text-field outtext)))
       (configure f :borderwidth 1))))
 
 
-(defun format-output (target)
+(defun format-output (source target)
   "Print inputstring with newlines and > .
    Store the inputted string as a list in *store-string*
-   Clear *text-field*"
-  (append-text target (format nil "~%~%> ~A" (text *text-field*)))
-  (push (split-string (text *text-field*)) *store-string*)
-  (clear-text *text-field*)
+   Clear source"
+  (append-text target (format nil "~%~%> ~A" (text source)))
+  (push (split-string (text source)) *store-string*)
+  (clear-text source)
   (append-text target (format nil (print-list (parse-command))))
   (see target "end"))
 

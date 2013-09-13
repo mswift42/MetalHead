@@ -169,7 +169,7 @@
 
 (defparameter *concert-hall*
   (make-instance 'loc
-   :name '("Concert Hall")
+   :name '("Concert Hall~%~%")
    :fdescription '("This is the town's concert hall. A modern "
 		   "looking sort of Bauhaus style building, "
 		   "it holds some 8000 people, when fully "
@@ -189,7 +189,7 @@
 
 (defparameter *back-alley*
   (make-instance 'loc
-   :name '("Concert Hall, Back Alley")
+   :name '("Concert Hall, Back Alley~%~%")
    :fdescription '("This is a small back alley, belonging to the "
 		   "concert hall. To the southside of the concert hall, "
 		   "you can see a  open window. You can get back to the concert "
@@ -218,7 +218,7 @@
 
 (defparameter *staircase*
   (make-instance 'loc
-   :name '("Concert Hall Staircase")
+   :name '("Concert Hall Staircase~%~%")
    :fdescription '("You walk down a stairway ending at a "
 		   "massive iron door to your south. "
 		   "To the northeast is an alleyway. ")
@@ -231,7 +231,7 @@
 
 (defparameter *cellar*
   (make-instance 'loc
-   :name '("Concert Hall Cellar")
+   :name '("Concert Hall Cellar~%~%")
    :fdescription '("You enter a dimly lit cellar. "
 		   "On one side of it are rows of chairs "
 		   "stacked up neatly upon another. "
@@ -269,7 +269,7 @@
 
 (defparameter *corridor*
   (make-instance 'loc
-   :name '("Concert Hall Corridor")
+   :name '("Concert Hall Corridor~%~%")
    :fdescription '("As you ascend the stairs, you find yourself "
 		   "in a wide and long corridor, lit by those "
 		   "lovely black neon lights. It seems that "
@@ -293,7 +293,7 @@
 
 (defparameter *toilets*
   (make-instance 'loc
-   :name '("Concert Hall Toilet")
+   :name '("Concert Hall Toilet~%~%")
    :fdescription '("This is one of those typical mass toilets. "
 		   "A room, dominated by a huge stainless stell "
 		   "trough, two stalls, and two wash basins. "
@@ -310,7 +310,7 @@
 
 (defparameter *smoking-room*
   (make-instance 'loc
-   :name '("Concert Hall Smoking Room")
+   :name '("Concert Hall Smoking Room~%~%")
    :fdescription '("You enter the smoking lounge. By habit, you "
 		   "start rolling a cigarette. With great poise "
 		   "you lick the paper and light your roll-up. "
@@ -346,7 +346,7 @@
 
 (defparameter *vip-area*
   (make-instance 'loc
-   :name '("Concert Hall Vip Area")
+   :name '("Concert Hall Vip Area~%~%")
    :fdescription '("Proud like you a little kid, who just got "
 		   "his first Heavy Metal record (in the Authors "
 		   "case this was Iron Maiden's Killers), "
@@ -374,7 +374,7 @@
 
 (defparameter *pedestrian-street-west*
   (make-instance 'loc
-   :name '("Outside the Happy Goose")
+   :name '("Outside the Happy Goose~%~%")
    :fdescription '("You are at the end of your town's High Street. "
 		   "People are milling about, doing their shopping "
 		   "or just having a walk, while your eyes get "
@@ -389,7 +389,7 @@
 
 (defparameter *pub*
   (make-instance 'loc
-   :name '("The Happy Goose")
+   :name '("The Happy Goose~%~%")
    :fdescription '("You enter the happy goose, a nice and "
 		   "clean looking pub, with plenty of benches "
 		   "to rest ones troubled feet.~%"
@@ -546,7 +546,7 @@
 
 (defparameter *friends-hallway*
   (make-instance 'loc
-   :name '("hallway")
+   :name '("hallway~%~%")
    :fdescription '("You enter a lengthy hallway. "
 		   "If you had a coat, you could "
 		   "hang it on a coat rack next to the "
@@ -578,7 +578,7 @@
 
 (defparameter *living-room*
   (make-instance 'loc
-   :name '("Living room")
+   :name '("Living room~%~%")
    :fdescription '("This is Tony's living room. "
 		   "A spacious 20 sqm, dominated by a huge "
 		   "flatscreen mounted on the wall to the east. "
