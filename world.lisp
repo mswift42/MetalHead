@@ -113,9 +113,29 @@
    :fdescription '("This is Finnegan's off-licence and convenience "
 		   "store. Shelves packed with everyday goods, and "
 		   "a very nice selection of refreshing and "
-		   "overwhelmingly alcoholic beverages.~%")
+		   "overwhelmingly alcoholic beverages.~%"
+		   "The exit is to the north. ")
+   :ldescription '("You inside Finnegan's off-licence. The exit "
+		   "is to the north. ")
+   :things '(*store-assistant*)
    :uexit '("north" *off-licence*)
    :flags '(:notseen)))
+
+(defparameter *store-assistant*
+  (make-instance 'item
+   :synonym '("susan" "store assistant" "girl"
+	      "woman" "assistant")
+   :fdescription '("Behind the counter a young woman is "
+		   "looking at you. Her nametag identifies her "
+		   "as Susan, which you noticed because you were "
+		   "staring at her fantastic t-shirt (You did think "
+		   "I'd write tits, admit it, you dirty pig.). "
+		   "You really shouldn't stare like this, it's rude, "
+		   "although I have to admit, her body is nothing "
+		   "short of spectacular. ")
+   :ldescription '("Susan, the store assistant is looking "
+		   "expectantly at you. ")
+   :action '((:talk-to-v :talk-to-susan-f))))
 
 (defparameter *main-road*
   (make-instance 'loc
@@ -361,6 +381,18 @@
 		   "and the backstage area is to the north.")
    :things '(*food*)
    :uexit '(("west" *corridor*) ("north" *backstage-area*))))
+
+(defparameter *backstage-area*
+  (make-instance 'loc
+   :name '("Concert Hall Backstage Area~%~%")
+   :fdescription '("At the precise moment you enter "
+		   "the backstage area, You hear the opening "
+		   "of \"Master of Puppets\" (if you don't know "
+		   "the song, it goes like this: don...don don don) "
+		   "~%Congratulations, You made it. Well done, "
+		   "Sir, or Madam. Please imagine a gigantic "
+		   "display of fireworks.~%~%"
+		   "THE END~%~%")))
 
 (defparameter *food*
   (make-instance 'item
