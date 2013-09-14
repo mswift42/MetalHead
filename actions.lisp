@@ -229,7 +229,26 @@
     "an opportunity now, can we?"))
 
 (defun talk-to-tony-f ()
-   )
+   (multiple-value-prog1
+       '("After the initial bla bla, how is your head, "
+	 "man, were you drunk last night, you made a complete "
+	 "ass of yourself, the naked singing on the table, "
+	 "in short the usual retrospection of a nights out, "
+	 "Tony comes straight to the point:~%~%"
+	 "\"Mate, I've tried everywhere, but the Metallica "
+	 "concert tonight is completely sold out. I've heard "
+	 "however, that there is a pub quiz this afternoon "
+	 "at the Happy Goose, with the price being one ticket "
+	 "for tonight's show.~%You hopefully still remember "
+	 "that I bought the tickets last time, and you had all "
+	 "the time in the world to get off your lazy bollocks "
+	 "and buy these ones, You will have to win the pub quiz "
+	 "give me the ticket, and find yourself some other way "
+	 "to get to the concert. Now get a fucking move on\"~%~%"
+	 "With is beautiful and inspiring words, Tony leads you "
+	 "out of his house and onto the street. ")
+     (change-location *friends-house*)
+     (setf (:cexit *friends-house* '(("south" *friends-hallway* nil nil))))))
 
 (defun take-dog-f ()
   '("I am sorry, you cannot take him. "
@@ -270,6 +289,41 @@
     "into your mouth and grab a beer to wash it down. "
     "I'd like to remind you however, that we didn't come "
     "here for this, did we? "))
+
+(defun take-brush-f ()
+  '("Really? You want to take the toilet brush? "
+    "Is this some kind of strange fetisch, or is your "
+    "approach to life to take everything what's lying around? "
+    "You should be ashamed of yourself. "))
+
+(defun take-paper-f ()
+  '("Please leave it. How would you like it to go to the "
+    "toilet, having to go very urgently, only to realize "
+    "that there's no paper? "))
+
+(defun look-cistern-f ()
+  (multiple-value-prog1
+      '("As you look at the cistern, you notice that it's lid "
+	"is sitting loosely on it. Curious as you are, you lift "
+	"the lid and find a key on one edge. ")
+    (push *key* (:things *toilet-stall*))))
+
+(defun take-key-f ()
+  (multiple-value-prog1
+      '("You slip the key into your pocket.")
+    (take-object '*key*)
+    (setf (:cexit *staircase*) '(("south" *cellar* has-key t)))))
+
+(defun has-key ()
+  "if player has key in inventory, change location to *cellar*
+   otherwise print message that door can only be opened with key."
+  (if (member *key* (:inventory *player*))
+      (multiple-value-prog1
+	  '("You take the key from your pocket, insert it, "
+	    "wiggle a bit, eh voila, it opens and you step into the "
+	    "cellar")
+	(change-location *hallway*))
+      '("You need a key to get in there. The door is locked. ")))
 
 (defparameter verb-synonyms
   '(("use" :use-v)
