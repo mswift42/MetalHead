@@ -248,7 +248,7 @@
 	 "With is beautiful and inspiring words, Tony leads you "
 	 "out of his house and onto the street. ")
      (change-location *friends-house*)
-     (setf (:cexit *friends-house* '(("south" *friends-hallway* nil nil))))))
+     (setf (:cexit *friends-house*) '(("south" *friends-hallway* nil nil)))))
 
 (defun take-dog-f ()
   '("I am sorry, you cannot take him. "
