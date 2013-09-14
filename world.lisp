@@ -411,6 +411,61 @@
    :uexit '(("north" *pub-toilets*) ("south" *pedestrian-street-west*))
    :flags '(:notseen)))
 
+(defparameter *pub-toilets*
+  (make-instance 'loc
+   :name '("The Happy Goose, toilets~%~%")
+   :fdescription '("Tiled floor and walls greet you when you "
+		   "open the door to the toilets. "
+		   "A surprisingly clean affair, it even smells nice. "
+		   "There are 2 urinals here, a wash basin and to the "
+		   "east is one toilet stall. The exit is to the south. ")
+   :ldescription '("You are in a very clean pub bathroom. The exit "
+		   "is to the south and to the east is a toilet "
+		   "stall. ")
+   :uexit '(("south" *pub*) ("east" *toilet-stall*))
+   :flags '(:notseen)))
+
+(defparameter *toilet-stall*
+  (make-instance 'loc
+   :name '("The Happy Goose, toilet stall~%~%")
+   :fdescription '("You enter the toilet stall. It's walls are "
+		   "made from cheap plywood, however it is as "
+		   "clean as the rest of the bathroom. "
+		   "The exit is to the west. ")
+   :ldescription '("A small toilet stall, with it's exit to the west. ")
+   :things '(*cistern* *toilet-brush* *toilet-paper*)
+   :flags '(:notseen)
+   :uexit '(("west" *pub-toilets*))))
+
+(defparameter *cistern*
+  (make-instance 'item
+   :synonym '("cistern")
+   :fdescription '("On top of the toilet, is a plastic cistern. ")
+   :action '((:look-closer-v :look-cistern-f))
+   :flags '(:fixed)))
+
+(defparameter *toilet-brush*
+  (make-instance 'item
+   :synonym '("toilet brush" "brush" "toiletbrush")
+   :fdescription '("To one side of the toilet is a toilet brush "
+		   "mounted in it's holder. ")
+   :action '((:pick-up-v :take-brush-f))))
+
+(defparameter *toilet-paper*
+  (make-instance 'item
+   :synonym '("toilet paper")
+   :fdescription '("Sitting on top of the cistern is a roll "
+		   "of toilet paper. ")
+   :action '((:pick-up-v :take-paper-f))))
+
+(defparameter *key*
+  (make-instance 'item
+   :synonym '("key" "iron key")
+   :fdescription '("On one edge of the cistern is a key. ")
+   :ldescription '("It looks like any other key. It probably "
+		   "opens a door. ")
+   :action '((:pick-up-v :take-key-f))))
+
 (defparameter *ticket-table*
   (make-instance 'item
    :name '("Ticket Table")
@@ -421,6 +476,7 @@
 		   "A ticket for tonight's Metallica concert. ")
    :action '((:buy-v :buy-pub-quiz-ticket-f))
    :flags '(:fixed)))
+
 
 
 
@@ -617,7 +673,7 @@
 	     (:start-v :power-on-laptop-f)
 	     (:type-pass-v :enter-password-f)
 	     (:pick-up-v :take-laptop-f))                        
-    :flags '(:poweroff :notseen)))
+    :flags '(:poweroff )))
 
 (defparameter *clothes*
   (make-instance 'item
@@ -675,8 +731,7 @@
 
 
 
-(defparameter *player*
-  (make-instance 'player :location *bedroom*
+(defparameter *player*  (make-instance 'player :location *bedroom*
 		 :inventory '()))
 
 
