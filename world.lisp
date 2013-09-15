@@ -693,7 +693,7 @@
    :ldescription '("A lengthy hallway. To the south is a living room "
 		   "and the north is the exit to the street. ")
    :things '(*coatrack*)
-   :cexit '(("south" *living-room* bough-beer-v nil))
+   :cexit '(("south" *living-room* bought-beer-v nil))
    :uexit '(("north" *friends-house*))
    :flags '(:notseen)))
 
@@ -789,8 +789,13 @@
    :name '("brass doorbell")
    :synonym '("doorbell" "brass doorbell" "bell")
    :fdescription '("You can see a big brass doorbell here.")
-   :flags '((:fixed))
+   :flags '(:fixed)
    :action'(:use-v :press-doorbell-f)))
+
+(defparameter *coatrack*
+  (make-instance 'item
+   :synonym '("coatrack" "rack")
+   :flags '(:fixed)))
 
 
 
