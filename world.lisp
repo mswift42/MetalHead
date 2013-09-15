@@ -1,6 +1,17 @@
 
 (in-package #:metalhead)
 
+;; Classes for rooms, items and player.
+;; fdescription is for inital description of a location or item,
+;; ldescriptin describes a location which has been visited before.
+;; uexit is an unconditinal exit, i.e. can be visited always.
+;; nexit is not an exit, but instead of printing "no exit" it prints
+;; a more interesting text.
+;; cexit is a conditional exit, i.e, for locations you need a key, or have
+;; accomplished some task previously.
+;; flags are for storing information about a location, i.e. has this location
+;; been visited before.
+;; things is a list of items in a location.
 
 (defclass loc ()
   ((name :initarg :name :initform '() :accessor :name)
@@ -13,6 +24,11 @@
    (flags :initarg :flags :initform '() :accessor :flags)
    (things :initarg :things :initform '() :accessor :things)))
 
+;; Nearly identical to class loc.
+;; synonym stores different synonyms for an object. i.e. synonym for *laptop*
+;; are "laptop" "notebook" "computer", thus program understands take computer.
+;; action describes what can be done with an object. A laptop can be started
+;; picked up, used, ...
 
 (defclass item ()
   ((name :initarg :name :initform '() :accessor :name)
@@ -23,9 +39,11 @@
    (action :initarg :action :initform '() :accessor :action)
    (flags :initarg :flags :initform '() :accessor :flags)))
 
+
 (defclass player ()
   ((location :initarg :location :accessor :location)
-   (inventory :initarg :inventory :initform '() :accessor :inventory)))
+   (inventory :initarg :inventory :initform '() :accessor :inventory))
+  (:documentation "current location of player and list of inventory items."))
 
 
 (defparameter *bedroom*
@@ -101,12 +119,13 @@
 		   "to the library in the west.")
    :uexit '(("south" *finnegans*) ("west" *library*)
 	    ("northeast" *housefront*))
+   :nexit '()
    :flags '(:notseen)))
 
 (defparameter *beer*
   (make-instance 'item
    :synonym '("beer" "fuerstenberg" "fürstenberg")
-   :fdescription '("You bought a fantastic pilsner beer. ")x))
+   :fdescription '("You bought a fantastic pilsner beer. ")))
 
 
 
