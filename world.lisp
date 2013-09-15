@@ -94,7 +94,10 @@
 		    "west is the entrance to a park. The main road is "
 		    "in the northwest from you and to the southwest you "
 		    "can see an off licence shop.")
-    :ldescription '("You stand outside of your house.")
+    :ldescription '("You stand outside of your house. To the east "
+		    "is you can get back inside, to west is a park "
+		    "entrance, to the northwest is the mainroad "
+		    "and to the southwest is a off-licence shop. ")
     :uexit '(("east" *hallway*)
 	     ("west" *park-entrance-east* )
 	     ("northwest" *main-road* )
