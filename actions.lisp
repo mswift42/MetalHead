@@ -186,6 +186,7 @@
 	"of noise, you hear the intro to Death's \"Leprosy\"~%"
 	"Maybe 20 seconds later, the door opens and your friend "
 	"beckons you inside.")
+    (change-location *friends-hallway*)
     (setf (:cexit *friends-house*) '(("south" *friends-house* bell-rung t)))))
 
 (defun increment-fish-counter ()
@@ -238,6 +239,13 @@
     "in the golden goose\"\nWell, we can't pass up such "
     "an opportunity now, can we?"))
 
+(defun bought-beer-v ()
+  (if (member *beer* (:inventory *player*))
+      (multiple-value-prog1
+	  (describe-room *living-room*)
+	  (change-location *living-room*))
+      '("You need to buy beer first. ")))
+
 (defun talk-to-tony-f ()
    (multiple-value-prog1
        '("After the initial bla bla, how is your head, "
@@ -252,10 +260,10 @@
 	 "for tonight's show.~%You hopefully still remember "
 	 "that I bought the tickets last time, and you had all "
 	 "the time in the world to get off your lazy bollocks "
-	 "and buy these ones, You will have to win the pub quiz "
+	 "and buy these ones. You will have to win the pub quiz "
 	 "give me the ticket, and find yourself some other way "
 	 "to get to the concert. Now get a fucking move on\"~%~%"
-	 "With is beautiful and inspiring words, Tony leads you "
+	 "With these beautiful and inspiring words, Tony leads you "
 	 "out of his house and onto the street. ")
      (change-location *friends-house*)
      (setf (:cexit *friends-house*) '(("south" *friends-hallway* nil nil)))))
@@ -346,7 +354,7 @@
 	"Your heart starts racing, she is absolutely perfect. "
 	"~%~%\"Just yesterday, we got this beer from Germany in. "
 	"It's called \"Fürstenberg\" and it is a masterpiece in "
-	"beer brewing.\"~%~%As it never takes long to persuade you "
+	"beer brewing.\"~%~%As it never takes long to persuade you, "
 	"you go on and buy 20 bottles. Somehow you find the courage "
 	"to ask Susan out and with a gratified smile she promises to "
 	"have drinks with you next weekend.~%Happy as if your favourite "
@@ -368,7 +376,8 @@
     ("type password" :type-pass-v)
     ("enter password" :type-pass-v)
     ("press" :use-v)
-    ("examine" :look-closer-v))
+    ("examine" :look-closer-v)
+    ("talk" :talk-to-v))
   "association list to lookup the fitting functions in an object to its verb")
 
 (defun return-synonym (verb)
