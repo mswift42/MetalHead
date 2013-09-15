@@ -322,8 +322,28 @@
 	  '("You take the key from your pocket, insert it, "
 	    "wiggle a bit, eh voila, it opens and you step into the "
 	    "cellar")
-	(change-location *hallway*))
+	(change-location *cellar**))
       '("You need a key to get in there. The door is locked. ")))
+
+(defun talk-to-susan-f ()
+  (multiple-value-prog1
+      '("Timidly you approach Susan, and ask her if she "
+	"could recommend any beer for you to buy. "
+	"(I have to hand it to you, that's one pick-up line for "
+	"the ages.)~%For some unfathomable reason however, "
+	"Susan seems to like you. She flashes a wonderful "
+	"smile, neatly emphasizing her cute dimples. "
+	"Your heart starts racing, she is absolutely perfect. "
+	"~%~%\"Just yesterday, we got this beer from Germany in. "
+	"It's called \"Fürstenberg\" and it is a masterpiece in "
+	"beer brewing.\"~%~%As it never takes long to persuade you "
+	"you go on and buy 20 bottles. Somehow you find the courage "
+	"to ask Susan out and with a gratified smile she promises to "
+	"have drinks with you next weekend.~%Happy as if your favourite "
+	"football team just won the championship, you take the beer "
+	"and leave the store. ")
+    (change-location *off-licence*)
+    (push *beer* (:inventory *player*))))
 
 (defparameter verb-synonyms
   '(("use" :use-v)
