@@ -105,6 +105,11 @@
 	    ("northeast" *housefront*))
    :flags '(:notseen)))
 
+(defparameter *beer*
+  (make-instance 'item
+   :synonym '("beer" "fuerstenberg" "fürstenberg")
+   :fdescription '("You bought a fantastic pilsner beer. ")x))
+
 
 
 (defparameter *finnegans*
@@ -567,6 +572,7 @@
    :uexit '(("north" *park-center* ))
    :things '(*fish*)
    :flags '(:notseen)))
+
 
 (defparameter *park-lane-west*
   (make-instance 'loc
