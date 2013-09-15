@@ -431,10 +431,6 @@
       "One of us does not understand the English language very well."
       "I cannot compute that."))))
 
-
-(defparameter *allowed-commands* '(use-laptop-f))
-
-
 (defun change-location (room)
   "When changing locations, set global-variable *location* to new location.
    Describe room either with first or later description."
@@ -446,9 +442,18 @@
   (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
 		   (:things room)))) 
 
- (defun describe-list-of-items-in-location-later (room)
-  "Return the ldescription of all itemns in a room."
-  (flatten (mapcar #'(lambda (x) (:ldescription (symbol-value x)))
+ ;; (defun describe-list-of-items-in-location-later (room)
+ ;;  "Return the ldescription of all itemns in a room."
+ ;;  (flatten (mapcar #'(lambda (x) (:ldescription (symbol-value x)))
+ ;; 		   (:things room))))
+
+(defun describe-list-of-items-in-location-later (room)
+  "return a list with all item descriptions in a location.
+   If a location has a :ldescription print :ldescription else use
+   :fdescription of item."
+  (flatten (mapcar #'(lambda (x) (if (:ldescription (symbol-value x))
+				     (:ldescription (symbol-value x))
+				     (:fdescription (symbol-value x))))
 		   (:things room))))
 
 (defun describe-room ( room)
@@ -462,10 +467,8 @@
 	(update-flag room :notseen :seen) )
       (multiple-value-prog1
 	  (append (:name room) (:ldescription room)
-		  (describe-list-of-items-in-location room)))))
+		  (describe-list-of-items-in-location-later room)))))
 
-;; (defmethod items-in-room ((self loc))
-;;   (:things self))
 
 (defun print-list (list)
   "concatenate list of strings to one single string."
@@ -531,8 +534,6 @@
     ((equalassoc (build-substring list) verb-synonyms)
      (second (equalassoc (build-substring list) verb-synonyms)))
      (t nil)))
-
-
 
 
 
