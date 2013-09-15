@@ -11,6 +11,16 @@
   "update *player* instance with new location."
   (setf (:location self) newlocation))
 
+
+;; to prevent a player from going back to a 'finished' 
+;; for example, *finnegans*, block-exit will change an unconditional
+;; exit to a non-exit.
+(defun block-exit (location dir-list nexit-text)
+  "delete valid exit from :uexit list and add exit as non-exit"
+  (setf (:uexit location) (remove-if #'(lambda (x) (equal x dir-list))
+				     (:uexit location)))
+  (push (list (first dir-list) nexit-text)(:nexit location) ))
+
 (defgeneric exit-lst (loc direction))
 
 (defmethod exit-lst ((self loc) direction)
@@ -322,7 +332,7 @@
 	  '("You take the key from your pocket, insert it, "
 	    "wiggle a bit, eh voila, it opens and you step into the "
 	    "cellar")
-	(change-location *cellar**))
+	(change-location *cellar*))
       '("You need a key to get in there. The door is locked. ")))
 
 (defun talk-to-susan-f ()
@@ -343,7 +353,9 @@
 	"football team just won the championship, you take the beer "
 	"and leave the store. ")
     (change-location *off-licence*)
-    (push *beer* (:inventory *player*))))
+    (push *beer* (:inventory *player*))
+    (block-exit *off-licence* '("south" *finnegans*)
+		'("the shop seems to have closed. " ))))
 
 (defparameter verb-synonyms
   '(("use" :use-v)
