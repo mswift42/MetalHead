@@ -57,8 +57,6 @@
    :flags '(:notseen)))
 
 
-
-
 (defparameter *housefront*
   (make-instance 'loc
     :name '("Outside your house~%~%")
@@ -145,10 +143,15 @@
 (defparameter *main-road*
   (make-instance 'loc
    :name '("main road~%~%")
-   :fdescription '("You are at a busy stretch of your tiny towns "
-		   "main road. ")
-   :ldescription '("this is the southern part of the main road.")
-   :uexit '(("north" *main-road-north* ))
+   :fdescription '("You are at a busy stretch of your towns "
+		   "main road. A lot of traffic here, so you should "
+		   "probably move along. You can reach the end of the "
+		   "end of the main road to the north and you can "
+		   "get back to your house to the southeast. ")
+   :ldescription '("this is the southern part of the main road. "
+		   "It ends to to the north and your house is to "
+		   "the southeast. ")
+   :uexit '(("north" *main-road-north* ) ("southeast" *housefront*))
    :flags '(:notseen)))
 
 (defparameter *main-road-north*
@@ -158,9 +161,14 @@
 		   "home town. Like many others of its brethren "
 		   "it certainly has seen better times, but not all is "
 		   "bad, hey, at least it is not ,... (insert name "
-		   "of your rival town/most disliked town).")
+		   "of your rival town/most disliked town)."
+		   "The main road continues to the south and to the "
+		   "northwest is the beginning of a pedestrian street. ")
+   :ldescription '("This is the northern part of the main road. It "
+		   "continues to the south and to the northwest begins "
+		   "the pedestrian street. ")
    :ldescription '("This is the north part of your towns main road.")
-   :uexit '(("south" *main-road* '("the road leads from south to north.")))
+   :uexit '(("south" *main-road* ) ("northwest" *pedestrian-street-east*))
    :flags '(:notseen)))
 
 
