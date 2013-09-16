@@ -679,7 +679,6 @@
 		   "To the east is the library and to the "
 		   "west is the concert hall ticket office.")
    :uexit '(("east" *library*) ("west" *ticket-office*))
-   :cexit '(("south" *friends-hallway* bell-rung nil))
    :things '(*doorbell*)
    :flags '(:notseen)))
 
