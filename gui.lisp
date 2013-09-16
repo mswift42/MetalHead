@@ -2,7 +2,7 @@
 (in-package #:metalhead)
 
 
-(defun make-frame ()
+(defun main ()
   (with-ltk ()
      (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
 			     :relief :groove ))
