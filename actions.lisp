@@ -1,7 +1,6 @@
 
 (in-package #:metalhead)
 
-
 (defun current-location ()
   (:location *player*))
 
@@ -10,7 +9,6 @@
 (defmethod change-loc ((self player) newlocation)
   "update *player* instance with new location."
   (setf (:location self) newlocation))
-
 
 ;; to prevent a player from going back to a 'finished' 
 ;; for example, *finnegans*, block-exit will change an unconditional
@@ -144,8 +142,6 @@
 				   (:flags self)))))
 
 
-
-
 ;; I'm using multiple-value-prog1 here because it evalutates it's
 ;; first argument and returns it, but silently evaluates the proceeding
 ;; forms. Otherwise gui.lisp 's format-output function does not know
@@ -159,8 +155,6 @@
     (update-flag *clothes* :notwearing :wearing)
     (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
     (take-object '*clothes*)))
-
-
 
 
 (defun take-laptop-f ()
@@ -487,7 +481,11 @@
       (t nil))))
 
 (defun look-command-p (list)
-  "return if input is a 'look' command."
+  "return if input is a 'look' command. If input is only a single 
+   look, call describe-room function. If looked is a :thing in 
+   current-location return :ldescription of item.(laptop in bedroom)
+   If the object is mentioned in the description, for example bed in 
+   bedroom, call then nothing-special-f function."
   (let ((len (length list)))
     (cond
       ((and (= 1 len)
@@ -498,12 +496,26 @@
 	    (find-synonym-in-location (last-element list)))
        (:ldescription
 	(find-synonym-in-location (last-element list))))
+      ((and (> len 1)
+	    (is-look-p (first list))
+	    (search (last-element list) 
+			 (print-list (append (:fdescription (current-location))
+					     (describe-list-of-items-in-location (current-location))))))
+       (nothing-special-f (last-element list)))
       (t nil))))
 
 (defun is-look-p (exp)
    "return if command is member of synonyms for 'look'"
    (equalmember exp '("look" "examine" "study" "view" "scan" "parse"
 		      "explore" "l")))
+
+(defun nothing-special-f (word)
+  "concatenate inputed word with a random string. Needed for function 
+   look-command-p"
+  (list (concatenate 'string (random-string '("There is nothing special about "
+					      "It's just an ordinary "
+					      "It's a ")))
+	       word))
 
 (defun is-take-p (exp)
   "return if command if member of synonyms for 'take'"
@@ -539,6 +551,8 @@
 
 (defun no-object ()
   '("There is no such thing "))
+
+
 
 
 
