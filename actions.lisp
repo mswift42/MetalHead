@@ -242,10 +242,15 @@
 (defun read-inscription-f ()
   '("As you come closer to read the inscription in the "
     "bench, you notice two things: A: the bench smells "
-    "of vomit, and B: the text written in the wood reads 
-                \"For a heavy time, go into the second toilet stall "
+    "of vomit, and B: the text written in the wood reads "
+    "\"For a heavy time, go into the second toilet stall "
     "in the golden goose\"\nWell, we can't pass up such "
     "an opportunity now, can we?"))
+
+(defun burn-rubble-f ()
+  "If player is inclined in a way that would make him burn stuff. "
+  '("I know that burning stuff is fun. However, you should try "
+    "sneaking into the show, and not alarm everyone to your presence. "))
 
 (defun bought-beer-v ()
   "If player has bought beer at finnegans allow him 
@@ -392,8 +397,10 @@
     ("examine" :look-closer-v)
     ("check" :read-v)
     ("read" :read-v)
+    ("burn" :burn-v)
     ("talk" :talk-to-v))
   "association list to lookup the fitting functions in an object to its verb")
+
 
 (defun return-synonym (verb)
   "return the function synonym to the entered verb."
