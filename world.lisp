@@ -276,6 +276,8 @@
    :fdescription '("One one side of the alley is a big pile of, well, "
 		   "rubble, discarded wooden palettes, building a huge "
 		   "stack of wood. ")
+   :sdescription '("Just your ordinary pile of rubble. You kick it around "
+		   "a bit, but quickly loose interest. ")
    :action '((:burn-v :burn-rubble-f))
    :flags '(:fixed)))
 
@@ -483,7 +485,8 @@
 		   "pint(s) of Guiness. The toilets are to the north "
 		   "and the exit is to the south. ")
    :things '(*ticket-table*)
-   :uexit '(("north" *pub-toilets*) ("south" *pedestrian-street-west*))
+   :uexit '( ("south" *pedestrian-street-west*))
+   :cexit '(("north" *pub-toilets* :pub-quiz-played-f nil))
    :flags '(:notseen)))
 
 (defparameter *pub-toilets*
@@ -734,7 +737,7 @@
    :synonym '("Tony" "best friend" "friend")
    :fdescription '("Tony is sitting on the couch and looking at "
 		   "you expectantly. ")
-   :ldescription '("It's you best friend Tony. Sporting a t-shirt "
+   :sdescription '("It's you best friend Tony. Sporting a t-shirt "
 		   "showing Maiden's Powerslave cover, and looking "
 		   "thirsty. ")
    :flags '(:fixed)
@@ -780,7 +783,7 @@
    :name '("healthy rainbow trout.")
    :synonym '("trout" "fish")
    :fdescription '("There is one big trout in the pond.")
-   :ldescription '("you are looking at a very healthy and "
+   :sdescription '("you are looking at a very healthy and "
 		   "most probably good tasting rainbow trout.")
    :flags '(("taken" 0))
    :action '((:pick-up-v :pick-up-trout-f))))
@@ -790,7 +793,7 @@
    :name '("ridiculously comfortable looking bench.")
    :fdescription '("You can see a ridiculously comfortable looking "
 		   "bench here.")
-   :ldescription '("this is a very comfortable looking bench. ")
+   :ldescription '("there is a very comfortable looking bench here. ")
    :sdescription '("As you examine the bench you notice that there's "
 	           "something scratched into the wood.")
    :synonym '("comfortable" "cosy" "comfy" "inviting" "bench" "park bench")
@@ -802,6 +805,8 @@
    :name '("brass doorbell")
    :synonym '("doorbell" "brass doorbell" "bell")
    :fdescription '("You can see a big brass doorbell here.")
+   :sdescription '("One of those doorbells. You press it and "
+		   "via some magic it makes a sound. ")
    :flags '(:fixed)
    :action'(:use-v :press-doorbell-f)))
 
