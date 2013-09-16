@@ -179,11 +179,11 @@
     "your clothes in your hands.~%"
     "You should maybe think about putting them on."))
 
-(defun enter-password-f ()
-  "entering password into laptop"
-  '(" "))
 
 (defun press-doorbell-f ()
+  "Check if dialog with tony has happened. if not, print text 
+   and set location to friends-hallway. if dialog has happened 
+   only print text,i.e. location *friends-hallway* is closed."
   (if (member :friend-visited (:flags *doorbell*))
       '("you press the doorbell and listen to a very romantic "
 	"song of death. Unfortunately, it seems as if your friend is "
@@ -248,6 +248,8 @@
     "an opportunity now, can we?"))
 
 (defun bought-beer-v ()
+  "If player has bought beer at finnegans allow him 
+   to enter living-room."
   (if (member *beer* (:inventory *player*))
       (multiple-value-prog1
 	  (describe-room *living-room*)
@@ -255,6 +257,9 @@
       '("You need to buy beer first. ")))
 
 (defun talk-to-tony-f ()
+  "Dialog with tony. After info about pub-quiz, set location
+   to *friends-house* and add :friend-visited to doorbell-flags, thus
+   blocking the exit to inside *friends-hosue*"
    (multiple-value-prog1
        '("After the initial bla bla, how is your head, "
 	 "man, were you drunk last night, you made a complete "
