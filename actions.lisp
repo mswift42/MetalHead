@@ -104,17 +104,17 @@
    (equalmember string '("go" "move" "walk")))
 
 (defun use-laptop-f ()
-  (if (equal 'poweroff (first (:flags *laptop*)))
+  (if (member :poweroff (:flags *laptop*))
       '("Your laptop is turned off")
       '("you could browse your favorite websites "
        "all day, you good old procrastinator, "
        "however I'd propose you simply check your Email.")))
 
 (defun power-on-laptop-f ()
-  (setf (:flags *laptop*) '(poweron))
-  "You press the power button. You hear some funny noises, and it actually 
+  (update-flag *laptop* :poweroff :poweron)
+  '("You press the power button. You hear some funny noises, and it actually 
    starts booting. One cup of Tea later, and you start at the login 
-   screen. I hope you haven't forgotten the password.")
+   screen. "))
 
 (defun wear-clothes ()
   "if not wearing clothes, print out text . Else change location to hallway."
@@ -162,6 +162,15 @@
     "the battery is not working and it's "
     "highly unlikely that it would survive "
     "any form of transport."))
+
+(defun read-email-f ()
+  '("You read your emails. Your spam filter thankfully takes care "
+    "of most blatant scam mails, yet you still managed to get a "
+    "special offer for penis enlargement pills. I don't know how "
+    "desperate you are, but trust me, they work as well as "
+    "hair regrow treatments.~%You got one interesting email though, "
+    "your best friend Tony writes you to visit him this afternoon "
+    "and to bring some beer, he's got some very urgent news. "))
 
 (defun take-clothes-f ()
   "Text to return when taking clothes"
@@ -376,6 +385,8 @@
     ("enter password" :type-pass-v)
     ("press" :use-v)
     ("examine" :look-closer-v)
+    ("check" :read-v)
+    ("read" :read-v)
     ("talk" :talk-to-v))
   "association list to lookup the fitting functions in an object to its verb")
 
