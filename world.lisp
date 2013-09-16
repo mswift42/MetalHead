@@ -176,7 +176,7 @@
    :fdescription '("You are at a busy stretch of your towns "
 		   "main road. A lot of traffic here, so you should "
 		   "probably move along. You can reach the end of the "
-		   "end of the main road to the north and you can "
+		   "main road to the north and you can "
 		   "get back to your house to the southeast. ")
    :ldescription '("this is the southern part of the main road. "
 		   "It ends to to the north and your house is to "
@@ -197,7 +197,6 @@
    :ldescription '("This is the northern part of the main road. It "
 		   "continues to the south and to the northwest begins "
 		   "the pedestrian street. ")
-   :ldescription '("This is the north part of your towns main road. ")
    :uexit '(("south" *main-road* ) ("northwest" *pedestrian-street-east*))
    :flags '(:notseen)))
 
