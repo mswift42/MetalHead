@@ -51,10 +51,12 @@
 		 :name '("bedroom~%~%")
 		 :fdescription '("This is your bedroom. It has the "
 				 "usual bedroom stuff, for example "
-				 "there is a bed and other bedroom stuff.")
+				 "there is a bed and other bedroom stuff."
+				 "To the west is the hallway. ")
 		 :ldescription '("you are in your bedroom. You "
 				 "should seriously think about "
-				 "cleaning it up.")
+				 "cleaning it up. The hallway is to "
+				 "the west. ")
    :cexit '(("west" *hallway* wear-clothes nil ))
    :things '(*laptop* *clothes* *poster*)
    :flags '(:notseen)))
@@ -93,7 +95,7 @@
 		    "To the east you can get to your hallway. To the "
 		    "west is the entrance to a park. The main road is "
 		    "in the northwest from you and to the southwest you "
-		    "can see an off licence shop.")
+		    "can see an off licence shop. ")
     :ldescription '("You stand outside of your house. To the east "
 		    "is you can get back inside, to west is a park "
 		    "entrance, to the northwest is the mainroad "
@@ -115,11 +117,11 @@
 		   "little money weeks.~%"
 		   "To the south is Finnegan's and the street leads from "
 		   "your house in the northeast to the library in "
-		   "the west.")
+		   "the west. ")
    :ldescription '("You are outside of Finnegan's off-licence. To "
 		   "the south is the entrance to the sop and the "
 		   "street leads from your house in the northeast "
-		   "to the library in the west.")
+		   "to the library in the west. ")
    :uexit '(("south" *finnegans*) ("west" *library*)
 	    ("northeast" *housefront*))
    :nexit '()
@@ -128,7 +130,10 @@
 (defparameter *beer*
   (make-instance 'item
    :synonym '("beer" "fuerstenberg" "fürstenberg")
-   :fdescription '("You bought a fantastic pilsner beer. ")))
+   :fdescription '("You bought a fantastic pilsner beer. ")
+   :sdescription '("It is a very nice pilsner beer "
+		   "a very clean, smooth slightly bitter taste, "
+		   "very wonderful. ")))
 
 
 
@@ -160,6 +165,9 @@
 		   "short of spectacular. ")
    :ldescription '("Susan, the store assistant is looking "
 		   "expectantly at you. ")
+   :sdescription '("Susan is one very cute lady. Dark long hair, "
+		   "very cute dimples when she smiles, and luckily she "
+		   "smiles a lot. ")
    :action '((:talk-to-v :talk-to-susan-f))))
 
 (defparameter *main-road*
@@ -189,7 +197,7 @@
    :ldescription '("This is the northern part of the main road. It "
 		   "continues to the south and to the northwest begins "
 		   "the pedestrian street. ")
-   :ldescription '("This is the north part of your towns main road.")
+   :ldescription '("This is the north part of your towns main road. ")
    :uexit '(("south" *main-road* ) ("northwest" *pedestrian-street-east*))
    :flags '(:notseen)))
 
@@ -200,7 +208,8 @@
    :fdescription '("This is what they call the \"High Street\""
 		   "A cobblestone road and loads of stores and "
 		   "betting shops. ")
-   :ldescription '("The road leads from the main road in the southeast to west")
+   :ldescription '("The road leads from the main road in the "
+		   "southeast and it continues to the west. "")
    :uexit '(("southeast" *main-road-north*) ("north" *arcade-hall*)
 	    ("west" *pedestrian-street-west*))
    :flags '(:notseen)))
