@@ -175,13 +175,18 @@
   '(" "))
 
 (defun press-doorbell-f ()
-  (multiple-value-prog1
-      '("You press the doorbell. With a startling amount "
-	"of noise, you hear the intro to Death's \"Leprosy\"~%"
-	"Maybe 20 seconds later, the door opens and your friend "
-	"beckons you inside.")
-    (change-location *friends-hallway*)
-    (setf (:cexit *friends-house*) '(("south" *friends-house* bell-rung t)))))
+  (if (member :friend-visited (:flags *doorbell*))
+      '("you press the doorbell and listen to a very romantic "
+	"song of death. Unfortunately, it seems as if your friend is "
+	"not at home, because despite of you pressing the bell "
+	"for 5 minutes now, no one is coming to open the door. ")
+      (multiple-value-prog1
+	  '("You press the doorbell. With a startling amount "
+	    "of noise, you hear the intro to Death's \"Leprosy\"~%"
+	    "Maybe 20 seconds later, the door opens and your friend "
+	    "beckons you inside.")
+	(change-location *friends-hallway*)
+	(setf (:cexit *friends-house*) '(("south" *friends-house* bell-rung t))))))
 
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
@@ -260,7 +265,7 @@
 	 "With these beautiful and inspiring words, Tony leads you "
 	 "out of his house and onto the street. ")
      (change-location *friends-house*)
-     (setf (:cexit *friends-house*) '(("south" *friends-hallway* nil nil)))))
+     (push :friend-visited (:flags *doorbell*))))
 
 (defun take-dog-f ()
   '("I am sorry, you cannot take him. "
@@ -494,7 +499,7 @@
       ((and (> len 1)
 	    (is-look-p (first list))
 	    (find-synonym-in-location (last-element list)))
-       (:ldescription
+       (:sdescription
 	(find-synonym-in-location (last-element list))))
       ((and (> len 1)
 	    (is-look-p (first list))
