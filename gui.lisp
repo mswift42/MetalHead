@@ -2,21 +2,20 @@
 (in-package #:metalhead)
 
 
-;; (defparameter *text-field*
-;;   (make-instance 'text
-;; 		 :font "monospaced" :background "#343434"
-;; 		 :foreground "#ff9800"))
-
 (defun make-frame ()
   (with-ltk ()
      (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
 			     :relief :groove ))
 	   (scroll (make-instance 'scrolled-text :master f))
+	    (label (make-instance 'label :master f :text "MetalHead"))
 	   (outtext (textbox scroll))
-	   (text-field (make-instance 'text :font "monospaced")))
+	   (text-field (make-instance 'text :font "monospaced"
+				      :background "#f2f1f0"
+				      :foreground "#4c4c4c")))
       (pack f )
+      (pack label)
       (configure outtext :font "monospaced"
-		 :background "#202020" :foreground "#ffffff" :wrap :word )
+		 :background "#f2f1f0" :foreground "#4c4c4c" :wrap :word )
       (pack scroll :anchor :nw :expand t :fill :both :ipady 100)
       (pack text-field :side  :bottom :expand nil)
       (bind text-field "<KeyPress-Return>"
