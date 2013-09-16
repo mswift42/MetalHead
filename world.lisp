@@ -209,7 +209,7 @@
 		   "A cobblestone road and loads of stores and "
 		   "betting shops. ")
    :ldescription '("The road leads from the main road in the "
-		   "southeast and it continues to the west. "")
+		   "southeast and it continues to the west. ")
    :uexit '(("southeast" *main-road-north*) ("north" *arcade-hall*)
 	    ("west" *pedestrian-street-west*))
    :flags '(:notseen)))
@@ -525,6 +525,8 @@
    :synonym '("toilet brush" "brush" "toiletbrush")
    :fdescription '("To one side of the toilet is a toilet brush "
 		   "mounted in it's holder. ")
+   :sdescription '("It is a toilet brush. People use it to clean "
+		   "toilets. ")
    :action '((:pick-up-v :take-brush-f))))
 
 (defparameter *toilet-paper*
@@ -532,13 +534,16 @@
    :synonym '("toilet paper")
    :fdescription '("Sitting on top of the cistern is a roll "
 		   "of toilet paper. ")
+   :sdescription '("It is a roll of paper. It's white. It's "
+		   "useful for wiping your ass. I'm sure you have "
+		   "seen one before. ")
    :action '((:pick-up-v :take-paper-f))))
 
 (defparameter *key*
   (make-instance 'item
    :synonym '("key" "iron key")
    :fdescription '("On one edge of the cistern is a key. ")
-   :ldescription '("It looks like any other key. It probably "
+   :sdescription '("It looks like any other key. It probably "
 		   "opens a door. ")
    :action '((:pick-up-v :take-key-f))))
 
@@ -550,6 +555,8 @@
 		   "can buy a ticket to participate at today's "
 		   "Pub Quiz. The Price, you are asking? "
 		   "A ticket for tonight's Metallica concert. ")
+   :sdescription '("It's a table where you can buy a ticket for
+                    today's pub quiz")
    :action '((:buy-v :buy-pub-quiz-ticket-f))
    :flags '(:fixed)))
 
@@ -741,11 +748,9 @@
    :name '("laptop")
    :synonym '("notebook" "laptop" "computer")
    :fdescription '("on a table near the exit to the west is a laptop.")
-   :ldescription '("your old sturdy laptop. Not the latest and shiniest "
+   :sdescription '("your old sturdy laptop. Not the latest and shiniest "
 		   "but money is very expensive so you still "
 		   "make do with it." )
-   :sdescription '("your laptop. It used to be black. "
-		   "Whats the colour of grime again?")
    :action '((:use-v  :use-laptop-f)
 	     (:start-v :power-on-laptop-f)
 	     (:type-pass-v :enter-password-f)
@@ -757,7 +762,7 @@
    :name '("your clothes")
    :synonym '("clothes")
    :fdescription '("strewn all over the floor are your clothes.")
-   :ldescription '("jeans and a t-shirt. nothing fancy.")
+   :sdescription '("jeans and a t-shirt. nothing fancy.")
    :action '((:wear-v :put-on-clothes :pick-up-v :take-clothes-f))
    :flags '(:notwearing)))
 
