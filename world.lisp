@@ -745,22 +745,22 @@
 (defparameter *laptop*
   (make-instance 'item 
    :name '("laptop")
-   :synonym '("notebook" "laptop" "computer")
-   :fdescription '("on a table near the exit to the west is a laptop.")
+   :synonym '("notebook" "laptop" "computer" "email")
+   :fdescription '("On a table near the exit to the west is a laptop. ")
    :sdescription '("your old sturdy laptop. Not the latest and shiniest "
 		   "but money is very expensive so you still "
 		   "make do with it." )
    :action '((:use-v  :use-laptop-f)
 	     (:start-v :power-on-laptop-f)
-	     (:type-pass-v :enter-password-f)
-	     (:pick-up-v :take-laptop-f))                        
-    :flags '(:poweroff )))
+	     (:pick-up-v :take-laptop-f)
+	     (:read-v :read-email-f))                        
+    :flags '(:poweroff)))
 
 (defparameter *clothes*
   (make-instance 'item
    :name '("your clothes")
    :synonym '("clothes")
-   :fdescription '("strewn all over the floor are your clothes.")
+   :fdescription '("Strewn all over the floor are your clothes. ")
    :sdescription '("jeans and a t-shirt. nothing fancy.")
    :action '((:wear-v :put-on-clothes :pick-up-v :take-clothes-f))
    :flags '(:notwearing)))
@@ -770,11 +770,9 @@
    :name '("a poster")
    :synonym '("poster")
    :fdescription '("On the wall you can see an old poster.")
-   :ldescription '("It is a very old nearly completely faded poster."
+   :sdescription '("It is a very old nearly completely faded poster."
 		   " You can only make out a painted scene of rows "
 		   "of white crosses in a field.")
-   :sdescription '("Oh you joyful Master of Puppets. You mother "
-		   "of all metal records.")
    :flags '(:fixed)
    :action '((:look-closer-v :describe-poster-f))))
 
