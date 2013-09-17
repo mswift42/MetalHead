@@ -129,6 +129,7 @@
 
 (defparameter *beer*
   (make-instance 'item
+   :beer '("beer")
    :synonym '("beer" "fuerstenberg" "fürstenberg")
    :fdescription '("You bought a fantastic pilsner beer. ")
    :sdescription '("It is a very nice pilsner beer "
@@ -153,6 +154,7 @@
 
 (defparameter *store-assistant*
   (make-instance 'item
+   :name '("Susan")
    :synonym '("susan" "store assistant" "girl"
 	      "woman" "assistant")
    :fdescription '("Behind the counter a young woman is "
@@ -174,7 +176,17 @@
   (make-instance 'loc
    :name '("main road~%~%")
    :fdescription '("You are at a busy stretch of your towns "
-		   "main road. A lot of traffic here, so you should "
+		   "main road. "
+		   "Guys are flaunting their cars in a "
+		   "\"Look at me, I've got a car\" sort "
+		   "of way, elbows planted on the door, their "
+		   "radios stating what music they are into. "
+		   "(It's always shit by the way. Have you ever "
+		   "wondered, why people, who generously decide to "
+		   "letting you participate in their enjoyment of music "
+		   "by blasting it through their phone's speaker only "
+		   "I repeat, only listen to crap?)~%Anyway "
+		   "a lot of traffic here, so you should "
 		   "probably move along. You can reach the end of the "
 		   "main road to the north and you can "
 		   "get back to your house to the southeast. ")
@@ -480,8 +492,10 @@
    :fdescription '("You are at the end of your town's High Street. "
 		   "People are milling about, doing their shopping "
 		   "or just having a walk, while your eyes get "
-		   "invariably drawn to a pub in the west, where "
-		   "they are already setting up tables outside. ")
+		   "invariably drawn to a pub in the north, where "
+		   "they are already setting up tables outside. "
+		   "To the southwest is the concert hall and the "
+		   "pedestrian street ends to the south. ")
    :ldescription '("This is a pedestrian road going from east to "
 		   "the concert hall in the southwest. "
 		   "In the north you can see a pub. ")
@@ -542,6 +556,7 @@
 
 (defparameter *cistern*
   (make-instance 'item
+   :name '("cistern")
    :synonym '("cistern")
    :fdescription '("On top of the toilet, is a plastic cistern. ")
    :action '((:look-closer-v :look-cistern-f))
@@ -549,6 +564,7 @@
 
 (defparameter *toilet-brush*
   (make-instance 'item
+   :name '("toiletbrush")
    :synonym '("toilet brush" "brush" "toiletbrush")
    :fdescription '("To one side of the toilet is a toilet brush "
 		   "mounted in it's holder. ")
@@ -558,6 +574,7 @@
 
 (defparameter *toilet-paper*
   (make-instance 'item
+   :name '("toiletpaper")
    :synonym '("toilet paper")
    :fdescription '("Sitting on top of the cistern is a roll "
 		   "of toilet paper. ")
@@ -568,6 +585,7 @@
 
 (defparameter *key*
   (make-instance 'item
+   :name '("key")
    :synonym '("key" "iron key")
    :fdescription '("On one edge of the cistern is a key. ")
    :sdescription '("It looks like any other key. It probably "
@@ -837,6 +855,7 @@
 
 (defparameter *coatrack*
   (make-instance 'item
+   :name '("coatrack")
    :synonym '("coatrack" "rack")
    :flags '(:fixed)))
 
