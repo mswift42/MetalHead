@@ -197,6 +197,23 @@
 	(change-location *friends-hallway*)
 	(setf (:cexit *friends-house*) '(("south" *friends-house* bell-rung t))))))
 
+(defun look-band-poster-f ()
+  '("These are your typical band posters. They are not very "
+    "imaginative, some show people wearing leather looking mean "
+    "and some show people wearing jeans looking happy. I don't "
+    "think the people designing those posters went for originality. "
+    "You are a metal band? Ok, wear a wristband with spikes, "
+    "cross your arms and look constipated. Time to take a picture.~%"
+    "One of the posters, however, stands out. A Metallica Poster with "
+    "a yellow sticker, reading \"Sold out\" across it. Life's a bummer "
+    "if you're a hummer. "))
+
+(defun take-band-poster-f ()
+  '("While I appreciate the effort to enlargen your poster collection, "
+    "the bible clearly states, that you shouldn't steal. Also, "
+    "Metal is the sound of the devil, and playing with yourself makes "
+    "you go blind. (I should know, I'm typing this in braille. )"))
+
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
   (incf (second (equalassoc "taken" (:flags *fish*))) ))
@@ -240,6 +257,7 @@
   (:sdescription *poster*))
 
 (defun read-inscription-f ()
+  "tell player about hidden key in pub."
   '("As you come closer to read the inscription in the "
     "bench, you notice two things: A: the bench smells "
     "of vomit, and B: the text written in the wood reads "
@@ -251,6 +269,13 @@
   "If player is inclined in a way that would make him burn stuff. "
   '("I know that burning stuff is fun. However, you should try "
     "sneaking into the show, and not alarm everyone to your presence. "))
+
+(defun pub-quiz-played-f ()
+  "If player has won the participated allow access to toilets."
+  (if (member :quiz-played (:flags *pub*))
+      (change-location *pub-toilets*)
+      '("You can't go now. The pub quiz is about to start and "
+	"that's far too important to miss. ")))
 
 (defun bought-beer-v ()
   "If player has bought beer at finnegans allow him 
@@ -347,8 +372,7 @@
 (defun take-key-f ()
   (multiple-value-prog1
       '("You slip the key into your pocket.")
-    (take-object '*key*)
-    (setf (:cexit *staircase*) '(("south" *cellar* has-key t)))))
+    (take-object '*key*)))
 
 (defun has-key ()
   "if player has key in inventory, change location to *cellar*
@@ -540,7 +564,7 @@
 (defun nothing-special-f (word)
   "concatenate inputed word with a random string. Needed for function 
    look-command-p"
-  (list (concatenate 'string (random-string '("There is nothing special about "
+  (list (concatenate 'string (random-string '("There is nothing special about the "
 					      "It's just an ordinary "
 					      "It's a ")))
 	       word))
