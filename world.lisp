@@ -232,7 +232,7 @@
    :things '(*band-poster*)))
 
 (defparameter *band-poster*
-  (make-instance 'loc
+  (make-instance 'item
    :name '("poster")
    :synonym '("posters" "poster" "band poster"
 	      "band posters")
