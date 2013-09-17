@@ -289,7 +289,7 @@
 (defun talk-to-tony-f ()
   "Dialog with tony. After info about pub-quiz, set location
    to *friends-house* and add :friend-visited to doorbell-flags, thus
-   blocking the exit to inside *friends-hosue*"
+   blocking the exit to inside *friends-hosue*. "
    (multiple-value-prog1
        '("After the initial bla bla, how is your head, "
 	 "man, were you drunk last night, you made a complete "
@@ -310,6 +310,15 @@
 	 "out of his house and onto the street. ")
      (change-location *friends-house*)
      (push :friend-visited (:flags *doorbell*))))
+
+(defun pub-open-v ()
+  "If dialog with tony has happened 'open' pub.
+   otherwise print message that pub still has closed."
+  (if (member :friend-visited (:flags *doorbell*))
+      (change-location *pub*)
+      '("The pub is not open yet. You should find some "
+	"other way to pass the time. Drunk and stupid is no "
+	"way to go through life. ")))
 
 (defun take-dog-f ()
   '("I am sorry, you cannot take him. "
@@ -422,6 +431,7 @@
     ("check" :read-v)
     ("read" :read-v)
     ("burn" :burn-v)
+    ("buy" :buy-v)
     ("talk" :talk-to-v))
   "association list to lookup the fitting functions in an object to its verb")
 

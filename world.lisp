@@ -97,7 +97,7 @@
 		    "in the northwest from you and to the southwest you "
 		    "can see an off licence shop. ")
     :ldescription '("You stand outside of your house. To the east "
-		    "is you can get back inside, to west is a park "
+		    "is you can get back inside, to the west is a park "
 		    "entrance, to the northwest is the mainroad "
 		    "and to the southwest is a off-licence shop. ")
     :uexit '(("east" *hallway*)
@@ -129,7 +129,7 @@
 
 (defparameter *beer*
   (make-instance 'item
-   :beer '("beer")
+   :name '("beer")
    :synonym '("beer" "fuerstenberg" "fürstenberg")
    :fdescription '("You bought a fantastic pilsner beer. ")
    :sdescription '("It is a very nice pilsner beer "
@@ -229,7 +229,7 @@
 
 (defparameter *arcade-hall*
   (make-instance 'loc
-   :name '("Arcade Hall")
+   :name '("Arcade Hall~%~%")
    :fdescription '("If you had too much money, you could lose it "
 		   "here. Slot machines, those stupid video roulette "
 		   "games, and some classic arcade machines. "
