@@ -17,8 +17,8 @@
 
 
 (test test-describe-list-of-items-in-location                      
-  (is (equal '("on a table near the exit to the west is a laptop."
-	       "strewn all over the floor are your clothes."
+  (is (equal '("On a table near the exit to the west is a laptop. "
+	       "Strewn all over the floor are your clothes. "
 	       "On the wall you can see an old poster.")
 	     (describe-list-of-items-in-location *bedroom*))))
 
@@ -56,7 +56,9 @@
   (is (equal '("It is a very old nearly completely faded poster."
  " You can only make out a painted scene of rows "
  "of white crosses in a field.")
-	     (look-command-p '("study" "poster")))))
+	     (look-command-p '("study" "poster"))))
+  (is-true (look-command-p '("look" "at" "exit")))
+  (is-true (look-command-p '("look" "at" "floor"))))
 
 (test test-is-action-p
   (is (eq :wear-v (is-action-p '("put" "on" "clothes"))))
