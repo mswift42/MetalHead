@@ -206,11 +206,25 @@
    :name '("pedestrian street~%~%")
    :fdescription '("This is what they call the \"High Street\""
 		   "A cobblestone road and loads of stores and "
-		   "betting shops. ")
+		   "betting shops. There is an arcade hall to "
+		   "the north, to the southeast is the main road "
+		   "and the pedestrian street continues to the west. ")
    :ldescription '("The road leads from the main road in the "
 		   "southeast and it continues to the west. ")
    :uexit '(("southeast" *main-road-north*) ("north" *arcade-hall*)
 	    ("west" *pedestrian-street-west*))
+   :flags '(:notseen)))
+
+(defparameter *arcade-hall*
+  (make-instance 'loc
+   :name '("Arcade Hall")
+   :fdescription '("If you had too much money, you could lose it "
+		   "here. Slot machines, those stupid video roulette "
+		   "games, and some classic arcade machines. "
+		   "At least it smells bad. The exit is to the south. ")
+   :ldescription '("A silly arcade hall, dominated by silly slot "
+		   "machines. The exit is to the south. ")
+   :uexit '(("south" *pedestrian-street-east*))
    :flags '(:notseen)))
 
 (defparameter *ticket-office*
