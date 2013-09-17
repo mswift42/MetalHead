@@ -228,7 +228,18 @@
 		   "the northeast you can see your friends house. ")
    :uexit '(("north" *concert-hall*)
 	    ("southeast" *friends-house*))
-   :flags '(:notseen)))
+   :flags '(:notseen)
+   :things '(*band-poster*)))
+
+(defparameter *band-poster*
+  (make-instance 'loc
+   :name '("poster")
+   :synonym '("posters" "poster" "band poster"
+	      "band posters")
+   :fdescription '()
+   :ldescription '()
+   :action '((:look-closer-v :look-band-poster-f)
+	     (:pick-up-v :take-band-poster-f))))
 
 (defparameter *concert-hall*
   (make-instance 'loc
@@ -264,8 +275,8 @@
 		   " hall to the southeast and southwestwards is a "
 		   "staircase leading downwards. ")
    :uexit '(("southeast" *concert-hall*) ("southwest" *staircase*))
-   :nexit '(("south") '("It is a very small window, there's no way "
-			"you would fit through that."))
+   :nexit '(("south" ("It is a very small window, there's no way "
+		       "you would fit through that.")))
    :flags '(:notseen)
    :things '(*rubble*)))
 
