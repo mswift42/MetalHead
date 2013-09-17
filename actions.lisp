@@ -74,12 +74,6 @@
   (flatten (object-action-list (:things (current-location)))))
 
 
-(defun symbol-to-string (sym)
-  "convert symbol name to string minus earmuffs."
-  (let* ((name (symbol-name sym))
-	 (len (length name)))
-    (subseq name 1 (1- len))))
-
 (defparameter  *directions-synonyms*
   '(("e"  "east") ("w"  "west") ("s" "south") ("n"  "north") ("d"  "down")
     ("u"  "up") ("se"  "southeast") ("sw"  "southwest")
@@ -279,7 +273,7 @@
 
 (defun bought-beer-v ()
   "If player has bought beer at finnegans allow him 
-   to enter living-room."
+   to enter living-room at friends house."
   (if (member *beer* (:inventory *player*))
       (multiple-value-prog1
 	  (describe-room *living-room*)
@@ -327,7 +321,12 @@
     "not San Francisco. "))
 
 (defun look-litterbox-f ()
-  (if (not (member *back-stage-pass* (:things *smoking-room*)))
+  "check if back-stage-pass is in inventory. If not, and if 
+   litterbox is being examined for first time, print long text 
+   and push *back-stage-pass* to (:things *smoking-room*. Else 
+   print short text."
+  (if (not (or (member *back-stage-pass* (:things *smoking-room*))
+	       (member *back-stage-pass* (:inventory *player*))))
       (multiple-value-prog1
 	  '("The litterbox, made of some sort of "
 	    "aluminium, has the shape of a big hourglass. "
@@ -441,8 +440,8 @@
   (second (equalassoc verb verb-synonyms))) 
 
 (defun convert-symbol (s)
-  "convert in package world stored symbol to its in package 
-   action function value '(convert-symbol :use-laptop-f) -> use-laptop-f"
+  "convert in file  world stored symbol to its in file 
+   action stored function value '(convert-symbol :use-laptop-f) -> use-laptop-f"
   (find-symbol (symbol-name s)))
 
 (defun action-for-verb (verb)
@@ -584,6 +583,10 @@
   (equalmember exp '("t" "take" "grab" "snatch" "get")))
 
 (defun take-command (list)
+  "if last element in list is a 'item' instance, check if 
+   it has a :pick-up-v action stored in (:flags item). If yes, 
+   call the according function. If :fixed in :flags print 
+   you cannot take that. Else call take-object function."
   (let ((obj (find-synonym-in-location (last-element list))))
     (cond
       ((not obj) (no-object))
