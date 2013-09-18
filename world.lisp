@@ -129,7 +129,7 @@
 
 (defparameter *beer*
   (make-instance 'item
-   :name '("beer")
+   :name '("beer ")
    :synonym '("beer" "fuerstenberg" "fürstenberg")
    :fdescription '("You bought a fantastic pilsner beer. ")
    :sdescription '("It is a very nice pilsner beer "
@@ -437,7 +437,7 @@
 
 (defparameter *back-stage-pass*
   (make-instance 'item
-   :name '("Backstage Pass")
+   :name '("A Backstage Pass ")
    :synonym '("pass" "backstage pass" "card" "laminated card")
    :fdescription '("In one corner of the room, behind the litter bin, "
 		   "is some card lying on the floor. ")
@@ -585,7 +585,7 @@
 
 (defparameter *key*
   (make-instance 'item
-   :name '("key")
+   :name '("a key ")
    :synonym '("key" "iron key")
    :fdescription '("On one edge of the cistern is a key. ")
    :sdescription '("It looks like any other key. It probably "
@@ -823,7 +823,7 @@
 
 (defparameter *fish*
    (make-instance 'item
-   :name '("healthy rainbow trout.")
+   :name '("a healthy rainbow trout ")
    :synonym '("trout" "fish")
    :fdescription '("There is one big trout in the pond.")
    :sdescription '("you are looking at a very healthy and "
