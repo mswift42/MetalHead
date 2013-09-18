@@ -612,6 +612,28 @@
      (second (equalassoc (build-substring list) verb-synonyms)))
      (t nil)))
 
+(defun inventory-p (exp)
+  "is expression a inventory command"
+  (equalmember exp '("i" "inventory")))
+
+(defun print-inventory ()
+  "print 'you are carrying ' + names of all items in 
+   inventory"
+  (let ((inv (loop for i in (:inventory *player*)
+		   collect (:name i))))
+    (concatenate 'string "You are carrying "
+		 (substitute #\, #\.
+			     (print-list (flatten inv)))
+		 " ")))
+
+(defun inventory-command-p (list)
+  "Check if length of list is 1 and the first element
+   is a inventory-p command. If yes, print list of 
+   inventory items. "
+  (if (and (= 1 (length list))
+	   (inventory-p (first list)))
+      (list (print-inventory ))))
+
 
 
 (defun no-object ()

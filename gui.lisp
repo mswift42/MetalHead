@@ -44,6 +44,8 @@
        (look-command-p commandlist))
       ((is-take-p (first commandlist))
        (take-command commandlist))
+      ((inventory-command-p commandlist)
+       (inventory-command-p commandlist))
       (t (no-action)))))
 
 

@@ -64,6 +64,9 @@
   (is (eq :wear-v (is-action-p '("put" "on" "clothes"))))
   (is (eq :wear-v (is-action-p '("wear" "clothes")))))
 
+(test test-inventory-p
+  (is-true (inventory-p "inVenTory")))
+
 
 
 
