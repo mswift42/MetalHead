@@ -368,7 +368,7 @@
 (defun take-paper-f ()
   '("Please leave it. How would you like it to go to the "
     "toilet, having to go very urgently, only to realize "
-    "that there's no paper? "))
+     "that there's no paper? "))
 
 (defun look-cistern-f ()
   (multiple-value-prog1
@@ -634,12 +634,23 @@
 	   (inventory-p (first list)))
       (list (print-inventory ))))
 
-
-
 (defun no-object ()
   '("There is no such thing "))
 
+(defparameter *questions-and-answers*
+  '(("Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden" 
+     ("Di'Anno" "Di Anno" "DiAnno"))
+    ("Name of a swedish Band that got it's name from a volcano in Tolkien's Lord of the Rings." 
+     ("Amon Amarth"))
+    ()))
 
+(defun answer-for-question (question)
+  "return the answer for question in *questions-ans-answers*"
+  (second (equalassoc question *questions-and-answers*)))
+
+(defun correct-answer-p (question answer)
+  "Is the answer correct for the given question?"
+  (equalmember answer (answer-for-question question)))
 
 
 

@@ -67,6 +67,18 @@
 (test test-inventory-p
   (is-true (inventory-p "inVenTory")))
 
+(test test-answer-for-question
+  (is (equal '("Di'Anno" "Di Anno" "DiAnno")
+	     (answer-for-question "Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden"))))
+
+(test test-correct-answer-p
+  (is-true (correct-answer-p "Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden" "Di'Anno"))
+  (is-true (correct-answer-p "Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden" "di'anno"))
+  (is-true (correct-answer-p "Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden" "diAnNo"))
+  (is-true (correct-answer-p "Name of a swedish Band that got it's name from a volcano in Tolkien's Lord of the Rings." "amOn AMArTh")))
+
+
+
 
 
 
