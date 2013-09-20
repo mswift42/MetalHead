@@ -68,7 +68,7 @@
   (is-true (inventory-p "inVenTory")))
 
 (test test-answer-for-question
-  (is (equal '("Di'Anno" "Di Anno" "DiAnno")
+  (is (equal '("Di'Anno" "Di Anno" "DiAnno" "Paul Di'Anno" "Paul Di Anno")
 	     (answer-for-question "Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden"))))
 
 (test test-correct-answer-p

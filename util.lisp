@@ -7,11 +7,11 @@
         ((atom structure) `(,structure))
         (t (mapcan #'flatten structure))))
 
-(defmacro equalassoc (exp list)
+(defmacro string-assoc (exp list)
   "test assoc for equal to work with strings."
   `(assoc ,exp ,list :test #'string-equal))
 
-(defmacro equalmember (exp list)
+(defmacro string-member (exp list)
   "test member for equal to work with stirngs."
   `(member ,exp ,list :test #'string-equal))
 

@@ -28,12 +28,12 @@
 	(ue (:uexit self))
 	(ne (:nexit self)))
     (cond
-      ((equalassoc direction ce)
-       (flatten (cons 'ce (equalassoc direction ce))))
-      ((equalassoc direction ue)
-       (flatten (cons 'ue (equalassoc direction ue))))
-      ((equalassoc direction ne)
-       (flatten (cons 'ne (equalassoc direction ne))))
+      ((string-assoc direction ce)
+       (flatten (cons 'ce (string-assoc direction ce))))
+      ((string-assoc direction ue)
+       (flatten (cons 'ue (string-assoc direction ue))))
+      ((string-assoc direction ne)
+       (flatten (cons 'ne (string-assoc direction ne))))
       (t nil))))                                                             
 
 (defgeneric find-synonym (item string)
@@ -42,7 +42,7 @@
 (defmethod find-synonym ((self item) string)
   "if synonym is in synonym list of item, return item
    (find-synonym *laptop* 'laptop') -> #<item{af17569}"
-  (if (equalmember string (:synonym self))
+  (if (string-member string (:synonym self))
       self
       nil))
 
@@ -88,14 +88,14 @@
   "look up entered direction in directions-synonyms and directions.
    If synonym return full name. If full name entered return it."
   (cond
-    ((equalmember input *directions*) input)
-    ((equalassoc input *directions-synonyms*)
-     (second (equalassoc input *directions-synonyms*)))
+    ((string-member input *directions*) input)
+    ((string-assoc input *directions-synonyms*)
+     (second (string-assoc input *directions-synonyms*)))
      (t nil)))
 
 (defun move-p (string)
   "return if string is a movement command."
-   (equalmember string '("go" "move" "walk")))
+   (string-member string '("go" "move" "walk")))
 
 (defun use-laptop-f ()
   (if (member :poweroff (:flags *laptop*))
@@ -210,11 +210,11 @@
 
 (defun increment-fish-counter ()
   "Increase :taken counter of item *fish*"
-  (incf (second (equalassoc "taken" (:flags *fish*))) ))
+  (incf (second (string-assoc "taken" (:flags *fish*))) ))
 
 (defun pick-up-trout-f ()
   "take the fish out off the pond."
-  (let ((counter (second (equalassoc "taken" (:flags *fish*)))))
+  (let ((counter (second (string-assoc "taken" (:flags *fish*)))))
     (case counter
       (0 
        (multiple-value-prog1
@@ -437,7 +437,7 @@
 
 (defun return-synonym (verb)
   "return the function synonym to the entered verb."
-  (second (equalassoc verb verb-synonyms))) 
+  (second (string-assoc verb verb-synonyms))) 
 
 (defun convert-symbol (s)
   "convert in file  world stored symbol to its in file 
@@ -567,7 +567,7 @@
 
 (defun is-look-p (exp)
    "return if command is member of synonyms for 'look'"
-   (equalmember exp '("look" "examine" "study" "view" "scan" "parse"
+   (string-member exp '("look" "examine" "study" "view" "scan" "parse"
 		      "explore" "l")))
 
 (defun nothing-special-f (word)
@@ -580,7 +580,7 @@
 
 (defun is-take-p (exp)
   "return if command if member of synonyms for 'take'"
-  (equalmember exp '("t" "take" "grab" "snatch" "get")))
+  (string-member exp '("t" "take" "grab" "snatch" "get")))
 
 (defun take-command (list)
   "if last element in list is a 'item' instance, check if 
@@ -606,15 +606,15 @@
   "return action flag from verb synonyms if entered command is 
    a action command"
   (cond
-    ((equalassoc (first list) verb-synonyms)
-     (second (equalassoc (first list) verb-synonyms)))
-    ((equalassoc (build-substring list) verb-synonyms)
-     (second (equalassoc (build-substring list) verb-synonyms)))
+    ((string-assoc (first list) verb-synonyms)
+     (second (string-assoc (first list) verb-synonyms)))
+    ((string-assoc (build-substring list) verb-synonyms)
+     (second (string-assoc (build-substring list) verb-synonyms)))
      (t nil)))
 
 (defun inventory-p (exp)
   "is expression a inventory command"
-  (equalmember exp '("i" "inventory")))
+  (string-member exp '("i" "inventory")))
 
 (defun print-inventory ()
   "print 'you are carrying ' + names of all items in 
@@ -639,18 +639,20 @@
 
 (defparameter *questions-and-answers*
   '(("Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden" 
-     ("Di'Anno" "Di Anno" "DiAnno"))
+     ("Di'Anno" "Di Anno" "DiAnno" "Paul Di'Anno" "Paul Di Anno"))
     ("Name of a swedish Band that got it's name from a volcano in Tolkien's Lord of the Rings." 
      ("Amon Amarth"))
-    ()))
+    ( )))
 
 (defun answer-for-question (question)
   "return the answer for question in *questions-ans-answers*"
-  (second (equalassoc question *questions-and-answers*)))
+  (second (string-assoc question *questions-and-answers*)))
 
 (defun correct-answer-p (question answer)
   "Is the answer correct for the given question?"
-  (equalmember answer (answer-for-question question)))
+  (string-member answer (answer-for-question question)))
+
+
 
 
 
