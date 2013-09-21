@@ -1,6 +1,7 @@
-
+ 
 (in-package #:metalhead)
-(setf ltk:*debug-tk* t)
+
+
 
 (defun main ()
   "Ltk-gui window for game, split in 2 parts, a outtext part, where 
@@ -24,7 +25,7 @@
       (pack text-field :side  :bottom :expand nil)
       (bind text-field "<KeyPress-Return>"
 	    (lambda (event) (format-output text-field outtext)))
-      (configure f :borderwidth 1))))
+       (configure f :borderwidth 1))))
 
 (defun pub-quiz-window ()
   (with-ltk ()
@@ -32,15 +33,21 @@
 	   (score (make-instance 'label :master f :text *pubquiz-score*))
 	   (pub (make-instance 'label :master f :text "Pub Quiz"))
 	   (outtext (make-instance 'text))
-	   (tf (make-instance 'text :background "#b2b1b0" :foreground "#302010")))
+	   (tf (make-instance 'text :background "#b2b1b0" :foreground "#302010"))
+	   )
       (pack f)
       (pack pub :side :left :ipadx 50)
       (pack score :side :left :ipadx 50)
       (pack outtext :ipady 100)
-      (bind tf "<KeyPress-Return>" (lambda (event)
-				     (setf (text score)  (incf *pubquiz-score*))))
+      (setf (text outtext) "hoden")
+      (dolist (i *questions*)
+	(setf (text outtext) i)
+	(bind tf "<KeyPress-Return>" (lambda (event)
+				       (format-2 tf outtext (text outtext)  score))))
       (pack tf))))
 
+(defparameter *questions*
+  (question-list 2))
 
 (defun format-output (source target)
   "Print inputstring with newlines and > .
@@ -51,6 +58,17 @@
   (clear-text source)
   (append-text target (format nil (print-list (parse-command))))
   (see target "end"))
+
+(defun format-2 (source target question counter)
+  ""
+  (let ((answer (string-right-trim '(#\Space #\Newline) (text source))))
+    (if (correct-answer-p question answer)
+	(progn (append-text target (format nil "~%~A" "correct"))
+	       (setf (text counter) (incf *pubquiz-score*))))
+    ;(append-text target question)
+    ;(append-text target answer)
+    ;(clear-text source)
+    ))
 
 (defun parse-command ()
   "parse entered player input."

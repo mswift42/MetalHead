@@ -644,6 +644,15 @@
      ("Amon Amarth"))
     ( )))
 
+(defun question-list (n)
+  "build list of n questions. "
+  (let ((ql nil))
+    (loop
+	 for i in *questions-and-answers*
+	 while (< (length ql) n)
+         do (pushnew (first i) ql)
+         finally (return ql))))
+
 (defun answer-for-question (question)
   "return the answer for question in *questions-ans-answers*"
   (second (string-assoc question *questions-and-answers*)))
