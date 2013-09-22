@@ -692,9 +692,9 @@
   "build list of n questions. "
   (let ((ql nil))
     (loop
-	 for i in *questions-and-answers*
+	 for i from 1
 	 while (< (length ql) n)
-         do (pushnew (first i) ql)
+         do (pushnew (first (random-string *questions-and-answers*)) ql)
          finally (return ql))))
 
 (defun answer-for-question (question)

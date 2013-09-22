@@ -1,7 +1,6 @@
  
 (in-package #:metalhead)
 
-(setf ltk:*debug-tk* t)
 
 (defun main ()
   "Ltk-gui window for game, split in 2 parts, a outtext part, where 
@@ -36,8 +35,6 @@
 				   :wrap :word))
 	   (tf (make-instance 'text  :font "monospaced")))
       (pack f)
-      (if (= *turns* 2)
-	  (destroy f))
       (pack pub :side :left :ipadx 50)
       (pack outtext :ipady 100)
       (setf (text outtext) (pop *questions*))
