@@ -59,7 +59,7 @@
   (see target "end"))
 
 (defun format-quiz (source target)
-  ""
+  "store question and answer, call parse-quiz function."
   (let ((answer (string-right-trim '(#\Space #\Newline) (text source)))
 	(question (string-right-trim '(#\Newline) (text target))))
     (setf *question* question)
@@ -69,11 +69,13 @@
     (clear-text source)))
 
 (defun parse-quiz ()
+  "If answer is correct increase score and turns variables, 
+   else only increase turns variable, finally print score."
   (if (correct-answer-p *question* *answer*)
-      (multiple-value-prog1 "~%~%Correct~%~%"
+      (progn
 	(incf *score*)
 	(incf *turns*))
-      (multiple-value-prog1 "~%~%Wrong~%~%"
+      (progn
 	(incf *turns*)))
   (if (> (length *questions*)
 	 0)
