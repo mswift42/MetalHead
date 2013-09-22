@@ -75,7 +75,8 @@
   (is-true (correct-answer-p "Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden" "Di'Anno"))
   (is-true (correct-answer-p "Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden" "di'anno"))
   (is-true (correct-answer-p "Who was the predecessor of Bruce Dickinson as frontman of Iron Maiden" "diAnNo"))
-  (is-true (correct-answer-p "Name of a swedish Band that got it's name from a volcano in Tolkien's Lord of the Rings." "amOn AMArTh")))
+  (is-true (correct-answer-p "Name of a swedish Band that got it's name from a volcano in Tolkien's Lord of the Rings." "amOn AMArTh"))
+  (is-true (correct-answer-p "Tom Angelripper was founding member of which German Band?" "soDOM")))
 
 
 

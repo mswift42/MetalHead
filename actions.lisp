@@ -642,7 +642,8 @@
      ("Di'Anno" "Di Anno" "DiAnno" "Paul Di'Anno" "Paul Di Anno"))
     ("Name of a swedish Band that got it's name from a volcano in Tolkien's Lord of the Rings." 
      ("Amon Amarth"))
-    ( )))
+    ("Tom Angelripper was founding member of which German Band?"
+     ("Sodom"))))
 
 (defun question-list (n)
   "build list of n questions. "

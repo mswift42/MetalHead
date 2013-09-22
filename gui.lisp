@@ -1,7 +1,7 @@
  
 (in-package #:metalhead)
 
-
+(setf ltk:*debug-tk* t)
 
 (defun main ()
   "Ltk-gui window for game, split in 2 parts, a outtext part, where 
@@ -39,11 +39,9 @@
       (pack pub :side :left :ipadx 50)
       (pack score :side :left :ipadx 50)
       (pack outtext :ipady 100)
-      (setf (text outtext) "hoden")
-      (dolist (i *questions*)
-	(setf (text outtext) i)
-	(bind tf "<KeyPress-Return>" (lambda (event)
-				       (format-2 tf outtext (text outtext)  score))))
+      (setf (text outtext) (first *questions*))
+      (bind tf "<KeyPress-Return>" (lambda (event)
+				     (format-2 tf outtext score)))
       (pack tf))))
 
 (defparameter *questions*
@@ -59,16 +57,18 @@
   (append-text target (format nil (print-list (parse-command))))
   (see target "end"))
 
-(defun format-2 (source target question counter)
+(defun format-2 (source target  counter)
   ""
-  (let ((answer (string-right-trim '(#\Space #\Newline) (text source))))
-    (if (correct-answer-p question answer)
-	(progn (append-text target (format nil "~%~A" "correct"))
-	       (setf (text counter) (incf *pubquiz-score*))))
-    ;(append-text target question)
-    ;(append-text target answer)
-    ;(clear-text source)
-    ))
+  (let ((answer (string-right-trim '(#\Space #\Newline) (text source)))
+	;(ql (rest *questions*))
+	)
+    (if (correct-answer-p (text target) answer)
+	(append-text target "Correct!")
+	;(setf (text counter) (incf (text counter)))
+	)))
+
+(defparameter *question* nil)
+(defparameter *answer* nil)
 
 (defun parse-command ()
   "parse entered player input."
