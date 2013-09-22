@@ -46,7 +46,7 @@
       (pack tf))))
 
 (defparameter *questions*
-  (question-list 3))
+  (question-list 10))
 
 (defun format-output (source target)
   "Print inputstring with newlines and > .

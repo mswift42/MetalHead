@@ -653,7 +653,11 @@
     ("What was the name of Testament's debut album?"
      ("The Legacy" "Legacy"))
     ("Who founded Death?"
-     ("Chuck Schuldiner" "Schuldiner"))))
+     ("Chuck Schuldiner" "Schuldiner"))
+    ("Who was the original drummer for Slayer"
+     ("Dave Lombardo" "Lombardo"))
+    ("Three bands were considered the \"big three of Teutonic Trash Metal\" Sodom, Kreator and?"
+     ("Destruction"))))
 
 (defun question-list (n)
   "build list of n questions. "
