@@ -647,7 +647,13 @@
     ("What is the name of Black Sabbath's debut album?"
      ("Black Sabbath"))
     ("What was the stagename for Pantera's / Damageplan' tragically killed lead guitarist?"
-     ("Dimebag Darrell" "Dimebag" "Darrell" "Darrel" "Darell"))))
+     ("Dimebag Darrell" "Dimebag" "Darrell" "Darrel" "Darell"))
+    ("What was Slayer's most commercially successful album?"
+     ("South of Heaven"))
+    ("What was the name of Testament's debut album?"
+     ("The Legacy" "Legacy"))
+    ("Who founded Death?"
+     ("Chuck Schuldiner" "Schuldiner"))))
 
 (defun question-list (n)
   "build list of n questions. "
