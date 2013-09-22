@@ -438,6 +438,10 @@
 	"inside the show for yourself. ")
     (push :quiz-played (:flags *pub*))))
 
+(defun lost-ticket-f ()
+  '("You couldn't even get 50 % of the questions right? "
+    "Shame on you. ~%~%or as the kids say, GAME OVER"))
+
 (defparameter verb-synonyms
   '(("use" :use-v)
     ("utilize" :use-v)
