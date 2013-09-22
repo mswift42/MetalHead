@@ -39,13 +39,13 @@
       (pack pub :side :left :ipadx 50)
       (pack score :side :left :ipadx 50)
       (pack outtext :ipady 100)
-      (setf (text outtext) (first *questions*))
+      (setf (text outtext) (pop *questions*))
       (bind tf "<KeyPress-Return>" (lambda (event)
-				     (format-2 tf outtext score)))
+				     (format-quiz tf outtext score)))
       (pack tf))))
 
 (defparameter *questions*
-  (question-list 2))
+  (question-list 3))
 
 (defun format-output (source target)
   "Print inputstring with newlines and > .
@@ -57,15 +57,24 @@
   (append-text target (format nil (print-list (parse-command))))
   (see target "end"))
 
-(defun format-2 (source target  counter)
+(defun format-quiz (source target  counter)
   ""
   (let ((answer (string-right-trim '(#\Space #\Newline) (text source)))
-	;(ql (rest *questions*))
-	)
-    (if (correct-answer-p (text target) answer)
-	(append-text target "Correct!")
-	;(setf (text counter) (incf (text counter)))
-	)))
+	(question (string-right-trim '(#\Newline) (text target))))
+    (setf *question* question)
+    (setf *answer* answer)
+    (clear-text target)
+    (append-text target (format nil (parse-quiz)))
+    (clear-text source)))
+
+(defun parse-quiz ()
+  (if (correct-answer-p *question* *answer*)
+      (multiple-value-prog1 "~%~%Correct~%~%"
+	(incf *score*)
+	(incf *turns*))
+      (multiple-value-prog1 "~%~%Wrong~%~%"
+	(incf *turns*)))
+  (pop *questions*))
 
 (defparameter *question* nil)
 (defparameter *answer* nil)
