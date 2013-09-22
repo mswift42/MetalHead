@@ -375,7 +375,7 @@
       '("As you look at the cistern, you notice that it's lid "
 	"is sitting loosely on it. Curious as you are, you lift "
 	"the lid and find a key on one edge. ")
-    (push *key* (:things *toilet-stall*))))
+    (push '*key* (:things *toilet-stall*))))
 
 (defun take-key-f ()
   (multiple-value-prog1
@@ -414,6 +414,29 @@
     (push *beer* (:inventory *player*))
     (block-exit *off-licence* '("south" *finnegans*)
 		'("the shop seems to have closed. " ))))
+
+(defun buy-pub-quiz-ticket-f ()
+  (multiple-value-prog1
+      '("You walk to the table and buy a ticket. "
+	"By some great coincidence the quiz is all about "
+	"Heavy Metal, and is about to start now. ")
+    (pub-quiz-window)
+    (if (> *score* 5)
+	(won-ticket-f)
+	(lost-ticket-f))))
+
+(defun won-ticket-f ()
+  (multiple-value-prog1
+      '("You did enough to win the quiz. Sadly it seems, "
+	"metal is not that popular anymore. Well, as "
+	"they say, there's no accounting for taste. "
+	"As you are about to order your next pint, "
+	"Tony enters the pub, comes up to you and "
+	"takes the price of of you.~%~%"
+	"\"I really hope, I'll see you tonight\"~%~%"
+	"are his parting words.~%You still have to find a way "
+	"inside the show for yourself. ")
+    (push :quiz-played (:flags *pub*))))
 
 (defparameter verb-synonyms
   '(("use" :use-v)
@@ -657,7 +680,9 @@
     ("Who was the original drummer for Slayer"
      ("Dave Lombardo" "Lombardo"))
     ("Three bands were considered the \"big three of Teutonic Trash Metal\" Sodom, Kreator and?"
-     ("Destruction"))))
+     ("Destruction"))
+    ("Complete this song title of Morbid Angel: God of ..."
+     ("Emptiness"))))
 
 (defun question-list (n)
   "build list of n questions. "
