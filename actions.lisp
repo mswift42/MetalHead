@@ -643,7 +643,11 @@
     ("Name of a swedish Band that got it's name from a volcano in Tolkien's Lord of the Rings." 
      ("Amon Amarth"))
     ("Tom Angelripper was founding member of which German Band?"
-     ("Sodom"))))
+     ("Sodom"))
+    ("What is the name of Black Sabbath's debut album?"
+     ("Black Sabbath"))
+    ("What was the stagename for Pantera's / Damageplan' tragically killed lead guitarist?"
+     ("Dimebag Darrell" "Dimebag" "Darrell" "Darrel" "Darell"))))
 
 (defun question-list (n)
   "build list of n questions. "
