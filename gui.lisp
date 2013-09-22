@@ -30,18 +30,19 @@
 (defun pub-quiz-window ()
   (with-ltk ()
     (let* ((f (make-instance 'frame :relief :groove))
-	   (score (make-instance 'label :master f :text *pubquiz-score*))
-	   (pub (make-instance 'label :master f :text "Pub Quiz"))
-	   (outtext (make-instance 'text))
-	   (tf (make-instance 'text :background "#b2b1b0" :foreground "#302010"))
-	   )
+	   (pub (make-instance 'label :master f :text "Pub Quiz"
+			       ))
+	   (outtext (make-instance 'text :font "monospaced"
+				   :wrap :word))
+	   (tf (make-instance 'text  :font "monospaced")))
       (pack f)
+      (if (= *turns* 2)
+	  (destroy f))
       (pack pub :side :left :ipadx 50)
-      (pack score :side :left :ipadx 50)
       (pack outtext :ipady 100)
       (setf (text outtext) (pop *questions*))
       (bind tf "<KeyPress-Return>" (lambda (event)
-				     (format-quiz tf outtext score)))
+				     (format-quiz tf outtext )))
       (pack tf))))
 
 (defparameter *questions*
@@ -57,7 +58,7 @@
   (append-text target (format nil (print-list (parse-command))))
   (see target "end"))
 
-(defun format-quiz (source target  counter)
+(defun format-quiz (source target)
   ""
   (let ((answer (string-right-trim '(#\Space #\Newline) (text source)))
 	(question (string-right-trim '(#\Newline) (text target))))
@@ -74,7 +75,10 @@
 	(incf *turns*))
       (multiple-value-prog1 "~%~%Wrong~%~%"
 	(incf *turns*)))
-  (pop *questions*))
+  (if (> (length *questions*)
+	 0)
+      (pop *questions*)
+      (format nil "~%~%Your Score is : ~D" *score*)))
 
 (defparameter *question* nil)
 (defparameter *answer* nil)
