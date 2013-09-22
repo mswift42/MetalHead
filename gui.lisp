@@ -69,6 +69,9 @@
 
 (defparameter *question* nil)
 (defparameter *answer* nil)
+(defparameter *turns* 0)
+(defparameter *score* 0)
+
 
 (defun parse-command ()
   "parse entered player input."
