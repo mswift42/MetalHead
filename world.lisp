@@ -128,7 +128,7 @@
 
 (defparameter *beer*
   (make-instance 'item
-   :name '("beer ")
+   :name '("beer. ")
    :synonym '("beer" "fuerstenberg" "fürstenberg")
    :fdescription '("You bought a fantastic pilsner beer. ")
    :sdescription '("It is a very nice pilsner beer "
@@ -247,10 +247,10 @@
 		   "window, completely covered with posters "
 		   "depicting recent and upcoming events. "
 		   "To the north is the concert hall and in "
-		   "the northeast you can see your friends house. ")
+		   "the southeast you can see your friends house. ")
    :ldescription '("The ticket office. "
 		   "To the north is the concert hall and in "
-		   "the northeast you can see your friends house. ")
+		   "the southeast you can see your friends house. ")
    :uexit '(("north" *concert-hall*)
 	    ("southeast" *friends-house*))
    :flags '(:notseen)
@@ -282,7 +282,7 @@
 		   "street. A small back alley is to the northwest. ")
    :uexit '(("south" *ticket-office*) ("northeast" *pedestrian-street-west*)
 	    ("northwest" *back-alley*))
-   :nexit '(("west" '("You can get only in there with a valid ticket. "
+   :nexit '(("west" ("You can get only in there with a valid ticket. "
 		      "You don't have one. Ergo, you cannot go there. ")))
    :flags '(:notseen)))
 
@@ -388,7 +388,7 @@
 		   "and a bouncer is blocking a door to your east. ")
    :uexit '(("northeast" *cellar*) ("southwest" *smoking-room*)
 	    ("southeast" *toilets*))
-   :nexit '(("west" '("What is it about the term \"locked\" "
+   :nexit '(("west" ("What is it about the term \"locked\" "
 		      "that you don't understand? ")))
    :cexit '(("east" *vip-area* back-stage-pass nil))))
 
@@ -406,7 +406,7 @@
 		   "The exit is to the north. ")
    :ldescription '("The toilet, nothing special to see here, please "
 		   "move along west to the exit. ")
-   :uexit '(("west" *corridor*))
+   :uexit '(("north" *corridor*))
    :flags '(:notseen)))
 
 (defparameter *smoking-room*
@@ -494,7 +494,7 @@
 		   "invariably drawn to a pub in the north, where "
 		   "they are already setting up tables outside. "
 		   "To the southwest is the concert hall and the "
-		   "pedestrian street ends to the south. ")
+		   "pedestrian street ends to the east. ")
    :ldescription '("This is a pedestrian road going from east to "
 		   "the concert hall in the southwest. "
 		   "In the north you can see a pub. ")
