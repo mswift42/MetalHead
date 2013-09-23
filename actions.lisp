@@ -183,12 +183,12 @@
 	"song of death. Unfortunately, it seems as if your friend is "
 	"not at home, because despite of you pressing the bell "
 	"for 5 minutes now, no one is coming to open the door. ")
-      (multiple-value-prog1
+      (progn
 	  '("You press the doorbell. With a startling amount "
 	    "of noise, you hear the intro to Death's \"Leprosy\"~%"
 	    "Maybe 20 seconds later, the door opens and your friend "
 	    "beckons you inside.")
-	(change-location *friends-hallway*))))
+	  (change-location *friends-hallway*))))
 
 (defun look-band-poster-f ()
   '("These are your typical band posters. They are not very "
@@ -326,8 +326,8 @@
    litterbox is being examined for first time, print long text 
    and push *back-stage-pass* to (:things *smoking-room*. Else 
    print short text."
-  (if (not (or (member *back-stage-pass* (:things *smoking-room*))
-	       (member *back-stage-pass* (:inventory *player*))))
+  (if (not (or (member '*back-stage-pass* (:things *smoking-room*))
+	       (member '*back-stage-pass* (:inventory *player*))))
       (multiple-value-prog1
 	  '("The litterbox, made of some sort of "
 	    "aluminium, has the shape of a big hourglass. "
@@ -387,10 +387,10 @@
   "if player has key in inventory, change location to *cellar*
    otherwise print message that door can only be opened with key."
   (if (member '*key* (:inventory *player*))
-      (multiple-value-prog1
-	  '("You take the key from your pocket, insert it, "
-	    "wiggle a bit, eh voila, it opens and you step into the "
-	    "cellar")
+      (progn
+	'("You take the key from your pocket, insert it, "
+	  "wiggle a bit, eh voila, it opens and you step into the "
+	  "cellar")
 	(change-location *cellar*))
       '("You need a key to get in there. The door is locked. ")))
 
@@ -658,7 +658,7 @@
     (concatenate 'string "You are carrying "
 		 (substitute #\, #\.
 			     (print-list (flatten inv)))
-		 " ")))
+		  ".")))
 
 (defun inventory-command-p (list)
   "Check if length of list is 1 and the first element
