@@ -16,6 +16,11 @@
 	   (text-field (make-instance 'text :font "monospaced"
 				      :background "#f2f1f0"
 				      :foreground "#4c4c4c")))
+       (if (= 10 *turns*)
+	   (progn (sb-thread:destroy-thread *running-pub-quiz*)
+		  (if (> *score* 5)
+		      (won-ticket-f)
+		      (lost-ticket-f))))
       (pack f )
       (pack label)
       (configure outtext :font "monospaced"
@@ -40,7 +45,12 @@
       (setf (text outtext) (pop *questions*))
       (bind tf "<KeyPress-Return>" (lambda (event)
 				     (format-quiz tf outtext )))
+      (if (= 10 *turns*)
+	   (progn (sb-thread:destroy-thread *running-pub-quiz*)
+		  ))
       (pack tf))))
+
+(defvar *running-pub-quiz* nil)
 
 (defparameter *questions*
   (question-list 10))
@@ -77,7 +87,14 @@
   (if (> (length *questions*)
 	 0)
       (pop *questions*)
-      (format nil "~%~%Your Score is : ~D" *score*)))
+      (progn
+	(format nil "~%~%Your Score is : ~D in ~D turns." *score* *turns*)
+	(setf (:things *pub*)
+	      (delete '*ticket-table* (:things *pub*)))
+	(if (> *score* 5)
+		      (won-ticket-f)
+		      (lost-ticket-f))
+	(sb-thread:destroy-thread *running-pub-quiz*))))
 
 (defparameter *question* nil)
 (defparameter *answer* nil)
