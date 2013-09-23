@@ -770,7 +770,7 @@
    :ldescription '("Tony's living room. A big couch and a big "
 		   "telly. To the north is the hallway. ")
    :things '(*tony*)
-   :uexit '("north" *friends-hallway*)
+   :uexit '(("north" *friends-hallway*))
    :flags '(:notseen)))
 
 (defparameter *tony*
