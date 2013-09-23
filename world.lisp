@@ -1,4 +1,3 @@
-
 (in-package #:metalhead)
 
 ;; Classes for rooms, items and player.
@@ -422,7 +421,7 @@
 		   "the exit to the north. ")
    :ldescription '("You are in the smoking lounge. The exit is "
 		   "to the north. ")
-   :things '(*litterbox*)
+   :things '(*litterbin*)
    :flags '(:notseen)
    :uexit '(("north" *corridor*))))
 
@@ -575,7 +574,7 @@
 (defparameter *toilet-paper*
   (make-instance 'item
    :name '("toiletpaper")
-   :synonym '("toilet paper")
+   :synonym '("toilet paper" "toiletpaper" "paper")
    :fdescription '("Sitting on top of the cistern is a roll "
 		   "of toilet paper. ")
    :sdescription '("It is a roll of paper. It's white. It's "
