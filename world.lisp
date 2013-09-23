@@ -498,7 +498,7 @@
    :ldescription '("This is a pedestrian road going from east to "
 		   "the concert hall in the southwest. "
 		   "In the north you can see a pub. ")
-   :uexit '(("east" *pedestrian-street-west*) ("southwest" *concert-hall*))
+   :uexit '(("east" *pedestrian-street-east**) ("southwest" *concert-hall*))
    :cexit '(("north" *pub* :pub-open-v nil))
    :flags '(:notseen)) )
 
