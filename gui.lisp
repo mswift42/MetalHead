@@ -108,6 +108,10 @@
     (cond
       ((is-direction-p commandlist)
        (walk-direction (is-direction-p commandlist)))
+      ((not-here commandlist)
+       (list (concatenate 'string "you cannot see "
+			  (last-element commandlist)
+			  " here")))
       ((is-action-p commandlist)
        (funcall (action-for-symbol (is-action-p commandlist))))
       ((look-command-p commandlist)

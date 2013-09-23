@@ -188,8 +188,7 @@
 	    "of noise, you hear the intro to Death's \"Leprosy\"~%"
 	    "Maybe 20 seconds later, the door opens and your friend "
 	    "beckons you inside.")
-	(change-location *friends-hallway*)
-	(setf (:cexit *friends-house*) '(("south" *friends-house* bell-rung t))))))
+	(change-location *friends-hallway*))))
 
 (defun look-band-poster-f ()
   '("These are your typical band posters. They are not very "
@@ -591,6 +590,14 @@
 					     (describe-list-of-items-in-location (current-location))))))
        (nothing-special-f (last-element list)))
       (t nil))))
+
+(defun not-here (list)
+  "check if last item in list appears in :fdescription
+   of current location."
+  (not (or (search (last-element list)
+		   (print-list (append (:fdescription
+					(current-location)))))
+	   (find-synonym-in-location (last-element list)))))
 
 (defun is-look-p (exp)
    "return if command is member of synonyms for 'look'"
