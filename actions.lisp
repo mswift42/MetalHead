@@ -274,7 +274,7 @@
 (defun bought-beer-v ()
   "If player has bought beer at finnegans allow him 
    to enter living-room at friends house."
-  (if (member *beer* (:inventory *player*))
+  (if (member '*beer* (:inventory *player*))
       (multiple-value-prog1
 	  (describe-room *living-room*)
 	  (change-location *living-room*))
@@ -303,6 +303,8 @@
 	 "With these beautiful and inspiring words, Tony leads you "
 	 "out of his house and onto the street. ")
      (change-location *friends-house*)
+     (setf (:inventory *player*) (delete '*beer*
+					(:inventory *player*)))
      (push :friend-visited (:flags *doorbell*))))
 
 (defun pub-open-v ()
@@ -385,7 +387,7 @@
 (defun has-key ()
   "if player has key in inventory, change location to *cellar*
    otherwise print message that door can only be opened with key."
-  (if (member *key* (:inventory *player*))
+  (if (member '*key* (:inventory *player*))
       (multiple-value-prog1
 	  '("You take the key from your pocket, insert it, "
 	    "wiggle a bit, eh voila, it opens and you step into the "
@@ -411,7 +413,7 @@
 	"football team just won the championship, you take the beer "
 	"and leave the store. ")
     (change-location *off-licence*)
-    (push *beer* (:inventory *player*))
+    (push '*beer* (:inventory *player*))
     (block-exit *off-licence* '("south" *finnegans*)
 		'("the shop seems to have closed. " ))))
 
@@ -420,10 +422,8 @@
       '("You walk to the table and buy a ticket. "
 	"By some great coincidence the quiz is all about "
 	"Heavy Metal, and is about to start now. ")
-    (pub-quiz-window)
-    (if (> *score* 5)
-	(won-ticket-f)
-	(lost-ticket-f))))
+    (setf *running-pub-quiz* (sb-thread:make-thread (lambda ()
+				   (pub-quiz-window))))))
 
 (defun won-ticket-f ()
   (multiple-value-prog1
@@ -647,7 +647,7 @@
   "print 'you are carrying ' + names of all items in 
    inventory"
   (let ((inv (loop for i in (:inventory *player*)
-		   collect (:name i))))
+		   collect (:name (symbol-value i)))))
     (concatenate 'string "You are carrying "
 		 (substitute #\, #\.
 			     (print-list (flatten inv)))
@@ -686,10 +686,14 @@
     ("Three bands were considered the \"big three of Teutonic Trash Metal\" Sodom, Kreator and?"
      ("Destruction"))
     ("Complete this song title of Morbid Angel: God of ..."
-     ("Emptiness"))))
+     ("Emptiness"))
+    ("What is the first song on Metallica's Ride the Lightning?"
+     ("Fight Fire with Fire"))
+    ("What is the title of Iron Maiden's live album of 1985?"
+     ("Live after death"))))
 
 (defun question-list (n)
-  "build list of n questions. "
+  "build list of n random questions. "
   (let ((ql nil))
     (loop
 	 for i from 1
