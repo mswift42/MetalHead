@@ -118,7 +118,7 @@
 		   "your house in the northeast to the library in "
 		   "the west. ")
    :ldescription '("You are outside of Finnegan's off-licence. To "
-		   "the south is the entrance to the sop and the "
+		   "the south is the entrance to the shop and the "
 		   "street leads from your house in the northeast "
 		   "to the library in the west. ")
    :uexit '(("south" *finnegans*) ("west" *library*)
@@ -390,7 +390,7 @@
 	    ("southeast" *toilets*))
    :nexit '(("west" ("What is it about the term \"locked\" "
 		      "that you don't understand? ")))
-   :cexit '(("east" *vip-area* back-stage-pass nil))))
+   :cexit '(("east" *vip-area* back-stage-pass-f nil))))
 
 (defparameter *toilets*
   (make-instance 'loc
@@ -498,7 +498,7 @@
    :ldescription '("This is a pedestrian road going from east to "
 		   "the concert hall in the southwest. "
 		   "In the north you can see a pub. ")
-   :uexit '(("east" *pedestrian-street-east**) ("southwest" *concert-hall*))
+   :uexit '(("east" *pedestrian-street-east*) ("southwest" *concert-hall*))
    :cexit '(("north" *pub* :pub-open-v nil))
    :flags '(:notseen)) )
 
@@ -693,7 +693,7 @@
 		   "huge doors stand invitingly "
 		   "open.~%To to west is your best friends house and "
 		   "in the east you can see a small off-licence shop.")
-   :ldescription '("This is your towns library. Its wide doors are open ."
+   :ldescription '("This is your towns library. Southwards, its wide doors are open ."
 		   "To the west is your best friends house and in the "
 		   "east you can see a small off-licence shop.")
    :uexit '(("west" *friends-house*) ("east" *off-licence*))
