@@ -106,16 +106,17 @@
 
 (defun power-on-laptop-f ()
   (update-flag *laptop* :poweroff :poweron)
-  '("You press the power button. You hear some funny noises, and it actually 
-   starts booting. One cup of Tea later, and you start at the login 
-   screen. "))
+  '("You press the power button. You hear "
+    "some funny noises, and it "
+    "actually starts booting. One cup of Tea "
+    "later, and you start at the login screen. "))
 
 (defun wear-clothes ()
   "if not wearing clothes, print out text . Else change location to hallway."
   (if (eq (first  (:flags *clothes*)) :notwearing)
       '("you are not wearing any clothes. I am terribly sorry but you "
 	"should not inflict your gross naked body on other people. "
-	"There are plenty beautiful sights in this "
+	"There are many  beautiful sights in this "
 	"world. You are not one of them. "
 	"When God made you he was either drunk or bored. "
  	"Maybe he was just spiteful "
