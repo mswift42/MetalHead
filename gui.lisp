@@ -59,6 +59,8 @@
   "Print inputstring with newlines and > .
    Store the inputted string as a list in *store-string*
    Clear source and scroll to end of text."
+  (if (= *turns* 10)
+      (pub-quiz-played-f))
   (append-text target (format nil "~%~%> ~A" (text source)))
   (push (split-string (text source)) *store-string*)
   (clear-text source)
@@ -108,12 +110,12 @@
     (cond
       ((is-direction-p commandlist)
        (walk-direction (is-direction-p commandlist)))
-      ((is-action-p commandlist)
-       (funcall (action-for-symbol (is-action-p commandlist))))
       ((not-here commandlist)
        (list (concatenate 'string "you cannot see "
 			  (last-element commandlist)
 			  " here")))
+      ((is-action-p commandlist)
+       (funcall (action-for-symbol (is-action-p commandlist))))
       ((look-command-p commandlist)
        (look-command-p commandlist))
       ((is-take-p (first commandlist))
