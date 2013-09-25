@@ -90,13 +90,13 @@
 	 0)
       (pop *questions*)
       (progn
-	(format nil "~%~%Your Score is : ~D in ~D turns." *score* *turns*)
 	(setf (:things *pub*)
 	      (delete '*ticket-table* (:things *pub*)))
 	(if (> *score* 5)
-		      (won-ticket-f)
-		      (lost-ticket-f))
-	(sb-thread:destroy-thread *running-pub-quiz*))))
+	    (print-list (won-ticket-f))
+	    (print-list (lost-ticket-f)))
+;	(sb-thread:destroy-thread *running-pub-quiz*)
+	)))
 
 (defparameter *question* nil)
 (defparameter *answer* nil)
