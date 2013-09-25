@@ -19,8 +19,8 @@
        (if (= 10 *turns*)
 	   (progn (sb-thread:destroy-thread *running-pub-quiz*)
 		  (if (> *score* 5)
-		      (won-ticket-f)
-		      (lost-ticket-f))))
+		      (append-text outtext (print-list (won-ticket-f)))
+ 		      (lost-ticket-f))))
       (pack f )
       (pack label)
       (configure outtext :font "monospaced"
@@ -144,7 +144,7 @@
 
 (defun entnewlinify (list)
   "remove Newline Character at end of string list."
-   (mapcar #'(lambda (x) (string-right-trim '(#\Newline) x)) (first  list)))
+   (mapcar #'(lambda (x) (string-right-trim '(#\Newline) x)) (first  list)))    
 
 
 
