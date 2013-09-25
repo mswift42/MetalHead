@@ -467,7 +467,7 @@
     ("enter password" :type-pass-v)
     ("press" :use-v)
     ("examine" :look-closer-v)
-    ("look at")
+    ("look at" :look-closer-v)
     ("check" :read-v)
     ("read" :read-v)
     ("burn" :burn-v)
