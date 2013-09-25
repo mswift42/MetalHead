@@ -473,14 +473,16 @@
 		   "~%Congratulations, You made it. Well done, "
 		   "Sir, or Madam. Please imagine a gigantic "
 		   "display of fireworks.~%~%"
-		   "THE END~%~%")))
+		   "THE END~%~%")
+   :ldescription '()
+   :uexit '()))
 
 (defparameter *food*
   (make-instance 'item
    :name '("food")
    :synonym '("food" "drink" "alcohol")
    :fdescription '("Tables stacked with food and drink line"
-		   "line one side of the room. ")
+		   " one side of the room. ")
    :action '((:pick-up-v :take-food-f))))
 
 
