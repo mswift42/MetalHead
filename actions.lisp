@@ -1,4 +1,3 @@
-
 (in-package #:metalhead)
 
 (defun current-location ()
@@ -56,7 +55,8 @@
   "put item into inventory, delete item from location."
   (push item (:inventory *player*))
   (setf (:things (current-location))
-	(remove-if #'(lambda (x) (equal item (symbol-value x)))
+	(remove-if #'(lambda (x) (or (equal item (symbol-value x))
+				     (equal item x)))
 		   (:things (current-location)))))
 
 (defun drop-object (item)
@@ -184,7 +184,7 @@
 	"song of death. Unfortunately, it seems as if your friend is "
 	"not at home, because despite of you pressing the bell "
 	"for 5 minutes now, no one is coming to open the door. ")
-      (progn
+      (append
 	  '("You press the doorbell. With a startling amount "
 	    "of noise, you hear the intro to Death's \"Leprosy\"~%"
 	    "Maybe 20 seconds later, the door opens and your friend "
@@ -355,6 +355,12 @@
       "Life can be so fucking fantastic. ")
     (take-object '*back-stage-pass*))) 
 
+(defun back-stage-pass-f ()
+   (if (member '*back-stage-pass* (:inventory *player*))
+       (change-location *vip-area*)
+       '("The bouncer crosses his arms, and tells you:~%"
+	 "\"No pass, no entry.\"")))
+  
 (defun take-food-f ()
   '("In a very dignified way you stuff some shrimps "
     "into your mouth and grab a beer to wash it down. "
@@ -388,7 +394,7 @@
   "if player has key in inventory, change location to *cellar*
    otherwise print message that door can only be opened with key."
   (if (member '*key* (:inventory *player*))
-      (progn
+      (append
 	'("You take the key from your pocket, insert it, "
 	  "wiggle a bit, eh voila, it opens and you step into the "
 	  "cellar")
@@ -454,6 +460,7 @@
     ("enter password" :type-pass-v)
     ("press" :use-v)
     ("examine" :look-closer-v)
+    ("look at")
     ("check" :read-v)
     ("read" :read-v)
     ("burn" :burn-v)
@@ -594,7 +601,7 @@
 
 (defun not-here (list)
   "check if last item in list appears in :fdescription
-   of current location."
+   of current location or is a synonym for any of it's items."
   (not (or (search (last-element list)
 		   (print-list (append (:fdescription
 					(current-location)))))
@@ -614,7 +621,7 @@
 	       word))
 
 (defun is-take-p (exp)
-  "return if command if member of synonyms for 'take'"
+  "return if command is member of synonyms for 'take'"
   (string-member exp '("t" "take" "grab" "snatch" "get")))
 
 (defun take-command (list)
