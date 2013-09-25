@@ -356,10 +356,14 @@
     (take-object '*back-stage-pass*))) 
 
 (defun back-stage-pass-f ()
-   (if (member '*back-stage-pass* (:inventory *player*))
-       (change-location *vip-area*)
-       '("The bouncer crosses his arms, and tells you:~%"
-	 "\"No pass, no entry.\"")))
+  (if (member '*back-stage-pass* (:inventory *player*))
+      (append
+       '("the bouncer takes a look at your backstage "
+	 "pass, tells you to have a 'nice one' and "
+	 "ushers you inside.~%~%")
+       (change-location *vip-area*))
+      '("The bouncer crosses his arms, and tells you:~%"
+	"\"No pass, no entry.\"")))
   
 (defun take-food-f ()
   '("In a very dignified way you stuff some shrimps "
@@ -397,7 +401,7 @@
       (append
 	'("You take the key from your pocket, insert it, "
 	  "wiggle a bit, eh voila, it opens and you step into the "
-	  "cellar")
+	  "cellar.~%~%")
 	(change-location *cellar*))
       '("You need a key to get in there. The door is locked. ")))
 
@@ -502,7 +506,6 @@
       ((eq 'ne exittype) (cddr exitlist))
       (t (funcall (find-symbol
 		   (symbol-name (fourth exitlist))))))))
-
 
 
 (defun no-exit ()
