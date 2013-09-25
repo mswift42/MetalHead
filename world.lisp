@@ -475,7 +475,8 @@
 		   "display of fireworks.~%~%"
 		   "THE END~%~%")
    :ldescription '()
-   :uexit '()))
+   :nexit '(("south" ()))))
+
 
 (defparameter *food*
   (make-instance 'item
