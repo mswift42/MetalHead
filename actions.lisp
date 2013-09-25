@@ -452,6 +452,9 @@
   '("You couldn't even get 50 % of the questions right? "
     "Shame on you. ~%~%or as the kids say, GAME OVER"))
 
+(defun end-f ()
+  (:fdescription *backstage-area*))
+
 (defparameter verb-synonyms
   '(("use" :use-v)
     ("utilize" :use-v)
