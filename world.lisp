@@ -594,7 +594,8 @@
 (defparameter *ticket-table*
   (make-instance 'item
    :name '("Ticket Table")
-   :synonym '("table" "ticket counter" "ticket table")
+   :synonym '("table" "ticket counter" "ticket table"
+	      "ticket")
    :fdescription '("At the entrance is a small table where you "
 		   "can buy a ticket to participate at today's "
 		   "Pub Quiz. The Price, you are asking? "
