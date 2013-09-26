@@ -432,7 +432,7 @@
       '("You walk to the table and buy a ticket. "
 	"By some great coincidence the quiz is all about "
 	"Heavy Metal, and is about to start now. ")
-    (setf *running-pub-quiz* (sb-thread:make-thread (lambda ()
+    (setf *running-pub-quiz* (bt:make-thread (lambda ()
 				   (pub-quiz-window))))))
 
 (defun won-ticket-f ()
