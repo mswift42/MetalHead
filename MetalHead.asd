@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
   :depends-on (#:fiveam
                #:ltk
-	       #:cl-store)
+	       #:bordeaux-threads)
   :components ((:file "package")
                (:file "util")
 	       (:file "world")
