@@ -95,7 +95,7 @@
 	(if (> *score* 5)
 	    (print-list (won-ticket-f))
 	    (print-list (lost-ticket-f)))
-;	(sb-thread:destroy-thread *running-pub-quiz*)
+;	(bt:destroy-thread *running-pub-quiz*)
 	)))
 
 (defparameter *question* nil)
