@@ -443,7 +443,7 @@
    :sdescription '("It says:~%~%BACKSTAGE PASS - Unrestriced Access~%~%"
 		   "Oh boy, this is going to be great. ")
    :action '((:look-closer-v :look-back-stage-pass-f)
-	     (:pick-up-v :take-pass-f))))
+	     (:pick-up-v :take-pass-f))))                                                
 
 (defparameter *vip-area*
   (make-instance 'loc
@@ -461,7 +461,8 @@
    :ldescription '("This is the vip room. Westwards is a corridor "
 		   "and the backstage area is to the north.")
    :things '(*food*)
-   :uexit '(("west" *corridor*) ("north" *backstage-area*))))
+   :uexit '(("west" *corridor*))
+   :cexit '(("north" *backstage-area* :end-f))))
 
 (defparameter *backstage-area*
   (make-instance 'loc
@@ -607,8 +608,6 @@
                     today's pub quiz")
    :action '((:buy-v :buy-pub-quiz-ticket-f))
    :flags '(:fixed)))
-
-
 
 
 (defparameter *park-entrance-east*
