@@ -17,10 +17,10 @@
 				      :background "#f2f1f0"
 				      :foreground "#4c4c4c")))
        (if (= 10 *turns*)
-	   (progn (sb-thread:destroy-thread *running-pub-quiz*)
-		  (if (> *score* 5)
-		      (append-text outtext (print-list (won-ticket-f)))
- 		      (lost-ticket-f))))
+       	   (progn (sb-thread:destroy-thread *running-pub-quiz*)
+       		  (if (> *score* 5)
+       		      (append-text outtext (print-list (won-ticket-f)))
+       		      (lost-ticket-f))))
       (pack f )
       (pack label)
       (configure outtext :font "monospaced"
