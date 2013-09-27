@@ -599,9 +599,11 @@
 	(find-synonym-in-location (last-element list))))
       ((and (> len 1)
 	    (is-look-p (first list))
-	    (search (last-element list) 
-			 (print-list (append (:fdescription (current-location))
-					     (describe-list-of-items-in-location (current-location))))))
+	    (search
+	     (last-element list) 
+
+	     (print-list (append (:fdescription (current-location))
+				 (describe-list-of-items-in-location (current-location))))))
        (nothing-special-f (last-element list)))
       (t nil))))
 
@@ -609,8 +611,7 @@
   "check if last item in list appears in :fdescription
    of current location or is a synonym for any of it's items."
   (not (or (search (last-element list)
-		   (print-list (append (:fdescription
-					(current-location)))))
+		   (print-list (append (:fdescription (current-location)))))
 	   (find-synonym-in-location (last-element list)))))
 
 (defun is-look-p (exp)
@@ -654,9 +655,11 @@
   "return action flag from verb synonyms if entered command is 
    a action command"
   (cond
-    ((string-assoc (first list) verb-synonyms)
+    ((and (string-assoc (first list) verb-synonyms)
+	  (find-synonym-in-location (last-element list)))
      (second (string-assoc (first list) verb-synonyms)))
-    ((string-assoc (build-substring list) verb-synonyms)
+    ((and (string-assoc (build-substring list) verb-synonyms)
+	  (find-synonym-in-location (last-element list)))
      (second (string-assoc (build-substring list) verb-synonyms)))
      (t nil)))
 
