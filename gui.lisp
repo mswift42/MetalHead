@@ -28,7 +28,7 @@
       (pack scroll :anchor :nw :expand t :fill :both :ipady 100)
       (pack text-field :side  :bottom :expand nil)
       (bind text-field "<KeyPress-Return>"
-	    (lambda (event) (format-output text-field outtext)))
+	    (lambda (event) (format-output text-field outtext)))             
        (configure f :borderwidth 1))))
 
 (defun pub-quiz-window ()
@@ -45,9 +45,7 @@
       (setf (text outtext) (pop *questions*))
       (bind tf "<KeyPress-Return>" (lambda (event)
 				     (format-quiz tf outtext )))
-      (if (= 10 *turns*)
-	   (progn (sb-thread:destroy-thread *running-pub-quiz*)
-		  ))
+      
       (pack tf))))
 
 (defvar *running-pub-quiz* nil)
@@ -94,9 +92,7 @@
 	      (delete '*ticket-table* (:things *pub*)))
 	(if (> *score* 5)
 	    (print-list (won-ticket-f))
-	    (print-list (lost-ticket-f)))
-;	(bt:destroy-thread *running-pub-quiz*)
-	)))
+	    (print-list (lost-ticket-f))))))
 
 (defparameter *question* nil)
 (defparameter *answer* nil)

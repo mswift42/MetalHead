@@ -485,6 +485,8 @@
    :synonym '("food" "drink" "alcohol")
    :fdescription '("Tables stacked with food and drink line"
 		   " one side of the room. ")
+   :sdescription '("It's the usual assortment of sandwiches, "
+		   "pasta, fish stuff and beverages. ")
    :action '((:pick-up-v :take-food-f))))
 
 
