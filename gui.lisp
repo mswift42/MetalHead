@@ -32,26 +32,27 @@
        (configure f :borderwidth 1))))
 
 (defun pub-quiz-window ()
+  "Ltk window for pubquiz. Two textfields, the top one for questions
+   and the bottom one for player answers. "
   (with-ltk ()
     (let* ((f (make-instance 'frame :relief :groove))
-	   (pub (make-instance 'label :master f :text "Pub Quiz"
-			       ))
+	   (pub (make-instance 'label :master f :text "Pub Quiz"))
 	   (outtext (make-instance 'text :font "monospaced"
-				   :wrap :word))
+				         :wrap :word))
 	   (tf (make-instance 'text  :font "monospaced")))
       (pack f)
       (pack pub :side :left :ipadx 50)
       (pack outtext :ipady 100)
       (setf (text outtext) (pop *questions*))
-      (bind tf "<KeyPress-Return>" (lambda (event)
-				     (format-quiz tf outtext )))
-      
+      (bind tf "<KeyPress-Return>" (lambda (event) (format-quiz tf outtext )))
       (pack tf))))
 
 (defvar *running-pub-quiz* nil)
 
+(defvar *quiz-size* 10)
+
 (defparameter *questions*
-  (question-list 10))
+  (question-list *quiz-size*))
 
 (defun format-output (source target)
   "Print inputstring with newlines and > .
@@ -123,7 +124,6 @@
 (defparameter *pubquiz-score* 0)
 
 
-
 (defun split-string (string)
   "split string by space."
   (loop for i = 0 then (1+ j)
@@ -140,7 +140,6 @@
 (defun entnewlinify (list)
   "remove Newline Character at end of string list."
    (mapcar #'(lambda (x) (string-right-trim '(#\Newline) x)) (first  list)))    
-
 
 
 

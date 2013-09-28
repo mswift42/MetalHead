@@ -514,8 +514,7 @@
       ((null exitlist) (no-exit))
       ((eq 'ue exittype) (change-location (symbol-value (third exitlist))))
       ((eq 'ne exittype) (cddr exitlist))
-      (t (funcall (find-symbol
-		   (symbol-name (fourth exitlist))))))))
+      (t (funcall (find-symbol (symbol-name (fourth exitlist))))))))
 
 
 (defun no-exit ()
@@ -544,10 +543,7 @@
   (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
 		   (:things room)))) 
 
- ;; (defun describe-list-of-items-in-location-later (room)
- ;;  "Return the ldescription of all itemns in a room."
- ;;  (flatten (mapcar #'(lambda (x) (:ldescription (symbol-value x)))
- ;; 		   (:things room))))
+ 
 
 (defun describe-list-of-items-in-location-later (room)
   "return a list with all item descriptions in a location.
@@ -560,7 +556,8 @@
 
 (defun describe-room ( room)
   "if visiting loc for first time return list of :fdesc room
-   appended by description of all items in current loc.
+   appended by description of all items in current loc and set
+   flag of room to :seen.
    If loc has been visited, return :ldescription of loc."
   (if (member :notseen (:flags room))
       (multiple-value-prog1
@@ -593,7 +590,7 @@
    look, call describe-room function. If looked is a :thing in 
    current-location return :ldescription of item.(laptop in bedroom)
    If the object is mentioned in the description, for example bed in 
-   bedroom, call then nothing-special-f function."
+   bedroom, call the nothing-special-f function."
   (let ((len (length list)))
     (cond
       ((and (= 1 len)
@@ -606,11 +603,10 @@
 	(find-synonym-in-location (last-element list))))
       ((and (> len 1)
 	    (is-look-p (first list))
-	    (search
-	     (last-element list) 
-
-	     (print-list (append (:fdescription (current-location))
-				 (describe-list-of-items-in-location (current-location))))))
+	    (search (last-element list) 
+	     (print-list
+	      (append (:fdescription (current-location))
+		      (describe-list-of-items-in-location (current-location))))))
        (nothing-special-f (last-element list)))
       (t nil))))
 
