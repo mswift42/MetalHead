@@ -265,7 +265,7 @@
     "sneaking into the show, and not alarm everyone to your presence. "))
 
 (defun pub-quiz-played-f ()
-  "If player has won the participated allow access to toilets."
+  "If player has won the pub-quiz allow access to toilets."
   (if (member :quiz-played (:flags *pub*))
       (change-location *pub-toilets*)
       '("You can't go now. The pub quiz is about to start and "
@@ -385,11 +385,17 @@
      "that there's no paper? "))
 
 (defun look-cistern-f ()
-  (multiple-value-prog1
-      '("As you look at the cistern, you notice that it's lid "
-	"is sitting loosely on it. Curious as you are, you lift "
-	"the lid and find a key on one edge. ")
-    (push '*key* (:things *toilet-stall*))))
+  "check if key is in inventory or member of (:things *toilet-stall*)
+   if not, print long message and push *key* to (:things *toilet-stall*).
+   Else, print short message, describing cistern."
+  (if (not (or (member '*key* (:things *toilet-stall*))
+	       (member '*key* (:inventory *player*))))
+      (multiple-value-prog1
+	  '("As you look at the cistern, you notice that it's lid "
+	    "is sitting loosely on it. Curious as you are, you lift "
+	    "the lid and find a key on one edge. ")
+	(push '*key* (:things *toilet-stall*)))
+      '("A white ceramic cistern. Very useful to flush toilets. ")))
 
 (defun take-key-f ()
   (multiple-value-prog1
@@ -430,12 +436,11 @@
 		'("the shop seems to have closed. " ))))
 
 (defun buy-pub-quiz-ticket-f ()
-  (multiple-value-prog1
-      '("You walk to the table and buy a ticket. "
-	"By some great coincidence the quiz is all about "
-	"Heavy Metal, and is about to start now. ")
-    (setf *running-pub-quiz* (bt:make-thread (lambda ()
-				   (pub-quiz-window))))))
+  (setf *running-pub-quiz* (bt:make-thread (lambda ()
+					     (pub-quiz-window))))
+  (if (= *turns* 10)
+      (bt:destroy-thread *running-pub-quiz*)
+      (won-ticket-f)))
 
 (defun won-ticket-f ()
   (multiple-value-prog1
