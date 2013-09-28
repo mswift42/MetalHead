@@ -48,7 +48,8 @@
       (pack tf))))
 
 (defvar *running-pub-quiz* nil)
-
+(defparameter *turns* 0)
+(defparameter *score* 0)
 (defvar *quiz-size* 10)
 
 (defparameter *questions*
@@ -58,8 +59,7 @@
   "Print inputstring with newlines and > .
    Store the inputted string as a list in *store-string*
    Clear source and scroll to end of text."
-  (if (= *turns* 10)
-      (pub-quiz-played-f))
+  
   (append-text target (format nil "~%~%> ~A" (text source)))
   (push (split-string (text source)) *store-string*)
   (clear-text source)
@@ -92,9 +92,6 @@
 	    (print-list (won-ticket-f))
 	    (print-list (lost-ticket-f))))))
 
-
-(defparameter *turns* 0)
-(defparameter *score* 0)
 
 
 (defun parse-command ()

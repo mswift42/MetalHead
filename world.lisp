@@ -314,7 +314,8 @@
 		   "stack of wood. ")
    :sdescription '("Just your ordinary pile of rubble. You kick it around "
 		   "a bit, but quickly loose interest. ")
-   :action '((:burn-v :burn-rubble-f))
+   :action '((:burn-v :burn-rubble-f)
+	     (:look-closer-v :look-rubble-f))
    :flags '(:fixed)))
 
 (defparameter *staircase*

@@ -264,6 +264,10 @@
   '("I know that burning stuff is fun. However, you should try "
     "sneaking into the show, and not alarm everyone to your presence. "))
 
+(defun look-rubble-f ()
+  '("it's just wooden palettes stacked upon each other and a "
+    "lot of dirt. "))
+
 (defun pub-quiz-played-f ()
   "If player has won the pub-quiz allow access to toilets."
   (if (member :quiz-played (:flags *pub*))
@@ -437,10 +441,7 @@
 
 (defun buy-pub-quiz-ticket-f ()
   (setf *running-pub-quiz* (bt:make-thread (lambda ()
-					     (pub-quiz-window))))
-  (if (= *turns* 10)
-      (bt:destroy-thread *running-pub-quiz*)
-      (won-ticket-f)))
+					     (pub-quiz-window)))))
 
 (defun won-ticket-f ()
   (multiple-value-prog1
