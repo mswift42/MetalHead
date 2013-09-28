@@ -346,7 +346,7 @@
 	    "aluminium, has the shape of a big hourglass. "
 	    "The top is filled with sand, where you stub "
 	    "out your cigarettes, the bottom has a wide "
-	    "holde for the usual rubbish. "
+	    "hole for the usual rubbish. "
 	    "You notice some sort of laminated card lying "
 	    "on the floor behind the box. ")
 	(push '*back-stage-pass* (:things *smoking-room*)))
