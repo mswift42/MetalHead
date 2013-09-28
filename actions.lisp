@@ -753,7 +753,11 @@
     ("What is the first song on Metallica's Ride the Lightning?"
      ("Fight Fire with Fire"))
     ("What is the title of Iron Maiden's live album of 1985?"
-     ("Live after death"))))
+     ("Live after death"))
+    ("In which year was Metallica's Kill 'em all released? "
+     ("1983" "83"))
+    ("Which band was accused in 1990 for being responsible for the suicide attempts of 2 men in Sparks, Nevada, USA? "
+     ("Judas Priest"))))
 
 (defun question-list (n)
   "build list of n random questions. "
