@@ -114,9 +114,9 @@
 		   "weekly special promotions. Well, hopefully "
 		   "they have one of those plenty of beer for very "
 		   "little money weeks.~%"
-		   "To the south is Finnegan's and the street leads from "
-		   "your house in the northeast to the library in "
-		   "the west. ")
+		   "To the south is the entrance to Finnegan's and "
+		   "the street leads from  your house in the "
+		   "northeast to the library in " "the west. ")
    :ldescription '("You are outside of Finnegan's off-licence. To "
 		   "the south is the entrance to the shop and the "
 		   "street leads from your house in the northeast "
