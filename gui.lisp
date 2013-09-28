@@ -101,6 +101,8 @@
   "parse entered player input."
   (let ((commandlist (entnewlinify *store-string*)))
     (cond
+      ((is-help-p (first commandlist))
+       (print-help))
       ((is-direction-p commandlist)
        (walk-direction (is-direction-p commandlist)))
       ((not-here commandlist)

@@ -703,6 +703,27 @@
 	   (inventory-p (first list)))
       (list (print-inventory ))))
 
+(defun is-help-p (exp)
+  "is expression a help command"
+  (string-member exp '("h" "help")))
+
+(defun print-help ()
+  "print help screen."
+  '("This game has not the most sophisticated parser in the history "
+    "of sophisticated parser, but I hope you will manage.~%~%"
+    "To change locations: ~%~%"
+    "Enter the direction you want to go to:~%"
+    "west northwest , abbreviations like s, n, se work too.~%~%"
+    "To print the description of a location you are in:~%~%"
+    "l or look~%~%"
+    "To examine an object at your current location:~%~%"
+    "look at or examine <object>~%~%"
+    "Pick up an item:~%~%"
+    "take <object>~%~%"
+    "There are of course more valid commands, for example~%~%"
+    "put on clothes~%~%will exactly do that. "
+    "~%~%Enjoy and good luck.~%~%"))
+
 (defun no-object ()
   '("There is no such thing "))
 
