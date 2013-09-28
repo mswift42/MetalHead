@@ -23,6 +23,11 @@ Installation Instructions
 	sbcl --load save-core.lisp
 	./metalhead
 
+If you don't want to install sbcl and you have already installed a lisp implementation, you can run the game by changing the directory to MetalHead, run your lisp implementation, (I have tested this with sbcl and ccl) and:
+
+    (load "MetalHead.asd")
+	(ql:quickload "metalhead")
+
 How to play
 -----------
 
