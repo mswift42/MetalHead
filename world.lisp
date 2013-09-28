@@ -444,7 +444,8 @@
    :sdescription '("It says:~%~%BACKSTAGE PASS - Unrestriced Access~%~%"
 		   "Oh boy, this is going to be great. ")
    :action '((:look-closer-v :look-back-stage-pass-f)
-	     (:pick-up-v :take-pass-f))))                                                
+	     (:pick-up-v :take-pass-f))))
+
 
 (defparameter *vip-area*
   (make-instance 'loc
