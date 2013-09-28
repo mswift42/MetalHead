@@ -9,18 +9,14 @@
    to enter his commands."
   (with-ltk ()
      (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
-			     :relief :groove ))
+			     :relief :groove :width 600 :height 400))
 	   (scroll (make-instance 'scrolled-text :master f))
 	    (label (make-instance 'label :master f :text "MetalHead"))
 	   (outtext (textbox scroll))
 	   (text-field (make-instance 'text :font "monospaced"
 				      :background "#f2f1f0"
 				      :foreground "#4c4c4c")))
-       (if (= *quiz-size* *turns*)
-       	   (progn (bt:destroy-thread *running-pub-quiz*)
-       		  (if (>= *score* *quiz-win*)
-       		      (append-text outtext (print-list (won-ticket-f)))
-       		      (lost-ticket-f))))
+       
       (pack f )
       (pack label)
       (configure outtext :font "monospaced"
@@ -31,13 +27,13 @@
       (pack text-field :side  :bottom :expand nil)
       (bind text-field "<KeyPress-Return>"
 	    (lambda (event) (format-output text-field outtext)))             
-       (configure f :borderwidth 1))))
+       (configure f :borderwidth 1 :height 500 :width 600))))
 
 (defun pub-quiz-window ()
   "Ltk window for pubquiz. Two textfields, the top one for questions
    and the bottom one for player answers. "
   (with-ltk ()
-    (let* ((f (make-instance 'frame :relief :groove))
+    (let* ((f (make-instance 'frame :relief :groove :height 500 :width 600))
 	   (pub (make-instance 'label :master f :text "Pub Quiz"))
 	   (outtext (make-instance 'text :font "monospaced"
 				         :wrap :word))
@@ -144,7 +140,7 @@
    (mapcar #'(lambda (x) (string-right-trim '(#\Newline) x)) (first  list)))    
 
 
-
+(load "world.lisp")
 (main)
 
 
