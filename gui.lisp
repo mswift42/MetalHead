@@ -84,8 +84,7 @@
 	(incf *turns*))
       (progn
 	(incf *turns*)))
-  (if (> (length *questions*)
-	 0)
+  (if (> (length *questions*) 0)
       (pop *questions*)
       (progn
 	(setf (:things *pub*)
