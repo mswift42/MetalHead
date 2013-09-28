@@ -262,6 +262,11 @@
     "in the golden goose\"~%Well, we can't pass up such "
     "an opportunity now, can we? "))
 
+(defun sit-on-bench-f ()
+  '("With a big sigh you sit down and enjoy the comfy wood for a "
+    "couple of minutes. Unfortunately you get bored easily, so "
+    "you get up again. "))
+
 (defun burn-rubble-f ()
   "If player is inclined in a way that would make him burn stuff. "
   '("I know that burning stuff is fun. However, you should try "
@@ -483,11 +488,13 @@
     ("press" :use-v)
     ("examine" :look-closer-v)
     ("look at" :look-closer-v)
+    ("l at" :look-closer-v)
     ("check" :read-v)
     ("read" :read-v)
     ("burn" :burn-v)
     ("buy" :buy-v)
-    ("talk" :talk-to-v))
+    ("talk" :talk-to-v)
+    ("sit down" :sit-down-v))
   "association list to lookup the fitting functions in an object to its verb")
 
 

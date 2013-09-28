@@ -44,6 +44,15 @@
    (inventory :initarg :inventory :initform '() :accessor :inventory))
   (:documentation "current location of player and list of inventory items."))
 
+(defparameter *intro*
+  '("You wake up. As you are very often wont do, you regret last "
+    "night. It's not that you remember having embarassed yourself, "
+    "because, frankly, you hardly remember anything of what happened "
+    "after 10 p.m., but you've got one sensational headache, and I'd "
+    "rather don't get started talking about the taste in your mouth. "
+    "Slowly, you get up, drink about 4 pints of water and you are "
+    "ready to start the day.~%~%~%"))
+
 
 (defparameter *bedroom*
   (make-instance 'loc
@@ -862,7 +871,8 @@
 	           "something scratched into the wood.")
    :synonym '("comfortable" "cosy" "comfy" "inviting" "bench" "park bench")
    :flags '((:fixed))
-   :action '(:look-closer-v :read-inscription-f)))
+   :action '((:look-closer-v :read-inscription-f)
+	     (:sit-down-v :sit-on-bench-f))))
 
 (defparameter *doorbell*
   (make-instance 'item
