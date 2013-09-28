@@ -356,6 +356,8 @@
     (take-object '*back-stage-pass*))) 
 
 (defun back-stage-pass-f ()
+  "if back-stage-pass is in inventory, print a 'successful' message 
+   and change location to vip-area. else print 'failure' message."
   (if (member '*back-stage-pass* (:inventory *player*))
       (append
        '("the bouncer takes a look at your backstage "
