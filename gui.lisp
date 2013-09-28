@@ -16,9 +16,9 @@
 	   (text-field (make-instance 'text :font "monospaced"
 				      :background "#f2f1f0"
 				      :foreground "#4c4c4c")))
-       (if (= 10 *turns*)
+       (if (= *quiz-size* *turns*)
        	   (progn (bt:destroy-thread *running-pub-quiz*)
-       		  (if (> *score* 5)
+       		  (if (>= *score* *quiz-win*)
        		      (append-text outtext (print-list (won-ticket-f)))
        		      (lost-ticket-f))))
       (pack f )
