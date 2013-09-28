@@ -443,8 +443,10 @@
 		'("the shop seems to have closed. " ))))
 
 (defun buy-pub-quiz-ticket-f ()
-  (setf *running-pub-quiz* (bt:make-thread (lambda ()
-					     (pub-quiz-window)))))
+  (multiple-value-prog1
+      '("Just as you buy the ticket the pub quiz begins.~%~%")
+    (setf *running-pub-quiz* (bt:make-thread (lambda ()
+					       (pub-quiz-window))))))
 
 (defun won-ticket-f ()
   (multiple-value-prog1
