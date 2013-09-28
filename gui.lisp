@@ -70,16 +70,14 @@
   "store question and answer, call parse-quiz function."
   (let ((answer (string-right-trim '(#\Space #\Newline) (text source)))
 	(question (string-right-trim '(#\Newline) (text target))))
-    (setf *question* question)
-    (setf *answer* answer)
     (clear-text target)
-    (append-text target (format nil (parse-quiz)))
+    (append-text target (format nil (parse-quiz question answer)))
     (clear-text source)))
 
-(defun parse-quiz ()
+(defun parse-quiz (question answer)
   "If answer is correct increase score and turns variables, 
    else only increase turns variable, finally print score."
-  (if (correct-answer-p *question* *answer*)
+  (if (correct-answer-p question answer)
       (progn
 	(incf *score*)
 	(incf *turns*))
@@ -94,8 +92,7 @@
 	    (print-list (won-ticket-f))
 	    (print-list (lost-ticket-f))))))
 
-(defparameter *question* nil)
-(defparameter *answer* nil)
+
 (defparameter *turns* 0)
 (defparameter *score* 0)
 
