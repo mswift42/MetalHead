@@ -183,7 +183,7 @@
 		   "(It's always shit by the way. Have you ever "
 		   "wondered, why people, who generously decide to "
 		   "letting you participate in their enjoyment of music "
-		   "by blasting it through their phone's speaker only "
+		   "by blasting it through their phone's speaker only, "
 		   "I repeat, only listen to crap?)~%Anyway "
 		   "a lot of traffic here, so you should "
 		   "probably move along. You can reach the end of the "
@@ -645,12 +645,12 @@
    :fdescription '("This is the centrepiece of this municipal "
 		   "master piece. A wide english lawn inviting "
 		   "you to lie down and have a nap, or to play "
-		   "a round of some football.\n"
+		   "a round of some football.~%"
 		   "To the south you can see a little pond and a path "
-		   "leads through the park from east to west.")
-   :ldescription '("this is the centre of the little city park."
+		   "leads through the park from east to west. ")
+   :ldescription '("this is the centre of the little city park. "
 		   "To the south you can see a little pond and a path "
-		   "leads through the park from east to west.")
+		   "leads through the park from east to west. ")
    :uexit '(("south" *pond*)
 	    ("east" *park-lane-east* )
 	    ("west" *park-lane-west*))
@@ -678,7 +678,7 @@
 		   "the flowers are in quite remarkable shape and "
 		   "the air smells fresh and clean. This all helps in "
 		   "rising your spirits, while your mp3 player blasts "
-		   "\"Sepulturas' Roots Bloody Roots\" "
+		   "\"Sepulturas' Roots Bloody Roots\". "
 		   "In your east is the park centre and to the west "
 		   "is a park exit.")
    :ldescription '("You are in the western part of the inner city park. "
@@ -687,6 +687,21 @@
    :flags '(:notseen)
    :uexit '(("east" *park-center*)
 	    ("west" *park-entrance-west*))))
+
+(defparameter *park-entrance-west*
+  (make-instance 'loc
+   :name '("park entrance west~%~%")
+   :fdescription '("You are at the park's west entrance. "
+		   "It's iron doors are open and covered with "
+		   "ivy. A footpath leads to the east towards "
+		   "the park center and to the west is the "
+		   "concert hall. ")
+   :ldescription '("This is the park's west entrance. "
+		   "Westwards is the concert hall and "
+		   "a footpath leads towards to the park center. ")
+   :uexit '(("west" *concert-hall*)
+	    ("east" *park-lane-west*))
+   :flags '(:notseen)))
 
 (defparameter *library*
   (make-instance 'loc
@@ -856,7 +871,8 @@
    :sdescription '("One of those doorbells. You press it and "
 		   "via some magic it makes a sound. ")
    :flags '(:fixed)
-   :action'(:use-v :press-doorbell-f)))
+   :action'((:use-v :press-doorbell-f)
+	    (:look-closer-v :look-doorbell-f))))
 
 (defparameter *coatrack*
   (make-instance 'item
