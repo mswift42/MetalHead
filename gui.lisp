@@ -50,7 +50,8 @@
 (defvar *running-pub-quiz* nil)
 (defparameter *turns* 0)
 (defparameter *score* 0)
-(defvar *quiz-size* 10)
+(defvar *quiz-size* 10) ; number of questions to be asked for pub-quiz
+(defvar *quiz-win* 3)   ; limit of questions to get right.
 
 (defparameter *questions*
   (question-list *quiz-size*))
@@ -88,7 +89,7 @@
       (progn
 	(setf (:things *pub*)
 	      (delete '*ticket-table* (:things *pub*)))
-	(if (> *score* 3)
+	(if (>= *score* *quiz-win*)
 	    (print-list (won-ticket-f))
 	    (print-list (lost-ticket-f))))))
 

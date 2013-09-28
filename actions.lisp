@@ -4,7 +4,7 @@
   (:location *player*))
 
 (defgeneric change-loc (player loc))
- 
+
 (defmethod change-loc ((self player) newlocation)
   "update *player* instance with new location."
   (setf (:location self) newlocation))
@@ -91,18 +91,18 @@
     ((string-member input *directions*) input)
     ((string-assoc input *directions-synonyms*)
      (second (string-assoc input *directions-synonyms*)))
-     (t nil)))
+    (t nil)))
 
 (defun move-p (string)
   "return if string is a movement command."
-   (string-member string '("go" "move" "walk")))
+  (string-member string '("go" "move" "walk")))
 
 (defun use-laptop-f ()
   (if (member :poweroff (:flags *laptop*))
       '("Your laptop is turned off")
       '("you could browse your favorite websites "
-       "all day, you good old procrastinator, "
-       "however I'd propose you simply check your Email.")))
+	"all day, you good old procrastinator, "
+	"however I'd propose you simply check your Email.")))
 
 (defun power-on-laptop-f ()
   (update-flag *laptop* :poweroff :poweron)
@@ -143,9 +143,9 @@
 ;; what to print. 
 (defun put-on-clothes ()
   (multiple-value-prog1 '("with the grace of a young gazelle "
-			"you put on your clothes. Within "
-			"seconds your appearance changes from "
-			"ugly as hell to well below average handsome. "
+			  "you put on your clothes. Within "
+			  "seconds your appearance changes from "
+			  "ugly as hell to well below average handsome. "
 			  "Well done.")
     (update-flag *clothes* :notwearing :wearing)
     (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
@@ -185,11 +185,11 @@
 	"not at home, because despite of you pressing the bell "
 	"for 5 minutes now, no one is coming to open the door. ")
       (append
-	  '("You press the doorbell. With a startling amount "
-	    "of noise, you hear the intro to Death's \"Leprosy\"~%"
-	    "Maybe 20 seconds later, the door opens and your friend "
-	    "beckons you inside.")
-	  (change-location *friends-hallway*))))
+       '("You press the doorbell. With a startling amount "
+	 "of noise, you hear the intro to Death's \"Leprosy\"~%"
+	 "Maybe 20 seconds later, the door opens and your friend "
+	 "beckons you inside.")
+       (change-location *friends-hallway*))))
 
 (defun look-doorbell-f ()
   (:sdescription *doorbell*))
@@ -237,19 +237,19 @@
 	     "bare hands? No answer? Nothing? Nada? Please stop being "
 	     "such a stupid muppet. Thanks. ")
 	 (increment-fish-counter)))
-       (t
+      (t
        (multiple-value-prog1
-	'("Ok, Ok, I give up. Carefully you wade into the pond "
-	  "snatch the fish and put it into your trouser pocket. "
-	  "Full of confidence you wade out of the water and "
-	  "enjoy the cheer of at least 20 people who stare at "
-	  "you admiringly.~%~%Well I made the last bit up, "
-	  "people stare at you, but certainly not admiringly "
-	  "mostly of course, because you now have twice gone "
-	  "into a fish pond, and you have a stinking fish in "
-	  "your jeans. (This is not a metaphor)")
+	   '("Ok, Ok, I give up. Carefully you wade into the pond "
+	     "snatch the fish and put it into your trouser pocket. "
+	     "Full of confidence you wade out of the water and "
+	     "enjoy the cheer of at least 20 people who stare at "
+	     "you admiringly.~%~%Well I made the last bit up, "
+	     "people stare at you, but certainly not admiringly "
+	     "mostly of course, because you now have twice gone "
+	     "into a fish pond, and you have a stinking fish in "
+	     "your jeans. (This is not a metaphor)")
 	 (take-object *fish*))))))
- 
+
 (defun describe-poster ()
   (:sdescription *poster*))
 
@@ -284,35 +284,35 @@
   (if (member '*beer* (:inventory *player*))
       (multiple-value-prog1
 	  (describe-room *living-room*)
-	  (change-location *living-room*))
+	(change-location *living-room*))
       '("You need to buy beer first. ")))
 
 (defun talk-to-tony-f ()
   "Dialog with tony. After info about pub-quiz, set location
    to *friends-house* and add :friend-visited to doorbell-flags, thus
    blocking the exit to inside *friends-hosue*. "
-   (multiple-value-prog1
-       '("After the initial bla bla, how is your head, "
-	 "man, were you drunk last night, you made a complete "
-	 "ass of yourself, the naked singing on the table, "
-	 "in short the usual retrospection of a nights out, "
-	 "Tony comes straight to the point:~%~%"
-	 "\"Mate, I've tried everywhere, but the Metallica "
-	 "concert tonight is completely sold out. I've heard "
-	 "however, that there is a pub quiz this afternoon "
-	 "at the Happy Goose, with the price being one ticket "
-	 "for tonight's show.~%You hopefully still remember "
-	 "that I bought the tickets last time, and you had all "
-	 "the time in the world to get off your lazy bollocks "
-	 "and buy these ones. You will have to win the pub quiz "
-	 "give me the ticket, and find yourself some other way "
-	 "to get to the concert. Now get a fucking move on\"~%~%"
-	 "With these beautiful and inspiring words, Tony leads you "
-	 "out of his house and onto the street. ")
-     (change-location *friends-house*)
-     (setf (:inventory *player*) (delete '*beer*
+  (multiple-value-prog1
+      '("After the initial bla bla, how is your head, "
+	"man, were you drunk last night, you made a complete "
+	"ass of yourself, the naked singing on the table, "
+	"in short the usual retrospection of a nights out, "
+	"Tony comes straight to the point:~%~%"
+	"\"Mate, I've tried everywhere, but the Metallica "
+	"concert tonight is completely sold out. I've heard "
+	"however, that there is a pub quiz this afternoon "
+	"at the Happy Goose, with the price being one ticket "
+	"for tonight's show.~%You hopefully still remember "
+	"that I bought the tickets last time, and you had all "
+	"the time in the world to get off your lazy bollocks "
+	"and buy these ones. You will have to win the pub quiz "
+	"give me the ticket, and find yourself some other way "
+	"to get to the concert. Now get a fucking move on\"~%~%"
+	"With these beautiful and inspiring words, Tony leads you "
+	"out of his house and onto the street. ")
+    (change-location *friends-house*)
+    (setf (:inventory *player*) (delete '*beer*
 					(:inventory *player*)))
-     (push :friend-visited (:flags *doorbell*))))
+    (push :friend-visited (:flags *doorbell*))))
 
 (defun pub-open-v ()
   "If dialog with tony has happened 'open' pub.
@@ -352,14 +352,14 @@
 
 (defun take-pass-f ()
   (multiple-value-prog1
-    '("After realizing that you are holding a backstage pass "
-      "you put it around your neck with shaking hands. "
-      "This is how Harrison Ford must have felt when he "
-      "found the holy grail. After all, you will now "
-      "not only be able to see Metallica live and from "
-      "a great spot, but also to gorge yourself on a "
-      "vip buffet. Free food, free drink and free metal. "
-      "Life can be so fucking fantastic. ")
+      '("After realizing that you are holding a backstage pass "
+	"you put it around your neck with shaking hands. "
+	"This is how Harrison Ford must have felt when he "
+	"found the holy grail. After all, you will now "
+	"not only be able to see Metallica live and from "
+	"a great spot, but also to gorge yourself on a "
+	"vip buffet. Free food, free drink and free metal. "
+	"Life can be so fucking fantastic. ")
     (take-object '*back-stage-pass*))) 
 
 (defun back-stage-pass-f ()
@@ -373,7 +373,7 @@
        (change-location *vip-area*))
       '("The bouncer crosses his arms, and tells you:~%"
 	"\"No pass, no entry.\"")))
-  
+
 (defun take-food-f ()
   '("In a very dignified way you stuff some shrimps "
     "into your mouth and grab a beer to wash it down. "
@@ -389,7 +389,7 @@
 (defun take-paper-f ()
   '("Please leave it. How would you like it to go to the "
     "toilet, having to go very urgently, only to realize "
-     "that there's no paper? "))
+    "that there's no paper? "))
 
 (defun look-cistern-f ()
   "check if key is in inventory or member of (:things *toilet-stall*)
@@ -414,10 +414,10 @@
    otherwise print message that door can only be opened with key."
   (if (member '*key* (:inventory *player*))
       (append
-	'("You take the key from your pocket, insert it, "
-	  "wiggle a bit, eh voila, it opens and you step into the "
-	  "cellar.~%~%")
-	(change-location *cellar*))
+       '("You take the key from your pocket, insert it, "
+	 "wiggle a bit, eh voila, it opens and you step into the "
+	 "cellar.~%~%")
+       (change-location *cellar*))
       '("You need a key to get in there. The door is locked. ")))
 
 (defun talk-to-susan-f ()
@@ -458,12 +458,14 @@
 	"takes the price of of you.~%~%"
 	"\"I really hope, I'll see you tonight\"~%~%"
 	"are his parting words.~%You still have to find a way "
-	"inside the show for yourself. ")
+	"inside the show for yourself.~%~%"
+	"Please close this window now. ")
     (push :quiz-played (:flags *pub*))))
 
 (defun lost-ticket-f ()
-  '("You couldn't even get 50 % of the questions right? "
-    "Shame on you. ~%~%or as the kids say, GAME OVER"))
+  '("You couldn't even get 40 % of the questions right? "
+    "Shame on you. ~%~%or as the kids say, GAME OVER~%"
+    "You need to restart the game. "))
 
 (defun end-f ()
   (:fdescription *backstage-area*))
@@ -495,12 +497,12 @@
 
 (defun convert-symbol (s)
   "convert in file  world stored symbol to its in file 
-   action stored function value '(convert-symbol :use-laptop-f) -> use-laptop-f"
+    action stored function value '(convert-symbol :use-laptop-f) -> use-laptop-f"
   (find-symbol (symbol-name s)))
 
 (defun action-for-verb (verb)
   "lookup entered verb in verb-synonyms. if entry found, lookup that 
-   entry in actions-for location alist and convert symbol into function."
+    entry in actions-for location alist and convert symbol into function."
   (convert-symbol (second (member (return-synonym verb)
 				  (actions-for-location)))))
 
@@ -511,9 +513,9 @@
 
 (defun walk-direction (direction )
   "set *player* location to a viable entered direction. 
-   if cexit call cexit-function, if nexit print nexit text and 
-   if uexit call change-location function with corresponding location 
-   in (exit-lst)"
+    if cexit call cexit-function, if nexit print nexit text and 
+    if uexit call change-location function with corresponding location 
+    in (exit-lst)"
   (let* ((exitlist (exit-lst (current-location) direction))
 	 (exittype (first exitlist)))
     (cond
@@ -540,7 +542,7 @@
 
 (defun change-location (room)
   "When changing locations, set global-variable *location* to new location.
-   Describe room either with first or later description."
+    Describe room either with first or later description."
   (change-loc *player* room)
   (describe-room  (current-location)))
 
@@ -549,12 +551,12 @@
   (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
 		   (:things room)))) 
 
- 
+
 
 (defun describe-list-of-items-in-location-later (room)
   "return a list with all item descriptions in a location.
-   If a location has a :ldescription print :ldescription else use
-   :fdescription of item."
+    If a location has a :ldescription print :ldescription else use
+    :fdescription of item."
   (flatten (mapcar #'(lambda (x) (if (:ldescription (symbol-value x))
 				     (:ldescription (symbol-value x))
 				     (:fdescription (symbol-value x))))
@@ -562,13 +564,13 @@
 
 (defun describe-room ( room)
   "if visiting loc for first time return list of :fdesc room
-   appended by description of all items in current loc and set
-   flag of room to :seen.
-   If loc has been visited, return :ldescription of loc."
+    appended by description of all items in current loc and set
+    flag of room to :seen.
+    If loc has been visited, return :ldescription of loc."
   (if (member :notseen (:flags room))
       (multiple-value-prog1
-	(append  (:name room) (:fdescription room)
-		 (describe-list-of-items-in-location room))
+	  (append  (:name room) (:fdescription room)
+		   (describe-list-of-items-in-location room))
 	(update-flag room :notseen :seen) )
       (multiple-value-prog1
 	  (append (:name room) (:ldescription room)
@@ -581,22 +583,22 @@
 
 (defun is-direction-p (input)
   "return if input is a change-location command
-   '('go' 'west') -> 'west' '('west') -> 'west' '('eat' 'salad') nil"
+    '('go' 'west') -> 'west' '('west') -> 'west' '('eat' 'salad') nil"
   (let ((len (length input)))
     (cond
       ((and (= 1 len)
 	    (read-direction (first input))) (read-direction (first input)))
       ((and (= 2 len)
 	    (move-p (first input))
- 	    (read-direction (second input))) (read-direction (second input)))
+	    (read-direction (second input))) (read-direction (second input)))
       (t nil))))
 
 (defun look-command-p (list)
   "return if input is a 'look' command. If input is only a single 
-   look, call describe-room function. If looked is a :thing in 
-   current-location return :ldescription of item.(laptop in bedroom)
-   If the object is mentioned in the description, for example bed in 
-   bedroom, call the nothing-special-f function."
+    look, call describe-room function. If looked is a :thing in 
+    current-location return :ldescription of item.(laptop in bedroom)
+    If the object is mentioned in the description, for example bed in 
+    bedroom, call the nothing-special-f function."
   (let ((len (length list)))
     (cond
       ((and (= 1 len)
@@ -610,31 +612,31 @@
       ((and (> len 1)
 	    (is-look-p (first list))
 	    (search (last-element list) 
-	     (print-list
-	      (append (:fdescription (current-location))
-		      (describe-list-of-items-in-location (current-location))))))
+		    (print-list
+		     (append (:fdescription (current-location))
+			     (describe-list-of-items-in-location (current-location))))))
        (nothing-special-f (last-element list)))
       (t nil))))
 
 (defun not-here (list)
   "check if last item in list appears in :fdescription
-   of current location or is a synonym for any of it's items."
+    of current location or is a synonym for any of it's items."
   (not (or (search (last-element list)
 		   (print-list (append (:fdescription (current-location)))))
 	   (find-synonym-in-location (last-element list)))))
 
 (defun is-look-p (exp)
-   "return if command is member of synonyms for 'look'"
-   (string-member exp '("look" "examine" "study" "view" "scan" "parse"
-		      "explore" "l")))
+  "return if command is member of synonyms for 'look'"
+  (string-member exp '("look" "examine" "study" "view" "scan" "parse"
+		       "explore" "l")))
 
 (defun nothing-special-f (word)
   "concatenate inputed word with a random string. Needed for function 
-   look-command-p"
+    look-command-p"
   (list (concatenate 'string (random-string '("There is nothing special about the "
 					      "It's just an ordinary "
 					      "It's a ")))
-	       word))
+	word))
 
 (defun is-take-p (exp)
   "return if command is member of synonyms for 'take'"
@@ -642,9 +644,9 @@
 
 (defun take-command (list)
   "if last element in list is a 'item' instance, check if 
-   it has a :pick-up-v action stored in (:flags item). If yes, 
-   call the according function. If :fixed in :flags print 
-   you cannot take that. Else call take-object function."
+    it has a :pick-up-v action stored in (:flags item). If yes, 
+    call the according function. If :fixed in :flags print 
+    you cannot take that. Else call take-object function."
   (let ((obj (find-synonym-in-location (last-element list))))
     (cond
       ((not obj) (no-object))
@@ -670,7 +672,7 @@
     ((and (string-assoc (build-substring list) verb-synonyms)
 	  (find-synonym-in-location (last-element list)))
      (second (string-assoc (build-substring list) verb-synonyms)))
-     (t nil)))
+    (t nil)))
 
 (defun inventory-p (exp)
   "is expression a inventory command"
@@ -680,11 +682,11 @@
   "print 'you are carrying ' + names of all items in 
    inventory"
   (let ((inv (loop for i in (:inventory *player*)
-		   collect (:name (symbol-value i)))))
+		collect (:name (symbol-value i)))))
     (concatenate 'string "You are carrying "
 		 (substitute #\, #\.
 			     (print-list (flatten inv)))
-		  ".")))
+		 ".")))
 
 (defun inventory-command-p (list)
   "Check if length of list is 1 and the first element
@@ -729,10 +731,10 @@
   "build list of n random questions. "
   (let ((ql nil))
     (loop
-	 for i from 1
-	 while (< (length ql) n)
-         do (pushnew (first (random-string *questions-and-answers*)) ql)
-         finally (return ql))))
+       for i from 1
+       while (< (length ql) n)
+       do (pushnew (first (random-string *questions-and-answers*)) ql)
+       finally (return ql))))
 
 (defun answer-for-question (question)
   "return the answer for question in *questions-ans-answers*"
