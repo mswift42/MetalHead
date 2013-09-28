@@ -104,6 +104,9 @@
        (list (concatenate 'string "you cannot see "
 			  (last-element commandlist)
 			  " here")))
+      ((and (eql :look-closer-v (is-action-p commandlist))
+	    (not (action-for-symbol (is-action-p commandlist))))
+       (:sdescription (find-synonym-in-location (last-element commandlist))))
       ((is-action-p commandlist)
        (funcall (action-for-symbol (is-action-p commandlist))))
       ((look-command-p commandlist)
