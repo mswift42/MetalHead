@@ -191,6 +191,9 @@
 	    "beckons you inside.")
 	  (change-location *friends-hallway*))))
 
+(defun look-doorbell-f ()
+  (:sdescription *doorbell*))
+
 (defun look-band-poster-f ()
   '("These are your typical band posters. They are not very "
     "imaginative, some show people wearing leather looking mean "
@@ -256,8 +259,8 @@
     "bench, you notice two things: A: the bench smells "
     "of vomit, and B: the text written in the wood reads "
     "\"For a heavy time, go into the second toilet stall "
-    "in the golden goose\"\nWell, we can't pass up such "
-    "an opportunity now, can we?"))
+    "in the golden goose\"~%Well, we can't pass up such "
+    "an opportunity now, can we? "))
 
 (defun burn-rubble-f ()
   "If player is inclined in a way that would make him burn stuff. "
