@@ -31,7 +31,13 @@ If you don't want to install sbcl and you have already installed a lisp implemen
 How to play
 -----------
 
-This is a classical text adventure, you need to enter the commands what the player is supposed to do. If you type help you can read the in-game help screen.
+This is a classical text adventure, you need to enter the commands what the player is supposed to do. If you type 'help' you can read the in-game help screen.
+
+
+TODO
+----
+
+Add more questions to pub-quiz.
 
 
 
