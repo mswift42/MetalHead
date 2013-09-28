@@ -49,7 +49,7 @@
     "night. It's not that you remember having embarassed yourself, "
     "because, frankly, you hardly remember anything of what happened "
     "after 10 p.m., but you've got one sensational headache, and I'd "
-    "rather don't get started talking about the taste in your mouth. "
+    "rather not get started talking about the taste in your mouth. "
     "Slowly, you get up, drink about 4 pints of water and you are "
     "ready to start the day.~%~%~%"))
 

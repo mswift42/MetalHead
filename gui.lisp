@@ -24,7 +24,9 @@
       (pack f )
       (pack label)
       (configure outtext :font "monospaced"
-		 :background "#f2f1f0" :foreground "#4c4c4c" :wrap :word )
+		 :background "#f2f1f0" :foreground "#4c4c4c" :wrap :word)
+      (setf (text outtext) (format nil (print-list *intro*)))
+      (append-text outtext (format nil (print-list (change-location *bedroom*))))
       (pack scroll :anchor :nw :expand t :fill :both :ipady 100)
       (pack text-field :side  :bottom :expand nil)
       (bind text-field "<KeyPress-Return>"
