@@ -88,7 +88,7 @@
       (progn
 	(setf (:things *pub*)
 	      (delete '*ticket-table* (:things *pub*)))
-	(if (> *score* 5)
+	(if (> *score* 3)
 	    (print-list (won-ticket-f))
 	    (print-list (lost-ticket-f))))))
 
