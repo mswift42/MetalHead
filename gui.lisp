@@ -43,11 +43,11 @@
       (bind tf "<KeyPress-Return>" (lambda (event) (format-quiz tf outtext )))
       (pack tf))))
 
-(defvar *running-pub-quiz* nil)
+(defparameter *running-pub-quiz* nil)
 (defparameter *turns* 0)
 (defparameter *score* 0)
-(defvar *quiz-size* 10) ; number of questions to be asked for pub-quiz
-(defvar *quiz-win* 3)   ; limit of questions to get right.
+(defparameter *quiz-size* 10) ; number of questions to be asked for pub-quiz
+(defparameter *quiz-win* 3)   ; limit of questions to get right.
 
 (defparameter *questions*
   (question-list *quiz-size*))
