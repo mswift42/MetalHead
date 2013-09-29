@@ -1,7 +1,6 @@
  
 (in-package #:metalhead)
 
-
 (defun main ()
   "Ltk-gui window for game, split in 2 parts, a outtext part, where 
    the descriptions of items and locations are printed and the reactions 
@@ -9,14 +8,13 @@
    to enter his commands."
   (with-ltk ()
      (let* ((f (make-instance 'frame :padding "\"1 1 1 1\""
-			     :relief :groove :width 600 :height 400))
+			     :relief :groove))
 	   (scroll (make-instance 'scrolled-text :master f))
 	    (label (make-instance 'label :master f :text "MetalHead"))
 	   (outtext (textbox scroll))
 	   (text-field (make-instance 'text :font "monospaced"
 				      :background "#f2f1f0"
 				      :foreground "#4c4c4c")))
-       
       (pack f )
       (pack label)
       (configure outtext :font "monospaced"
@@ -27,7 +25,7 @@
       (pack text-field :side  :bottom :expand nil)
       (bind text-field "<KeyPress-Return>"
 	    (lambda (event) (format-output text-field outtext)))             
-       (configure f :borderwidth 1 :height 500 :width 600))))
+       (configure f :borderwidth 1 ))))
 
 (defun pub-quiz-window ()
   "Ltk window for pubquiz. Two textfields, the top one for questions
