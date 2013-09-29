@@ -46,7 +46,7 @@
 
 (defparameter *intro*
   '("You wake up. As you are very often wont do, you regret last "
-    "night. It's not that you remember having embarassed yourself, "
+    "night. It's not that you remember having embarrassed yourself, "
     "because, frankly, you hardly remember anything of what happened "
     "after 10 p.m., but you've got one sensational headache, and I'd "
     "rather not get started talking about the taste in your mouth. "
@@ -76,7 +76,7 @@
    :fdescription '("You are in your hallway leading from your "
 		   "bedroom in the east to the front door in the west. "
 		   "It's wallpaper has this lovely charming mixture "
-		   "of nicotine stain and sun faded cardboard. yikes.")
+		   "of nicotine stain and sun faded cardboard. ")
    :ldescription '("the hallway. A narrow thing leading from "
 		   "your bedroom to the east to your front door "
 		   "leading into town to the west.")
@@ -90,7 +90,7 @@
     :name '("Outside your house~%~%")
     :fdescription '("You leave your house and find yourself at an "
 		    "absolutely marvellous spring day. It is warm, "
-		    "sunny an the birds are singing. It's exactly "
+		    "sunny, and  birds are singing. It's exactly "
 		    "the sort of day that makes everyone happy, the "
 		    "kind of day where heroes are made (you know "
 		    "in the bees and flowers having sex sort of "
@@ -106,7 +106,7 @@
 		    "can see an off licence shop. ")
     :ldescription '("You stand outside of your house. To the east "
 		    "is you can get back inside, to the west is a park "
-		    "entrance, to the northwest is the mainroad "
+		    "entrance, to the northwest is the main road "
 		    "and to the southwest is a off-licence shop. ")
     :uexit '(("east" *hallway*)
 	     ("west" *park-entrance-east* )
@@ -166,7 +166,7 @@
    :synonym '("susan" "store assistant" "girl"
 	      "woman" "assistant")
    :fdescription '("Behind the counter a young woman is "
-		   "looking at you. Her nametag identifies her "
+		   "looking at you. Her name tag identifies her "
 		   "as Susan, which you noticed because you were "
 		   "staring at her fantastic t-shirt (You did think "
 		   "I'd write tits, admit it, you dirty pig.). "
@@ -299,12 +299,12 @@
   (make-instance 'loc
    :name '("Concert Hall, Back Alley~%~%")
    :fdescription '("This is a small back alley, belonging to the "
-		   "concert hall. To the southside of the concert hall, "
+		   "concert hall. To the south-side of the concert hall, "
 		   "you can see a  open window. You can get back to the concert "
 		   "hall front to the southeast. To the southwest is a staircase "
 		   "leading downwards. ")
    :ldescription '("You are in a small back alley of the concert hall. "
-		   "To the southside of the concert hall, "
+		   "To the south-side of the concert hall, "
 		   "you can see a  open window. You can get back to the concert"
 		   " hall to the southeast and southwestwards is a "
 		   "staircase leading downwards. ")
@@ -346,7 +346,7 @@
    :fdescription '("You enter a dimly lit cellar. "
 		   "On one side of it are rows of chairs "
 		   "stacked up neatly upon another. "
-		   "Suddenly you realize a gigantic German Shepherd "
+		   "Suddenly you realise a gigantic German Shepherd "
 		   "is running towards you. Completely stunned "
 		   "you stand there, your heart racing, watching "
 		   "the dog approach you very quickly, saliva "
@@ -371,7 +371,7 @@
 (defparameter *dog*
   (make-instance 'item
    :name '("dog")
-   :synonym '("dog" "german shepherd" "shepherd")
+   :synonym '("dog" "German shepherd" "shepherd")
    :ldescription '("There is a German Shepherd here, happily "
 		   "wagging his tail and looking at you "
 		   "with big hopeful eyes. ")
@@ -388,13 +388,13 @@
 		   "of the concert hall, because you can now "
 		   "hear the excited buzz of a big crowd to the "
 		   "west. There are open doors to the southwest "
-		   "and southeast, a locked firedoor to the west "
+		   "and southeast, a locked fire door to the west "
 		   "and a fierce looking bouncer is blocking a "
-		   "door to the east. Norteastwards is a stairway "
+		   "door to the east. Northeastwards is a stairway "
 		   "leading into the cellar. ")
    :ldescription '("This is a big corridor with open doors to the "
 		   "southwest and southeast, a stairway is to "
-		   "the northeast, a locked firedoor is to the west "
+		   "the northeast, a locked fire door is to the west "
 		   "and a bouncer is blocking a door to your east. ")
    :uexit '(("northeast" *cellar*) ("southwest" *smoking-room*)
 	    ("southeast" *toilets*))
@@ -406,7 +406,7 @@
   (make-instance 'loc
    :name '("Concert Hall Toilet~%~%")
    :fdescription '("This is one of those typical mass toilets. "
-		   "A room, dominated by a huge stainless stell "
+		   "A room, dominated by a huge stainless steel "
 		   "trough, two stalls, and two wash basins. "
 		   "A fabulous place to meet fellow metal heads, "
 		   "exchange your favourite record titles, "
@@ -450,7 +450,7 @@
    :synonym '("pass" "backstage pass" "card" "laminated card")
    :fdescription '("In one corner of the room, behind the litter bin, "
 		   "is some card lying on the floor. ")
-   :sdescription '("It says:~%~%BACKSTAGE PASS - Unrestriced Access~%~%"
+   :sdescription '("It says:~%~%BACKSTAGE PASS - Unrestricted Access~%~%"
 		   "Oh boy, this is going to be great. ")
    :action '((:look-closer-v :look-back-stage-pass-f)
 	     (:pick-up-v :take-pass-f))))
@@ -466,7 +466,7 @@
 		   "With a \"Have a good one, mate\" he opens "
 		   "the door and ushers you inside. ~%"
 		   "Noticing that you are alone in this room, "
-		   "you realize that the show is about to start. "
+		   "you realise that the show is about to start. "
 		   "To the west is a corridor and to the north "
 		   "is the backstage area. ")
    :ldescription '("This is the vip room. Westwards is a corridor "
@@ -526,8 +526,8 @@
 		   "clean looking pub, with plenty of benches "
 		   "to rest ones troubled feet.~%"
 		   "With remarkable determination you walk up "
-		   "to the bar and order a pint of Guiness. "
-		   "After having paid and waited for the Guiness "
+		   "to the bar and order a pint of Guinness. "
+		   "After having paid and waited for the Guinness "
 		   "to settle, you lovingly look at the dark-violet "
 		   "to black of its body and the bright white foam. "
 		   "Slowly, you take a first sip, letting the "
@@ -537,7 +537,7 @@
 		   "To the south is the exit and to the north are "
 		   "the toilets. ")
    :ldescription '("You are inside the happy goose, enjoying your "
-		   "pint(s) of Guiness. The toilets are to the north "
+		   "pint(s) of Guinness. The toilets are to the north "
 		   "and the exit is to the south. ")
    :things '(*ticket-table*)
    :uexit '( ("south" *pedestrian-street-west*))
@@ -627,7 +627,7 @@
   (make-instance 'loc
    :name '("park entrance east~%~%")
    :fdescription '("This is the entrance to a beautiful little park. "
-		   "A gorgeous english garden with some nice shady "
+		   "A gorgeous English garden with some nice shady "
 		   "spots and plenty of benches to rest.")
    :ldescription '("You are at the east entrance of a park.")
    :uexit '(("west" *park-lane-east*) ("east" *housefront*))
@@ -653,7 +653,7 @@
   (make-instance 'loc
    :name '("park centre~%~%")
    :fdescription '("This is the centrepiece of this municipal "
-		   "master piece. A wide english lawn inviting "
+		   "master piece. A wide English lawn inviting "
 		   "you to lie down and have a nap, or to play "
 		   "a round of some football.~%"
 		   "To the south you can see a little pond and a path "
@@ -704,11 +704,11 @@
    :fdescription '("You are at the park's west entrance. "
 		   "It's iron doors are open and covered with "
 		   "ivy. A footpath leads to the east towards "
-		   "the park center and to the west is the "
+		   "the park centre and to the west is the "
 		   "concert hall. ")
    :ldescription '("This is the park's west entrance. "
 		   "Westwards is the concert hall and "
-		   "a footpath leads towards to the park center. ")
+		   "a footpath leads towards to the park centre. ")
    :uexit '(("west" *concert-hall*)
 	    ("east" *park-lane-west*))
    :flags '(:notseen)))
@@ -769,14 +769,14 @@
 		   "have just wasted 38 words telling you about "
 		   "it. While we are talking, the other day, I saw "
 		   "a guy, maybe 20 years old, wearing the stupidest "
-		   "mustache you could imagine. It was hilariously "
+		   "moustache you could imagine. It was hilariously "
 		   "horrible, like he spent a lot of effort and years "
 		   "in growing it, so he couldn't admit failure "
 		   "and cut the damn thing off. Even if you were a "
-		   "mustache aficionado, and I seriously hope you "
+		   "moustache aficionado, and I seriously hope you "
 		   "are not, you'd advise him to shave it, or better "
 		   "still, burn it off. Honestly, it looked like a "
-		   "cheap glue-it-on fake mustache, and to add insult "
+		   "cheap glue-it-on fake moustache, and to add insult "
 		   "to injury, it was in no way symmetrical, "
 		   "completely crooked, and had the appearance of "
 		   "hair coloured weeds.~%Well, enough ranting, "

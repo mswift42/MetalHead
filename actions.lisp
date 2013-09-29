@@ -100,7 +100,7 @@
 (defun use-laptop-f ()
   (if (member :poweroff (:flags *laptop*))
       '("Your laptop is turned off")
-      '("you could browse your favorite websites "
+      '("you could browse your favourite websites "
 	"all day, you good old procrastinator, "
 	"however I'd propose you simply check your Email.")))
 
@@ -115,7 +115,7 @@
   "if not wearing clothes, print out text . Else change location to hallway."
   (if (eq (first  (:flags *clothes*)) :notwearing)
       '("You seriously should think about putting on clothes first. "
-	"I'm sure you are Gods gift to the other sex, but even "
+	"I'm sure you think you are Gods gift to the other sex, but even "
 	"if you were, and you're not, that's still no reason to "
 	"go outside half-naked. ")
       (change-location *hallway*)))
@@ -134,7 +134,7 @@
 				   (:flags self)))))
 
 
-;; I'm using multiple-value-prog1 here because it evalutates it's
+;; I'm using multiple-value-prog1 here because it evaluates it's
 ;; first argument and returns it, but silently evaluates the proceeding
 ;; forms. Otherwise gui.lisp 's format-output function does not know
 ;; what to print. 
@@ -195,14 +195,14 @@
     "imaginative, some show people wearing leather looking mean "
     "and some show people wearing jeans looking happy. I don't "
     "think the people designing those posters went for originality. "
-    "You are a metal band? Ok, wear a wristband with spikes, "
+    "You are a metal band? OK, wear a wristband with spikes, "
     "cross your arms and look constipated. Time to take a picture.~%"
     "One of the posters, however, stands out. A Metallica Poster with "
     "a yellow sticker, reading \"Sold out\" across it. Life's a bummer "
     "if you're a hummer. "))
 
 (defun take-band-poster-f ()
-  '("While I appreciate the effort to enlargen your poster collection, "
+  '("While I appreciate the effort to enlarging your poster collection, "
     "the bible clearly states, that you shouldn't steal. Also, "
     "Metal is the sound of the devil, and playing with yourself makes "
     "you go blind. (I should know, I'm typing this in braille. )"))
@@ -235,7 +235,7 @@
 	 (increment-fish-counter)))
       (t
        (multiple-value-prog1
-	   '("Ok, Ok, I give up. Carefully you wade into the pond "
+	   '("OK, OK, I give up. Carefully you wade into the pond "
 	     "snatch the fish and put it into your trouser pocket. "
 	     "Full of confidence you wade out of the water and "
 	     "enjoy the cheer of at least 20 people who stare at "
@@ -338,7 +338,7 @@
   (if (not (or (member '*back-stage-pass* (:things *smoking-room*))
 	       (member '*back-stage-pass* (:inventory *player*))))
       (multiple-value-prog1
-	  '("The litterbox, made of some sort of "
+	  '("The litterbin, made of some sort of "
 	    "aluminium, has the shape of a big hourglass. "
 	    "The top is filled with sand, where you stub "
 	    "out your cigarettes, the bottom has a wide "
@@ -346,14 +346,14 @@
 	    "You notice some sort of laminated card lying "
 	    "on the floor behind the box. ")
 	(push '*back-stage-pass* (:things *smoking-room*)))
-      '("A big aluminium litterbox in the shape of a hourglass ")))
+      '("A big aluminium litterbin in the shape of a hourglass ")))
 
 (defun look-back-stage-pass-f ()
   (:sdescription *back-stage-pass*))
 
 (defun take-pass-f ()
   (multiple-value-prog1
-      '("After realizing that you are holding a backstage pass "
+      '("After realising that you are holding a backstage pass "
 	"you put it around your neck with shaking hands. "
 	"This is how Harrison Ford must have felt when he "
 	"found the holy grail. After all, you will now "
@@ -383,13 +383,13 @@
 
 (defun take-brush-f ()
   '("Really? You want to take the toilet brush? "
-    "Is this some kind of strange fetisch, or is your "
+    "Is this some kind of strange fetish, or is your "
     "approach to life to take everything what's lying around? "
     "You should be ashamed of yourself. "))
 
 (defun take-paper-f ()
   '("Please leave it. How would you like it to go to the "
-    "toilet, having to go very urgently, only to realize "
+    "toilet, having to go very urgently, only to realise "
     "that there's no paper? "))
 
 (defun look-cistern-f ()
@@ -428,7 +428,7 @@
 	"(I have to hand it to you, that's one pick-up line for "
 	"the ages.)~%For some unfathomable reason however, "
 	"Susan seems to like you. She flashes a wonderful "
-	"smile, neatly emphasizing her cute dimples. "
+	"smile, neatly emphasising her cute dimples. "
 	"Your heart starts racing, she is absolutely perfect. "
 	"~%~%\"Just yesterday, we got this beer from Germany in. "
 	"It's called \"Fürstenberg\" and it is a masterpiece in "
