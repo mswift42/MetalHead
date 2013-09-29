@@ -114,13 +114,10 @@
 (defun wear-clothes ()
   "if not wearing clothes, print out text . Else change location to hallway."
   (if (eq (first  (:flags *clothes*)) :notwearing)
-      '("you are not wearing any clothes. I am terribly sorry but you "
-	"should not inflict your gross naked body on other people. "
-	"There are many  beautiful sights in this "
-	"world. You are not one of them. "
-	"When God made you he was either drunk or bored. "
- 	"Maybe he was just spiteful "
-	"but for Fuck Sake please put on some clothes.")
+      '("You seriously should think about putting on clothes first. "
+	"I'm sure you are Gods gift to the other sex, but even "
+	"if you were, and you're not, that's still no reason to "
+	"go outside half-naked. ")
       (change-location *hallway*)))
 
 (defgeneric update-flag (instance old new)
@@ -142,11 +139,10 @@
 ;; forms. Otherwise gui.lisp 's format-output function does not know
 ;; what to print. 
 (defun put-on-clothes ()
-  (multiple-value-prog1 '("with the grace of a young gazelle "
-			  "you put on your clothes. Within "
-			  "seconds your appearance changes from "
-			  "ugly as hell to well below average handsome. "
-			  "Well done.")
+  (multiple-value-prog1
+      '("You put on your clothes, a near effortless process, except "
+	"your head really hurts when you bend down and those "
+	"stupid jeans seem to have gotten tighter again. ")
     (update-flag *clothes* :notwearing :wearing)
     (setf (:cexit *bedroom*) '(("west" *hallway* wear-clothes t)))
     (take-object '*clothes*)))
@@ -718,6 +714,8 @@
     "l or look~%~%"
     "To examine an object at your current location:~%~%"
     "look at or examine <object>~%~%"
+    "to use an object:~%~%"
+    "use <object>~%~%"
     "Pick up an item:~%~%"
     "take <object>~%~%"
     "There are of course more valid commands, for example~%~%"
