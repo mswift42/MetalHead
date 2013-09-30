@@ -123,7 +123,6 @@
 	    (print-list (lost-ticket-f))))))
 
 
-
 (defparameter *pubquiz-turns* 0)
 (defparameter *pubquiz-score* 0)
 
@@ -135,16 +134,10 @@
         collect (subseq string i j)
         while j))
 
-(defun print-string (str target)
-  (loop for i in str
-        do (append-text target (format nil "~&~%~A" i))))
-
-(defparameter *store-string* nil)
 
 (defun entnewlinify (list)
   "remove Newline Character at end of string list."
    (mapcar #'(lambda (x) (string-right-trim '(#\Newline) x)) (first  list)))    
-
 
 (load "world.lisp")
 (main)
