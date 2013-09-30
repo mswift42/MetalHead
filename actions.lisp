@@ -1,3 +1,6 @@
+;;; actions.lisp - game-logic and all actions, i.e.
+;;; player-interaction with game-world.
+
 (in-package #:metalhead)
 
 (defun current-location ()

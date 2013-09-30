@@ -1,3 +1,5 @@
+;;; world.lisp - All locations and items in game-world.
+
 (in-package #:metalhead)
 
 ;; Classes for rooms, items and player.
