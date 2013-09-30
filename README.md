@@ -13,6 +13,13 @@ Synopsis
 
 The world's best live band is playing in your town and you need to be there. Unfortunately it is sold out, but you can't let that stop you.
 
+Dependencies
+------------
+
+MetalHead uses [fiveam](http://common-lisp.net/project/fiveam/), [ltk](http://www.peter-herth.de/ltk/) and [bordeaux-threads](http://common-lisp.net/project/bordeaux-threads/).
+
+All of these are available via [quicklisp](http://www.quicklisp.org/beta/).
+
 
 Installation Instructions
 -------------------------
