@@ -93,7 +93,10 @@
 	(question (string-right-trim '(#\Newline) (text target))))
     (clear-text target)
     (append-text target (format nil (parse-quiz question answer)))
-    (clear-text source)))
+    (clear-text source)
+    (if (= *turns* *quiz-size*)
+	(append-text target
+		     (format nil "Your score is ~D in ~D turns." *score* *turns*)))))
 
 (defun parse-quiz (question answer)
   "If answer is correct increase score and turns variables, 
