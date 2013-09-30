@@ -754,7 +754,9 @@
     ("In which year was Metallica's Kill 'em all released? "
      ("1983" "83"))
     ("Which band was accused in 1990 for being responsible for the suicide attempts of 2 men in Sparks, Nevada, USA? "
-     ("Judas Priest"))))
+     ("Judas Priest"))
+    ("This English band, formed 1979 in Newcastle, are considered a major influence on thrash metal."
+     ("Venom"))))
 
 (defun question-list (n)
   "build list of n random questions. "
