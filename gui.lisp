@@ -1,4 +1,4 @@
- 
+;;; gui.lisp uses ltk to make the gui windows for the main game and the pub-quiz. 
 (in-package #:metalhead)
 
 (defun main ()
@@ -56,15 +56,39 @@
   "Print inputstring with newlines and > .
    Store the inputted string as a list in *store-string*
    Clear source and scroll to end of text."
-  
   (append-text target (format nil "~%~%> ~A" (text source)))
   (push (split-string (text source)) *store-string*)
   (clear-text source)
   (append-text target (format nil (print-list (parse-command))))
   (see target "end"))
 
+(defun parse-command ()
+  "parse entered player input. "
+  (let ((commandlist (entnewlinify *store-string*)))
+    (cond
+      ((is-help-p (first commandlist))
+       (print-help))
+      ((is-direction-p commandlist)
+       (walk-direction (is-direction-p commandlist)))
+      ((not-here commandlist)
+       (list (concatenate 'string "you cannot see "
+			  (last-element commandlist)
+			  " here")))
+      ((and (eql :look-closer-v (is-action-p commandlist))
+	    (not (action-for-symbol (is-action-p commandlist))))
+       (:sdescription (find-synonym-in-location (last-element commandlist))))
+      ((is-action-p commandlist)
+       (funcall (action-for-symbol (is-action-p commandlist))))
+      ((look-command-p commandlist)
+       (look-command-p commandlist))
+      ((is-take-p (first commandlist))
+       (take-command commandlist))
+      ((inventory-command-p commandlist)
+       (inventory-command-p commandlist))
+      (t (no-action)))))
+
 (defun format-quiz (source target)
-  "store question and answer, call parse-quiz function."
+  "string-right-trim  question and answer, call parse-quiz function."
   (let ((answer (string-right-trim '(#\Space #\Newline) (text source)))
 	(question (string-right-trim '(#\Newline) (text target))))
     (clear-text target)
@@ -91,30 +115,7 @@
 
 
 
-(defun parse-command ()
-  "parse entered player input."
-  (let ((commandlist (entnewlinify *store-string*)))
-    (cond
-      ((is-help-p (first commandlist))
-       (print-help))
-      ((is-direction-p commandlist)
-       (walk-direction (is-direction-p commandlist)))
-      ((not-here commandlist)
-       (list (concatenate 'string "you cannot see "
-			  (last-element commandlist)
-			  " here")))
-      ((and (eql :look-closer-v (is-action-p commandlist))
-	    (not (action-for-symbol (is-action-p commandlist))))
-       (:sdescription (find-synonym-in-location (last-element commandlist))))
-      ((is-action-p commandlist)
-       (funcall (action-for-symbol (is-action-p commandlist))))
-      ((look-command-p commandlist)
-       (look-command-p commandlist))
-      ((is-take-p (first commandlist))
-       (take-command commandlist))
-      ((inventory-command-p commandlist)
-       (inventory-command-p commandlist))
-      (t (no-action)))))
+
 
 (defparameter *pubquiz-turns* 0)
 (defparameter *pubquiz-score* 0)

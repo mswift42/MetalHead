@@ -551,8 +551,7 @@
 
 (defun describe-list-of-items-in-location (room)
   "Return list of descriptions of all items in a room."
-  (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value x)))
-		   (:things room)))) 
+  (flatten (mapcar #'(lambda (x) (:fdescription (symbol-value x))) (:things room))))
 
 
 
