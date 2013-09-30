@@ -758,7 +758,9 @@
     ("This English band, formed 1979 in Newcastle, are considered a major influence on thrash metal."
      ("Venom"))
     ("Of which Swedish band is Tomas Lindberg the frontman? "
-     ("At the Gates"))))
+     ("At the Gates"))
+    ("Which band released 1988 the record \"Under the Influence\"? "
+     ("Overkill"))))
 
 (defun question-list (n)
   "build list of n random questions. "
