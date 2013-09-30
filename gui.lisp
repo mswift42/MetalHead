@@ -63,7 +63,13 @@
   (see target "end"))
 
 (defun parse-command ()
-  "parse entered player input. "
+  "parse entered player input. If entered command is <help> print help screen,
+   if command is a <go in direction> command call walk-direction function. If cmd
+   refers to a object which is not in current location, return not here string. If
+   cmd is a <examine object> and not a valid action commnad return the :sdescription
+   of the <object>. If it is a valid action cmd, call the function in (:action <item>)
+   if it is a <examine object> cmd call the look-command-p function. If it is a 
+   is-take-p command call take-command function."
   (let ((commandlist (entnewlinify *store-string*)))
     (cond
       ((is-help-p (first commandlist))
@@ -115,8 +121,6 @@
 	(if (>= *score* *quiz-win*)
 	    (print-list (won-ticket-f))
 	    (print-list (lost-ticket-f))))))
-
-
 
 
 
