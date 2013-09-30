@@ -472,7 +472,9 @@
     "You need to restart the game. "))
 
 (defun end-f ()
-  (:fdescription *backstage-area*))
+  (multiple-value-prog1
+      (:fdescription *backstage-area*)
+      (change-location *backstage-area*)))
 
 (defparameter verb-synonyms
   '(("use" :use-v)
