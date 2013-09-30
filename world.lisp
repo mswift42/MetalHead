@@ -13,6 +13,11 @@
 ;; flags are for storing information about a location, i.e. has this location
 ;; been visited before.
 ;; things is a list of items in a location.
+;; the organisation of these classes has been heavily influenced by
+;; a pdf called learning ZIL (http://www.xlisp.org/zil.pdf) which explains how to 
+;; write interactive fiction. And yes, I'm well aware that MetalHead, especially
+;; parser wise, cannot compare to the good old Infocom classics.
+
 
 (defclass loc ()
   ((name :initarg :name :initform '() :accessor :name)
