@@ -1,6 +1,7 @@
 ;;; gui.lisp uses ltk to make the gui windows for the main game and the pub-quiz. 
 (in-package #:metalhead)
 
+
 (defun main ()
   "Ltk-gui window for game, split in 2 parts, a outtext part, where 
    the descriptions of items and locations are printed and the reactions 
@@ -24,8 +25,8 @@
       (pack scroll :anchor :nw :expand t :fill :both :ipady 100)
       (pack text-field :side  :bottom :expand nil)
       (bind text-field "<KeyPress-Return>"
-	    (lambda (event) (format-output text-field outtext)))             
-       (configure f :borderwidth 1 ))))
+	    (lambda (event) (format-output text-field outtext)))
+      (configure f :borderwidth 1 ))))
 
 (defun pub-quiz-window ()
   "Ltk window for pubquiz. Two textfields, the top one for questions
