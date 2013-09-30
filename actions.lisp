@@ -756,7 +756,9 @@
     ("Which band was accused in 1990 for being responsible for the suicide attempts of 2 men in Sparks, Nevada, USA? "
      ("Judas Priest"))
     ("This English band, formed 1979 in Newcastle, are considered a major influence on thrash metal."
-     ("Venom"))))
+     ("Venom"))
+    ("Of which Swedish band is Tomas Lindberg the frontman? "
+     ("At the Gates"))))
 
 (defun question-list (n)
   "build list of n random questions. "
