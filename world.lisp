@@ -20,10 +20,9 @@
 
 
 (defclass loc ()
-  ((name :initarg :name :initform '() :accessor :name)
+  ((name :initarg :name :initform '() :reader :name)
    (fdescription :initarg :fdescription :initform '() :reader :fdescription)
    (ldescription :initarg :ldescription :initform '() :reader :ldescription)
-   (sdescription :initarg :sdescription :initform '() :reader :sdescription)
    (uexit :initarg :uexit :initform '() :accessor :uexit)
    (nexit :initarg :nexit :initform '() :accessor :nexit)
    (cexit :initarg :cexit :initform '() :accessor :cexit)
@@ -37,11 +36,11 @@
 ;; picked up, used, ...
 
 (defclass item ()
-  ((name :initarg :name :initform '() :accessor :name)
-   (synonym :initarg :synonym :initform '() :accessor :synonym)
-   (fdescription :initarg :fdescription :initform '() :accessor :fdescription)
-   (ldescription :initarg :ldescription :initform '() :accessor :ldescription)
-   (sdescription :initarg :sdescription :initform '() :accessor :sdescription)
+  ((name :initarg :name :initform '() :reader :name)
+   (synonym :initarg :synonym :initform '() :reader :synonym)
+   (fdescription :initarg :fdescription :initform '() :reader :fdescription)
+   (ldescription :initarg :ldescription :initform '() :reader :ldescription)
+   (sdescription :initarg :sdescription :initform '() :reader :sdescription)
    (action :initarg :action :initform '() :accessor :action)
    (flags :initarg :flags :initform '() :accessor :flags)))
 
@@ -651,7 +650,6 @@
    :ldescription '("you are on a small path in the park. "
 		   "East is the park entrance and to the west is the "
 		   "centre of this little park. ")
-   :sdescription '()
    :uexit '(("west" *park-center*)
 	    ("east" *park-entrance-east*))                                   
    :flags '(:notseen)))
