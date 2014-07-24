@@ -50,6 +50,8 @@
 (defparameter *quiz-size* 10) ; number of questions to be asked for pub-quiz
 (defparameter *quiz-win* 3)   ; limit of questions to get right.
 
+(defparameter *store-string* "")
+
 (defparameter *questions*
   (question-list *quiz-size*))
 
